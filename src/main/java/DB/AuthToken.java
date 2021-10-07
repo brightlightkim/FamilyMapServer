@@ -1,10 +1,10 @@
 package DB;
 
-public class authtoken {
+public class AuthToken {
     private String authToken;
     private String username;
 
-    public authtoken(String authToken, String username) {
+    public AuthToken(String authToken, String username) {
         this.authToken = authToken;
         this.username = username;
     }

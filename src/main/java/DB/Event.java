@@ -1,6 +1,6 @@
 package DB;
 
-public class event {
+public class Event {
     private String event_id;
     private String associated_username;
     private String person_id;
@@ -11,7 +11,7 @@ public class event {
     private String event_type;
     private int year;
 
-    public event(String event_id, String associated_username, String person_id, float latitude, float longitude, String country, String city, String event_type, int year) {
+    public Event(String event_id, String associated_username, String person_id, float latitude, float longitude, String country, String city, String event_type, int year) {
         this.event_id = event_id;
         this.associated_username = associated_username;
         this.person_id = person_id;
