@@ -1,10 +1,23 @@
 package Result;
 
-public class LoadResult {
+import Model.Person;
+
+import java.util.ArrayList;
+
+public class AllPersonResult {
+    private ArrayList<Person> data;
     private String message;
     private boolean success;
 
-    public LoadResult() {
+    public AllPersonResult() {
+    }
+
+    public ArrayList<Person> getData() {
+        return data;
+    }
+
+    public void setData(ArrayList<Person> data) {
+        this.data = data;
     }
 
     public String getMessage() {
@@ -22,6 +35,4 @@ public class LoadResult {
     public void setSuccess(boolean success) {
         this.success = success;
     }
-
-
 }
