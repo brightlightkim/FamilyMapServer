@@ -2,13 +2,25 @@ package DataAccess;
 
 import Model.*;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class UserDao {
-    // clear
-    // find (get) >> retrieve >> primary key matter.
-    // insert a row to the table
+    private ArrayList<User> users;
+    /**
+     * clear users
+     */
     void clear(){}
+
+    /**
+     * find the user by id
+     * @param id id of the user
+     * @return user
+     */
     User find(String id){return null;}
+
+    /**
+     * inser the user
+     * @param user user
+     */
     void insert(User user){}
 }
