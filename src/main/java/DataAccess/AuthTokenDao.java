@@ -8,6 +8,7 @@ import java.util.ArrayList;
 /**
  * Data Access Class for AuthToken Model Class.
  * It's used to access the data of AuthToken.
+ * It has autoTokens that store all tokens.
  * It finds, inserts, and clears the authorized token.
  */
 public class AuthTokenDao {

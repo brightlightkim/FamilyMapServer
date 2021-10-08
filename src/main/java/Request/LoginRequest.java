@@ -1,5 +1,9 @@
 package Request;
 
+/**
+ * Class that requests Login
+ * It requires username and password
+ */
 public class LoginRequest {
     private String username;
     private String password;

@@ -6,6 +6,10 @@ import Model.User;
 
 import java.util.ArrayList;
 
+/**
+ * Class that requests loading
+ * It has ArrayList that stores users, persons, and events
+ */
 public class LoadRequest {
     private ArrayList<User> users;
     private ArrayList<Person> persons;

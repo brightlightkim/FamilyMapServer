@@ -1,8 +1,8 @@
 package Request;
 
 /**
- * javadoc
- * for every attributes
+ * Class that request register
+ * with username, password, email, first name, last name, and gender.
  */
 public class RegisterRequest {
     private String username;

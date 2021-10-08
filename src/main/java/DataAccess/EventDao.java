@@ -8,6 +8,8 @@ import java.util.List;
 
 /**
  * Data Access Class for Event
+ * It stores all events
+ * It finds, inserts, and clears events.
  */
 public class EventDao {
     private ArrayList<Event> events;

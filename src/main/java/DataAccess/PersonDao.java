@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 /**
  * Data Access Class for Person
+ * It stores all persons
+ * It finds, inserts, and clears persons.
  */
 public class PersonDao {
     private ArrayList<Person> persons;

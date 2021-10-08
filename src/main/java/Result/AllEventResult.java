@@ -5,6 +5,10 @@ import Model.Person;
 
 import java.util.ArrayList;
 
+/**
+ * Class that shows the result of all events.
+ * It has data arraylist, message to display, and check if it succeeded.
+ */
 public class AllEventResult {
     private ArrayList<Event> data;
     private String message;

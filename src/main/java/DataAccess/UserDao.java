@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 /**
  * Data Access Class for user
+ * It stores all users
+ * It finds, inserts, and clears users.
  */
 public class UserDao {
     private ArrayList<User> users;
