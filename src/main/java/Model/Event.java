@@ -1,4 +1,4 @@
-package DB;
+package Model;
 
 public class Event {
     private String event_id;

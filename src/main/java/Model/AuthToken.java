@@ -1,4 +1,4 @@
-package DB;
+package Model;
 
 public class AuthToken {
     private String authToken;

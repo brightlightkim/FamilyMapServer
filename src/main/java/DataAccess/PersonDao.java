@@ -1,4 +1,4 @@
-package DB_Access;
+package DataAccess;
 
 public class PersonDao {
 }

@@ -1,10 +1,11 @@
-package DB_Access;
+package DataAccess;
 
-import DB.*;
+import Model.*;
 
 import java.util.List;
 
 public class UserDao {
+
     void createUser(User user){}
     boolean validate(String username, String password){
         return false;
