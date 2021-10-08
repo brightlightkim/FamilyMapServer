@@ -6,6 +6,9 @@ import Model.Person;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data Access Class for Event
+ */
 public class EventDao {
     private ArrayList<Event> events;
 

@@ -4,6 +4,9 @@ import Model.*;
 
 import java.util.ArrayList;
 
+/**
+ * Data Access Class for user
+ */
 public class UserDao {
     private ArrayList<User> users;
     /**

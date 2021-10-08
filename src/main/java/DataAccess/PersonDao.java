@@ -3,6 +3,9 @@ package DataAccess;
 import Model.Person;
 import java.util.ArrayList;
 
+/**
+ * Data Access Class for Person
+ */
 public class PersonDao {
     private ArrayList<Person> persons;
 

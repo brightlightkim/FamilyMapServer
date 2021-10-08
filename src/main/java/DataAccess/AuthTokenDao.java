@@ -6,7 +6,7 @@ import Model.Event;
 import java.util.ArrayList;
 
 /**
- * Dao Class for AuthToken Model Class.
+ * Data Access Class for AuthToken Model Class.
  * It's used to access the data of AuthToken.
  * It finds, inserts, and clears the authorized token.
  */
