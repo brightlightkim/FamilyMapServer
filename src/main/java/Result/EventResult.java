@@ -1,5 +1,9 @@
 package Result;
-
+/**
+ * Class that shows the result of event.
+ * It has associatedUsername, eventID, personID, latitude, longitude, country, city, eventType
+ * year, message to display, and boolean if it succeeded.
+ */
 public class EventResult {
     private String associatedUsername;
     private String eventID;

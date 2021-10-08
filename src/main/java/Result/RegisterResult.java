@@ -1,5 +1,10 @@
 package Result;
 
+/**
+ * Class that shows the result of register.
+ * It has authorized token, username, and personID.
+ * It also has a message to display, and boolean if it succeeded.
+ */
 public class RegisterResult {
     private String authtoken;
     private String username;

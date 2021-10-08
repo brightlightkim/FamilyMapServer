@@ -1,5 +1,10 @@
 package Result;
-
+/**
+ * Class that shows the result of person.
+ * It has associated username, personID, first name, last name,
+ * gender, fatherID, motherID, and spouseID.
+ * It also has a message to display, and boolean if it succeeded.
+ */
 public class PersonResult {
     private String associatedUsername;
     private String personID;

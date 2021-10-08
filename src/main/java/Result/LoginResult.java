@@ -1,5 +1,9 @@
 package Result;
 
+/**
+ * Class that shows the result of login.
+ * It has an authorized token, username, personID, message to display, and boolean if it succeeded.
+ */
 public class LoginResult {
     private String authtoken;
     private String username;
