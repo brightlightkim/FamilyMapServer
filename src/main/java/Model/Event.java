@@ -1,5 +1,8 @@
 package Model;
 
+/**
+ * Model Class for Event
+ */
 public class Event {
     private String event_id;
     private String associated_username;
@@ -11,6 +14,18 @@ public class Event {
     private String event_type;
     private int year;
 
+    /**
+     * Event Class Constructor
+     * @param event_id related event id
+     * @param associated_username related username
+     * @param person_id person's id
+     * @param latitude latitude of the event
+     * @param longitude longitude of the event
+     * @param country country of the event
+     * @param city city of the event
+     * @param event_type Event type such as marriage of the event
+     * @param year year of the event
+     */
     public Event(String event_id, String associated_username, String person_id, float latitude, float longitude, String country, String city, String event_type, int year) {
         this.event_id = event_id;
         this.associated_username = associated_username;

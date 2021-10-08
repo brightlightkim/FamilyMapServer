@@ -9,6 +9,16 @@ public class User {
     private String gender;
     private String person_id;
 
+    /**
+     * User's Constructor
+     * @param username username of user
+     * @param password password of user
+     * @param email email of user
+     * @param first_name first name of user
+     * @param last_name last name of user
+     * @param gender gender of user
+     * @param person_id person's id of user
+     */
     public User(String username, String password, String email, String first_name, String last_name, String gender, String person_id) {
         this.username = username;
         this.password = password;
