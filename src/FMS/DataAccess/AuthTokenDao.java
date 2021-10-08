@@ -1,7 +1,6 @@
 package DataAccess;
 
 import Model.AuthToken;
-import Model.Event;
 
 import java.util.ArrayList;
 

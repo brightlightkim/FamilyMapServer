@@ -1,10 +1,8 @@
 package DataAccess;
 
 import Model.Event;
-import Model.Person;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Data Access Class for Event
@@ -31,7 +29,7 @@ public class EventDao {
 
     /**
      * insert the event
-     * @param event
+     * @param event the event
      */
     void insert(Event event){}
 

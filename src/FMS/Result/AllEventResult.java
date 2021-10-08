@@ -1,7 +1,6 @@
 package Result;
 
 import Model.Event;
-import Model.Person;
 
 import java.util.ArrayList;
 
