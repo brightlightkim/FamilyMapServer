@@ -21,14 +21,14 @@ public class PersonDao {
 
     /**
      * find the person with given id
-     * @param id
-     * @return
+     * @param id id of the person
+     * @return the person
      */
     Person find(String id){return null;}
 
     /**
      * insert the person
-     * @param person
+     * @param person It's the person
      */
     void insert(Person person){}
 
