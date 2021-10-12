@@ -1,8 +1,9 @@
 package DataAccessTest;
 
 import DataAccess.Database;
-import DataAccess.EventDAO;
-import DataAccess.UserDAO;
+import DataAccess.PersonDAO;
+import Exception.DataAccessException;
+import Model.Person;
 import Model.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,28 +11,26 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import Exception.DataAccessException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserDAOTest {
+public class PersonDAOTest {
     private Database db;
-    private User bestUser;
-    private UserDAO uDao;
+    private Person bestPerson;
+    private PersonDAO pDAO;
 
     @BeforeEach
-    public void setUp() throws DataAccessException
-    {
+    public void setUp() throws DataAccessException {
         db = new Database();
-        bestUser = new User("taeyangk95", "hello", "k2289@byu.edu",
-                "Taeyang", "Kim", "M", "k2289");
+        bestPerson = new Person("taeyangk95", "taeyangk", "Taeyang"
+                , "Kim", "m", "gwant", "hong", "you");
         Connection conn = db.getConnection();
         db.clearTables();
-        uDao = new UserDAO(conn);
+        pDAO = new PersonDAO(conn);
     }
 
     @AfterEach
-    public void tearDown() throws DataAccessException {
+    public void tearDown() throws DataAccessException{
         try {
             db.closeConnection(false);
         } catch (SQLException e) {
@@ -42,15 +41,15 @@ public class UserDAOTest {
 
     @Test
     public void insertPass() throws DataAccessException {
-        uDao.insert(bestUser);
-        User compareTest = uDao.find(bestUser.getUsername());
+        pDAO.insert(bestPerson);
+        Person compareTest = pDAO.find(bestPerson.getPersonID());
         assertNotNull(compareTest);
-        assertEquals(bestUser, compareTest);
+        assertEquals(bestPerson, compareTest);
     }
 
     @Test
     public void insertFail() throws DataAccessException {
-        uDao.insert(bestUser);
-        assertThrows(DataAccessException.class, ()-> uDao.insert(bestUser));
+        pDAO.insert(bestPerson);
+        assertThrows(DataAccessException.class, ()-> pDAO.insert(bestPerson));
     }
 }
