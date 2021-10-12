@@ -34,10 +34,10 @@ public class EventDao {
 
     /**
      * find the event by id
-     * @param username uersname of the event
+     * @param eventID id of the event
      * @return return the event
      */
-    public Event find(String username) throws DataAccessException {
+    public Event find(String eventID) throws DataAccessException {
         Event event;
         ResultSet rs = null;
         String sql = "SELECT * FROM Events WHERE EventID = ?;";
