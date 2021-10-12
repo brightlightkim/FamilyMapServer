@@ -23,8 +23,15 @@ public class EventDAO {
     /**
      * clear the events
      */
-    public void clear(){
-
+    public void clear() throws DataAccessException {
+        String sql = "DELETE FROM ?;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, "Events");
+            stmt.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            throw new DataAccessException("There is no database at all!");
+        }
     }
 
     /**
@@ -96,8 +103,33 @@ public class EventDAO {
      * @param eventID eventID of the events
      * @return return the events.
      */
-    public ArrayList<Event> findAll(String eventID){
-
-        return null;
+    public ArrayList<Event> findAll(String eventID) throws DataAccessException{
+        ArrayList<Event> events = new ArrayList<>();
+        ResultSet rs = null;
+        String sql = "SELECT * FROM Events WHERE EventID = ?;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, eventID);
+            rs = stmt.executeQuery();
+            //TODO check if this while loop is correct to get the set data
+            while (rs.next()) {
+                Event event = new Event(rs.getString("EventID"), rs.getString("AssociatedUsername"),
+                        rs.getString("PersonID"), rs.getFloat("Latitude"), rs.getFloat("Longitude"),
+                        rs.getString("Country"), rs.getString("City"), rs.getString("EventType"),
+                        rs.getInt("Year"));
+                events.add(event);
+            }
+            return events;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while finding event");
+        } finally {
+            if(rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
