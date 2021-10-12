@@ -13,24 +13,19 @@ import java.sql.SQLException;
  * It stores all events
  * It finds, inserts, and clears events.
  */
-public class EventDao {
-    private ArrayList<Event> events;
+public class EventDAO {
     private final Connection conn;
 
-    public EventDao() {
-        events = new ArrayList<>();
-        conn = null;
-    }
-
-    public EventDao(Connection conn)
+    public EventDAO(Connection conn)
     {
-        events = new ArrayList<>();
         this.conn = conn;
     }
     /**
      * clear the events
      */
-    public void clear(){}
+    public void clear(){
+
+    }
 
     /**
      * find the event by id

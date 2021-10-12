@@ -10,10 +10,10 @@ import java.util.ArrayList;
  * It has autoTokens that store all tokens.
  * It finds, inserts, and clears the authorized token.
  */
-public class AuthTokenDao {
+public class AuthTokenDAO {
     private ArrayList<AuthToken> authTokens;
 
-    public AuthTokenDao() {
+    public AuthTokenDAO() {
     }
 
     /**

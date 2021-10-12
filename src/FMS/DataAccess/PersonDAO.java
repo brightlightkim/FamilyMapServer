@@ -8,10 +8,10 @@ import java.util.ArrayList;
  * It stores all persons
  * It finds, inserts, and clears persons.
  */
-public class PersonDao {
+public class PersonDAO {
     private ArrayList<Person> persons;
 
-    public PersonDao() {
+    public PersonDAO() {
     }
 
     /**

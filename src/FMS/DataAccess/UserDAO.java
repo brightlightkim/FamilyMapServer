@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * It stores all users
  * It finds, inserts, and clears users.
  */
-public class UserDao {
+public class UserDAO {
     private ArrayList<User> users;
     /**
      * clear users

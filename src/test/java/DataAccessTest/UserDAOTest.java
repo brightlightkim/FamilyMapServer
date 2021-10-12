@@ -1,4 +1,4 @@
 package DataAccessTest;
 
-public class UserDaoTest {
+public class UserDAOTest {
 }
