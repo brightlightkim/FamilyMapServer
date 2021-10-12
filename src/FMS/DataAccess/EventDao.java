@@ -3,7 +3,10 @@ package DataAccess;
 import Model.Event;
 
 import java.util.ArrayList;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 /**
  * Data Access Class for Event
  * It stores all events
@@ -11,10 +14,18 @@ import java.util.ArrayList;
  */
 public class EventDao {
     private ArrayList<Event> events;
+    private final Connection conn;
 
     public EventDao() {
+        events = new ArrayList<>();
+        conn = null;
     }
 
+    public EventDao(Connection conn)
+    {
+        events = new ArrayList<>();
+        this.conn = conn;
+    }
     /**
      * clear the events
      */
