@@ -1,7 +1,6 @@
 package DataAccessTest;
 
 import DataAccess.Database;
-import DataAccess.EventDAO;
 import DataAccess.UserDAO;
 import Model.User;
 import org.junit.jupiter.api.AfterEach;
