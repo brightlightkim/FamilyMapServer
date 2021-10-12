@@ -4,14 +4,14 @@ package Model;
  * Model Class of Person
  */
 public class Person {
-    private String person_id;
-    private String associated_username;
-    private String first_name;
-    private String last_name;
-    private String gender;
-    private String father_id;
-    private String mother_id;
-    private String spouse_id;
+    private String PersonID;
+    private String AssociatedUsername;
+    private String FirstName;
+    private String LastName;
+    private String Gender;
+    private String FatherID;
+    private String MotherID;
+    private String SpouseID;
 
     /**
      * Person Class Constructor
@@ -20,83 +20,83 @@ public class Person {
      * @param first_name first name of the person
      * @param last_name last name of the person
      * @param gender gender of the person
-     * @param father_id father's id of the person
+     * @param FatherID father's id of the person
      * @param mother_id mother's id of the person
      * @param spouse_id spouse's id of the person
      */
-    public Person(String person_id, String associated_username, String first_name, String last_name, String gender, String father_id, String mother_id, String spouse_id) {
+    public Person(String person_id, String associated_username, String first_name, String last_name, String gender, String FatherID, String mother_id, String spouse_id) {
 
-        this.person_id = person_id;
-        this.associated_username = associated_username;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.gender = gender;
-        this.father_id = father_id;
-        this.mother_id = mother_id;
-        this.spouse_id = spouse_id;
+        this.PersonID = person_id;
+        this.AssociatedUsername = associated_username;
+        this.FirstName = first_name;
+        this.LastName = last_name;
+        this.Gender = gender;
+        this.FatherID = FatherID;
+        this.MotherID = mother_id;
+        this.SpouseID = spouse_id;
     }
 
-    public String getPerson_id() {
-        return person_id;
+    public String getPersonID() {
+        return PersonID;
     }
 
-    public void setPerson_id(String person_id) {
-        this.person_id = person_id;
+    public void setPersonID(String personID) {
+        this.PersonID = personID;
     }
 
-    public String getAssociated_username() {
-        return associated_username;
+    public String getAssociatedUsername() {
+        return AssociatedUsername;
     }
 
-    public void setAssociated_username(String associated_username) {
-        this.associated_username = associated_username;
+    public void setAssociatedUsername(String associatedUsername) {
+        this.AssociatedUsername = associatedUsername;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return FirstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String firstName) {
+        this.FirstName = firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return LastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String lastName) {
+        this.LastName = lastName;
     }
 
     public String getGender() {
-        return gender;
+        return Gender;
     }
 
     public void setGender(String gender) {
-        this.gender = gender;
+        this.Gender = gender;
     }
 
-    public String getFather_id() {
-        return father_id;
+    public String getFatherID() {
+        return FatherID;
     }
 
-    public void setFather_id(String father_id) {
-        this.father_id = father_id;
+    public void setFatherID(String fatherID) {
+        this.FatherID = fatherID;
     }
 
-    public String getMother_id() {
-        return mother_id;
+    public String getMotherID() {
+        return MotherID;
     }
 
-    public void setMother_id(String mother_id) {
-        this.mother_id = mother_id;
+    public void setMotherID(String motherID) {
+        this.MotherID = motherID;
     }
 
-    public String getSpouse_id() {
-        return spouse_id;
+    public String getSpouseID() {
+        return SpouseID;
     }
 
-    public void setSpouse_id(String spouse_id) {
-        this.spouse_id = spouse_id;
+    public void setSpouseID(String spouseID) {
+        this.SpouseID = spouseID;
     }
 }

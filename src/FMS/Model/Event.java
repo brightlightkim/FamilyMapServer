@@ -4,15 +4,15 @@ package Model;
  * Model Class for Event
  */
 public class Event {
-    private String event_id;
-    private String associated_username;
-    private String person_id;
-    private float latitude;
-    private float longitude;
-    private String country;
-    private String city;
-    private String event_type;
-    private int year;
+    private String EventID;
+    private String AssociatedUsername;
+    private String PersonID;
+    private float Latitude;
+    private float Longitude;
+    private String Country;
+    private String City;
+    private String EventType;
+    private int Year;
 
     /**
      * Event Class Constructor
@@ -27,86 +27,86 @@ public class Event {
      * @param year year of the event
      */
     public Event(String event_id, String associated_username, String person_id, float latitude, float longitude, String country, String city, String event_type, int year) {
-        this.event_id = event_id;
-        this.associated_username = associated_username;
-        this.person_id = person_id;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.country = country;
-        this.city = city;
-        this.event_type = event_type;
-        this.year = year;
+        this.EventID = event_id;
+        this.AssociatedUsername = associated_username;
+        this.PersonID = person_id;
+        this.Latitude = latitude;
+        this.Longitude = longitude;
+        this.Country = country;
+        this.City = city;
+        this.EventType = event_type;
+        this.Year = year;
     }
 
-    public String getEvent_id() {
-        return event_id;
+    public String getEventID() {
+        return EventID;
     }
 
-    public void setEvent_id(String event_id) {
-        this.event_id = event_id;
+    public void setEventID(String eventID) {
+        this.EventID = eventID;
     }
 
-    public String getAssociated_username() {
-        return associated_username;
+    public String getAssociatedUsername() {
+        return AssociatedUsername;
     }
 
-    public void setAssociated_username(String associated_username) {
-        this.associated_username = associated_username;
+    public void setAssociatedUsername(String associatedUsername) {
+        this.AssociatedUsername = associatedUsername;
     }
 
-    public String getPerson_id() {
-        return person_id;
+    public String getPersonID() {
+        return PersonID;
     }
 
-    public void setPerson_id(String person_id) {
-        this.person_id = person_id;
+    public void setPersonID(String personID) {
+        this.PersonID = personID;
     }
 
     public float getLatitude() {
-        return latitude;
+        return Latitude;
     }
 
     public void setLatitude(float latitude) {
-        this.latitude = latitude;
+        this.Latitude = latitude;
     }
 
     public float getLongitude() {
-        return longitude;
+        return Longitude;
     }
 
     public void setLongitude(float longitude) {
-        this.longitude = longitude;
+        this.Longitude = longitude;
     }
 
     public String getCountry() {
-        return country;
+        return Country;
     }
 
     public void setCountry(String country) {
-        this.country = country;
+        this.Country = country;
     }
 
     public String getCity() {
-        return city;
+        return City;
     }
 
     public void setCity(String city) {
-        this.city = city;
+        this.City = city;
     }
 
-    public String getEvent_type() {
-        return event_type;
+    public String getEventType() {
+        return EventType;
     }
 
-    public void setEvent_type(String event_type) {
-        this.event_type = event_type;
+    public void setEventType(String eventType) {
+        this.EventType = eventType;
     }
 
     public int getYear() {
-        return year;
+        return Year;
     }
 
     public void setYear(int year) {
-        this.year = year;
+        this.Year = year;
     }
 }

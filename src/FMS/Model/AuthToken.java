@@ -4,8 +4,8 @@ package Model;
  * Model Class for AuthToken
  */
 public class AuthToken {
-    private String authToken;
-    private String username;
+    private String AuthToken;
+    private String Username;
 
     /**
      * Constructor
@@ -13,23 +13,23 @@ public class AuthToken {
      * @param username related username
      */
     public AuthToken(String authToken, String username) {
-        this.authToken = authToken;
-        this.username = username;
+        this.AuthToken = authToken;
+        this.Username = username;
     }
 
     public String getAuthToken() {
-        return authToken;
+        return AuthToken;
     }
 
     public void setAuthToken(String authToken) {
-        this.authToken = authToken;
+        this.AuthToken = authToken;
     }
 
     public String getUsername() {
-        return username;
+        return Username;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.Username = username;
     }
 }
