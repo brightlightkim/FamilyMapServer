@@ -43,7 +43,7 @@ public class PersonDAO {
     public Person find(String personID) throws DataAccessException {
         Person person;
         ResultSet rs = null;
-        String sql = "SELECT * FROM Events WHERE EventID = ?;";
+        String sql = "SELECT * FROM Persons WHERE PersonID = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, personID);
             rs = stmt.executeQuery();
@@ -94,15 +94,16 @@ public class PersonDAO {
 
     /**
      * find all persons
-     * @param personID ID of the person
+     * @param associatedUsername ID of the person
      * @return persons array of persons.
+     * Associated Username
      */
-    public ArrayList<Person> findPersons(String personID) throws DataAccessException {
+    public ArrayList<Person> findPersons(String associatedUsername) throws DataAccessException {
         ArrayList<Person> persons = new ArrayList<>();
         ResultSet rs = null;
         String sql = "SELECT * FROM Events WHERE EventID = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, personID);
+            stmt.setString(1, associatedUsername);
             rs = stmt.executeQuery();
             while (rs.next()) {
                 Person person = new Person(rs.getString("PersonID"), rs.getString("AssociatedUsername"),

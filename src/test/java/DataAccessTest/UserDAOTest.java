@@ -32,8 +32,8 @@ public class UserDAOTest {
     @AfterEach
     public void tearDown() throws DataAccessException {
         try {
-            db.closeConnection(false);
-        } catch (SQLException e) {
+            db.closeConnection(true);
+        } catch (DataAccessException e) {
             e.printStackTrace();
             throw new DataAccessException("close connection failed");
         }

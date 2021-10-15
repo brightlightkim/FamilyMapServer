@@ -24,18 +24,19 @@ public class UserDAO {
      * @param user user
      */
     public void insert(User user) throws DataAccessException {
-        String sql = "INSERT INTO Events (Username, Password, Email, FirstName, LastName, " +
+        String sql = "INSERT INTO Users (Username, Password, Email, FirstName, LastName, " +
                 "Gender, PersonID) VALUES(?,?,?,?,?,?,?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getUsername());
-            stmt.setString(1, user.getPassword());
-            stmt.setString(1, user.getEmail());
-            stmt.setString(1, user.getFirstName());
-            stmt.setString(1, user.getLastName());
-            stmt.setString(1, user.getGender());
-            stmt.setString(1, user.getPersonID());
-
+            stmt.setString(2, user.getPassword());
+            stmt.setString(3, user.getEmail());
+            stmt.setString(4, user.getFirstName());
+            stmt.setString(5, user.getLastName());
+            stmt.setString(6, user.getGender());
+            stmt.setString(7, user.getPersonID());
+            stmt.executeUpdate();
         } catch (SQLException e){
+            e.printStackTrace();
             throw new DataAccessException("Error encountered while inserting user into the database");
         }
     }

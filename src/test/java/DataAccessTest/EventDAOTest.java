@@ -44,7 +44,7 @@ public class EventDAOTest {
         //between test cases
         try {
             db.closeConnection(false);
-        } catch (SQLException e) {
+        } catch (DataAccessException e) {
             e.printStackTrace();
             throw new DataAccessException("close connection failed");
         }

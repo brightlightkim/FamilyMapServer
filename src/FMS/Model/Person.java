@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Objects;
+
 /**
  * Model Class of Person
  */
@@ -34,6 +36,19 @@ public class Person {
         this.FatherID = FatherID;
         this.MotherID = mother_id;
         this.SpouseID = spouse_id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return Objects.equals(PersonID, person.PersonID) && Objects.equals(AssociatedUsername, person.AssociatedUsername) && Objects.equals(FirstName, person.FirstName) && Objects.equals(LastName, person.LastName) && Objects.equals(Gender, person.Gender) && Objects.equals(FatherID, person.FatherID) && Objects.equals(MotherID, person.MotherID) && Objects.equals(SpouseID, person.SpouseID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(PersonID, AssociatedUsername, FirstName, LastName, Gender, FatherID, MotherID, SpouseID);
     }
 
     public String getPersonID() {

@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PersonDAOTest {
     private Database db;
     private Person bestPerson;
+    private Person comparePerson;
     private PersonDAO pDAO;
 
     @BeforeEach
@@ -23,6 +24,8 @@ public class PersonDAOTest {
         db = new Database();
         bestPerson = new Person("taeyangk95", "taeyangk", "Taeyang"
                 , "Kim", "m", "gwant", "hong", "you");
+        comparePerson = new Person("jin", "that", "hwang"
+                , "tae", "f", "gwang", "hons", "yod");
         Connection conn = db.getConnection();
         db.clearTables();
         pDAO = new PersonDAO(conn);
@@ -32,7 +35,7 @@ public class PersonDAOTest {
     public void tearDown() throws DataAccessException{
         try {
             db.closeConnection(false);
-        } catch (SQLException e) {
+        } catch (DataAccessException e) {
             e.printStackTrace();
             throw new DataAccessException("close connection failed");
         }
@@ -50,5 +53,19 @@ public class PersonDAOTest {
     public void insertFail() throws DataAccessException {
         pDAO.insert(bestPerson);
         assertThrows(DataAccessException.class, ()-> pDAO.insert(bestPerson));
+    }
+
+    @Test
+    public void findPass() throws DataAccessException {
+        pDAO.insert(bestPerson);
+        pDAO.insert(comparePerson);
+        Person compareTest = pDAO.find(bestPerson.getPersonID());
+        assertNotNull(compareTest);
+        assertEquals(bestPerson, compareTest);
+    }
+
+    @Test
+    public void findFail() throws DataAccessException {
+        assertNull( pDAO.find(bestPerson.getPersonID()));
     }
 }
