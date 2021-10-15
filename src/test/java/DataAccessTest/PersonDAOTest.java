@@ -68,4 +68,10 @@ public class PersonDAOTest {
     public void findFail() throws DataAccessException {
         assertNull( pDAO.find(bestPerson.getPersonID()));
     }
+
+    @Test
+    public void clear() throws DataAccessException {
+        pDAO.clear();
+        assertNull(pDAO.find(bestPerson.getPersonID()));
+    }
 }

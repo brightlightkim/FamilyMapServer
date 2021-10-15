@@ -80,10 +80,9 @@ public class UserDAO {
      * clear users
      */
     public void clear() throws DataAccessException{
-        String sql = "DELETE FROM ?;";
+        String sql = "DELETE FROM Users;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, "Users");
-            stmt.executeQuery();
+            stmt.executeUpdate();
         } catch (SQLException e){
             e.printStackTrace();
             throw new DataAccessException("There is no database at all!");
