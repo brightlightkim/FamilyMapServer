@@ -6,6 +6,10 @@ import java.util.Locale;
 
 import com.sun.net.httpserver.*;
 
+/**
+ * File Handler Class that overrides HttpHandler handle method.
+ * It returns index.html if the request is null, /, or "/index.html"
+ */
 public class FileHandler implements HttpHandler{
     @Override
     public void handle(HttpExchange exchange) throws IOException {
