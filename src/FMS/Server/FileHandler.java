@@ -1,10 +1,13 @@
 package Server;
-import java.io.*;
-import java.net.*;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.nio.file.Files;
 import java.util.Locale;
-
-import com.sun.net.httpserver.*;
 
 /**
  * File Handler Class that overrides HttpHandler handle method.
@@ -18,14 +21,16 @@ public class FileHandler implements HttpHandler{
             if (exchange.getRequestMethod().toLowerCase(Locale.ROOT).equals("get")){
                 //set the URL
                 String urlPath = exchange.getRequestURI().toString();
-                if ((urlPath == null)||(urlPath == "/")||(urlPath == "/index.html")){
+                if ((urlPath == null)||urlPath.equals("/")||urlPath.equals("/index.html")){
                     urlPath = "/index.html";
                 }
                 String filePath = "web" + urlPath;
                 File file = new File(filePath);
                 if (file.exists()){
                     OutputStream respBody = exchange.getResponseBody();
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
                     Files.copy(file.toPath(), respBody);
+                    respBody.close();
                     success = true;
                 }
                 else{ //file is not found

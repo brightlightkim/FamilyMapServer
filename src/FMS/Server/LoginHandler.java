@@ -4,7 +4,6 @@ import Request.LoginRequest;
 import Result.LoginResult;
 import Service.LoginService;
 import com.google.gson.Gson;
-import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -18,10 +17,9 @@ public class LoginHandler implements HttpHandler {
         boolean success = false;
         Gson gson = new Gson();
         try {
-            if (exchange.getRequestMethod().toLowerCase(Locale.ROOT).equals("get")){
-                Headers reqData = exchange.getRequestHeaders();
-                //TODO: Is this right?
-                LoginRequest request = (LoginRequest)gson.fromJson(reqData.toString(), LoginRequest.class);
+            if (exchange.getRequestMethod().toLowerCase(Locale.ROOT).equals("post")){
+                Reader reqData = new InputStreamReader(exchange.getRequestBody());
+                LoginRequest request = (LoginRequest)gson.fromJson(reqData, LoginRequest.class);
                 LoginService service = new LoginService();
                 LoginResult result = service.login(request);
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
@@ -49,4 +47,5 @@ public class LoginHandler implements HttpHandler {
         sw.write(str);
         sw.flush();
     }
+
 }

@@ -1,7 +1,8 @@
 package Server;
-import java.io.*;
-import java.net.*;
-import com.sun.net.httpserver.*;
+import com.sun.net.httpserver.HttpServer;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
 
 public class Server {
 
@@ -28,7 +29,7 @@ public class Server {
         System.out.println("Creating contexts");
 
         server.createContext("/user/register", new ListGamesHandler());
-        server.createContext("/user/login", new ListGamesHandler());
+        server.createContext("/user/login", new LoginHandler());
         //TODO: Need more functions here for getting the username and generations.
         server.createContext("/fill/[username]/{generations}", new ListGamesHandler());
         server.createContext("/load", new ListGamesHandler());
