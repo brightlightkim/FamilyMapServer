@@ -124,10 +124,9 @@ public class EventDAO {
      * clear the events
      */
     public void clear() throws DataAccessException {
-        String sql = "DELETE FROM ?;";
+        String sql = "DELETE FROM Events;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, "Events");
-            stmt.executeQuery();
+            stmt.executeUpdate();
         } catch (SQLException e){
             e.printStackTrace();
             throw new DataAccessException("There is no database at all!");

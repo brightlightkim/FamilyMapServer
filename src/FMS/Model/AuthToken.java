@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Objects;
+
 /**
  * Model Class for AuthToken
  */
@@ -15,6 +17,19 @@ public class AuthToken {
     public AuthToken(String authToken, String username) {
         this.AuthToken = authToken;
         this.Username = username;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AuthToken authToken = (AuthToken) o;
+        return Objects.equals(AuthToken, authToken.AuthToken) && Objects.equals(Username, authToken.Username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(AuthToken, Username);
     }
 
     public String getAuthToken() {

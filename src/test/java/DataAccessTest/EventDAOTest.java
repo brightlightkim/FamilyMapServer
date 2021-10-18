@@ -4,6 +4,7 @@ import DataAccess.Database;
 import DataAccess.EventDAO;
 import Exception.DataAccessException;
 import Model.Event;
+import Model.Person;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EventDAOTest {
     private Database db;
     private Event bestEvent;
+    private Event compareEvent;
     private EventDAO eDao;
 
     @BeforeEach
@@ -29,6 +31,9 @@ public class EventDAOTest {
         bestEvent = new Event("Biking_123A", "Gale", "Gale123A",
                 35.9f, 140.1f, "Japan", "Ushiku",
                 "Biking_Around", 2016);
+        compareEvent = new Event("Talent", "Yas", "ulen",
+                23.2f, 130.1f, "Korea", "Jukjeon",
+                "Talented", 2013);
         //Here, we'll open the connection in preparation for the test case to use it
         Connection conn = db.getConnection();
         //Let's clear the database as well so any lingering data doesn't affect our tests
@@ -77,5 +82,25 @@ public class EventDAOTest {
         //of this class. All you need to know is that this line of code runs the code that
         //comes after the "()->" and expects it to throw an instance of the class in the first parameter.
         assertThrows(DataAccessException.class, ()-> eDao.insert(bestEvent));
+    }
+
+    @Test
+    public void findPass() throws DataAccessException {
+        eDao.insert(bestEvent);
+        eDao.insert(compareEvent);
+        Event compareTest = eDao.find(bestEvent.getEventID());
+        assertNotNull(compareTest);
+        assertEquals(bestEvent, compareTest);
+    }
+
+    @Test
+    public void findFail() throws DataAccessException {
+        assertNull( eDao.find(bestEvent.getPersonID()));
+    }
+
+    @Test
+    public void clear() throws DataAccessException {
+        eDao.clear();
+        assertNull(eDao.find(bestEvent.getPersonID()));
     }
 }
