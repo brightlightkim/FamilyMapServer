@@ -2,6 +2,7 @@ package DataAccess;
 
 import Model.AuthToken;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 
 /**
@@ -11,9 +12,10 @@ import java.util.ArrayList;
  * It finds, inserts, and clears the authorized token.
  */
 public class AuthTokenDAO {
-    private ArrayList<AuthToken> authTokens;
+    private final Connection conn;
 
-    public AuthTokenDAO() {
+    public AuthTokenDAO(Connection conn) {
+        this.conn = conn;
     }
 
     /**
@@ -29,6 +31,7 @@ public class AuthTokenDAO {
      * @return the AuthToken class of the matching token key.
      */
     AuthToken find(String token){
+
         return null;
     }
 
