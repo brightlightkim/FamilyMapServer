@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Objects;
+
 /**
  * Model Class for Event
  */
@@ -36,6 +38,19 @@ public class Event {
         this.City = city;
         this.EventType = event_type;
         this.Year = year;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return Float.compare(event.Latitude, Latitude) == 0 && Float.compare(event.Longitude, Longitude) == 0 && Year == event.Year && EventID.equals(event.EventID) && Objects.equals(AssociatedUsername, event.AssociatedUsername) && Objects.equals(PersonID, event.PersonID) && Objects.equals(Country, event.Country) && Objects.equals(City, event.City) && Objects.equals(EventType, event.EventType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(EventID, AssociatedUsername, PersonID, Latitude, Longitude, Country, City, EventType, Year);
     }
 
     public String getEventID() {
