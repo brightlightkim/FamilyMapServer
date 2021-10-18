@@ -19,19 +19,25 @@ public class AuthTokenDAO {
     /**
      * Clear the authorized tokens.
      */
-    void clear(){}
+    void clear(){
+
+    }
 
     /**
      * Find the AuthToken class
      * @param token token to look up to
      * @return the AuthToken class of the matching token key.
      */
-    AuthToken find(String token){return null;}
+    AuthToken find(String token){
+        return null;
+    }
 
     /**
      * insert the AuthToken.
      * @param token insert the token.
      */
-    void insert(AuthToken token){}
+    void insert(AuthToken token){
+
+    }
 
 }

@@ -1,0 +1,57 @@
+drop table if exists Users;
+drop table if exists Persons;
+drop table if exists Events;
+drop table if exists AuthTokens;
+
+create table Users
+(
+	Username varchar(255) not null primary key,
+	Password varchar(255) not null,
+	Email varchar(255) not null,
+	FirstName varchar(255) not null,
+	LastName varchar(255) not null,
+	Gender varchar(1) not null,
+	PersonID varchar(255) not null 
+);
+
+create table Persons
+(
+	PersonID varchar(255) not null primary key,
+	AssociatedUsername varchar(255),
+	FirstName varchar(255) not null,
+	LastName varchar(255) not null,
+	Gender varchar(1) not null,
+	FatherID varchar(255),
+	MotherID varchar(255),
+	SpouseID varchar(255)
+);
+
+create table Events
+(
+	EventID varchar(255) not null primary key,
+	AssociatedUsername varchar(255) not null,
+	PersonID varchar(255) not null,
+	Latitude float not null,
+	Longitude float not null,
+	Country varchar(255) not null,
+	City varchar(255) not null,
+	EventType varchar(255) not null,
+	Year integer not null
+);
+
+create table AuthTokens
+(
+	AuthToken varchar(255) not null primary key,
+	Username varchar(255) not null
+);
+
+insert into Users (Username, Password, Email, FirstName, LastName, Gender, PersonID) values ('Ann', '1234', 'ann@cs.byu.edu', 'kim', 'taeyang', 'm', 'Ann');
+insert into Users (Username, Password, Email, FirstName, LastName, Gender, PersonID) values ('a', '1234', 'ann@cs.byu.edu', 'kim', 'taeyang', 'm', 'a');
+insert into Users (Username, Password, Email, FirstName, LastName, Gender, PersonID) values ('b', '1234', 'ann@cs.byu.edu', 'kim', 'taeyang', 'm', 'b');
+
+insert into Persons (PersonID, FirstName, LastName, Gender) values ('hello', 'taeyang', 'kim', 'm'); 
+insert into Persons (PersonID, AssociatedUsername, FirstName, LastName, Gender, FatherID, MotherID, SpouseID) values ('123', 'a', 'tom', 'bradey', 'm', 'hello', 'hello', 'hello');
+
+insert into Events (EventID, AssociatedUsername, PersonID, Latitude, Longitude, Country, City, EventType, Year) values ('2001', 'Ann', 'hello', '123', '342', 'korea', 'yongin', 'baptism', '2005');
+
+insert into AuthTokens (AuthToken, Username) values ('authorized', 'Ann');
