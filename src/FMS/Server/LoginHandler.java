@@ -1,5 +1,6 @@
 package Server;
 
+import Exception.DataAccessException;
 import Request.LoginRequest;
 import Result.LoginResult;
 import Service.LoginService;
@@ -33,7 +34,7 @@ public class LoginHandler implements HttpHandler {
                 exchange.getResponseBody().close();
             }
         }
-        catch (IOException e){
+        catch (DataAccessException e){
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_SERVER_ERROR, 0);
             exchange.getResponseBody().close();
             e.printStackTrace();
