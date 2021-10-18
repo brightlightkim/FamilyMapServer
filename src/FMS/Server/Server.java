@@ -27,9 +27,16 @@ public class Server {
 
         System.out.println("Creating contexts");
 
-        server.createContext("/games/list", new ListGamesHandler());
-
-        server.createContext("/routes/claim", new ClaimRouteHandler());
+        server.createContext("/user/register", new ListGamesHandler());
+        server.createContext("/user/login", new ListGamesHandler());
+        //TODO: Need more functions here for getting the username and generations.
+        server.createContext("/fill/[username]/{generations}", new ListGamesHandler());
+        server.createContext("/load", new ListGamesHandler());
+        //TODO: Need more functions to find personID.
+        server.createContext("/person/[personID]", new ListGamesHandler());
+        //TODO: Need more functions to find eventID.
+        server.createContext("/event/[eventID]", new ListGamesHandler());
+        server.createContext("/event", new ListGamesHandler());
 
         server.createContext("/", new FileHandler());
 
@@ -42,7 +49,7 @@ public class Server {
 
     /**
      * main method for the server program
-     * @param args one command-line argument, which is the port numbe
+     * @param args one command-line argument, which is the port number
      * on which the server should accept incoming client connections.
      */
     public static void main(String[] args) {
