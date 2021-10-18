@@ -42,35 +42,35 @@ public class AuthTokenDAOTest {
 
     @Test
     public void insertPass() throws DataAccessException {
-        pDAO.insert(bestPerson);
-        Person compareTest = pDAO.find(bestPerson.getPersonID());
+        aDAO.insert(bestToken);
+        AuthToken compareTest = aDAO.find(bestToken.getAuthToken());
         assertNotNull(compareTest);
-        assertEquals(bestPerson, compareTest);
+        assertEquals(bestToken, compareTest);
     }
 
     @Test
     public void insertFail() throws DataAccessException {
-        pDAO.insert(bestPerson);
-        assertThrows(DataAccessException.class, ()-> pDAO.insert(bestPerson));
+        aDAO.insert(bestToken);
+        assertThrows(DataAccessException.class, ()-> aDAO.insert(bestToken));
     }
 
     @Test
     public void findPass() throws DataAccessException {
-        pDAO.insert(bestPerson);
-        pDAO.insert(comparePerson);
-        Person compareTest = pDAO.find(bestPerson.getPersonID());
+        aDAO.insert(bestToken);
+        aDAO.insert(compareToken);
+        AuthToken compareTest = aDAO.find(bestToken.getAuthToken());
         assertNotNull(compareTest);
-        assertEquals(bestPerson, compareTest);
+        assertEquals(bestToken, compareTest);
     }
 
     @Test
     public void findFail() throws DataAccessException {
-        assertNull( pDAO.find(bestPerson.getPersonID()));
+        assertNull( aDAO.find(bestToken.getAuthToken()));
     }
 
     @Test
     public void clear() throws DataAccessException {
-        pDAO.clear();
-        assertNull(pDAO.find(bestPerson.getPersonID()));
+        aDAO.clear();
+        assertNull(aDAO.find(bestToken.getAuthToken()));
     }
 }
