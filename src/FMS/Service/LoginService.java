@@ -12,5 +12,7 @@ public class LoginService {
      * @param request of LoginRequest with username and password
      * @return login result
      */
-    public LoginResult requestEvent(LoginRequest request){return null;}
+    public LoginResult login(LoginRequest request){
+        return null;
+    }
 }
