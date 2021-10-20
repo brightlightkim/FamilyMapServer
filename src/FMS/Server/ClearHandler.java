@@ -3,7 +3,7 @@ package Server;
 import Result.ClearResult;
 import Service.ClearService;
 import com.sun.net.httpserver.HttpExchange;
-
+import Error.DataAccessException;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.util.Locale;
@@ -27,7 +27,7 @@ public class ClearHandler extends Handler{
                 exchange.getResponseBody().close();
             }
         }
-        catch (IOException e){
+        catch (IOException | DataAccessException e){
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_SERVER_ERROR, 0);
             exchange.getResponseBody().close();
             e.printStackTrace();
