@@ -1,6 +1,6 @@
 package Server;
+
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,10 +13,9 @@ import java.util.Locale;
  * File Handler Class that overrides HttpHandler handle method.
  * It returns index.html if the request is null, /, or "/index.html"
  */
-public class FileHandler implements HttpHandler{
+public class FileHandler extends Handler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        boolean success = false;
         try{
             if (exchange.getRequestMethod().toLowerCase(Locale.ROOT).equals("get")){
                 //set the URL

@@ -28,7 +28,7 @@ public class Server {
 
         System.out.println("Creating contexts");
 
-        server.createContext("/user/register", new ListGamesHandler());
+        server.createContext("/user/register", new RegisterHandler());
         server.createContext("/user/login", new LoginHandler());
         //TODO: Need more functions here for getting the username and generations.
         server.createContext("/fill/[username]/{generations}", new ListGamesHandler());

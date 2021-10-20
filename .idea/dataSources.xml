@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:sqlite:C:\Users\brightlightkim\Downloads\DAOJunit5Example\DAOJunit5Example\familymap.sqlite</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="familymap [2]" uuid="a36ec67d-c49b-47d6-b224-7ad1d63a513a">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\brightlightkim\IdeaProjects\FamilyMapServerStudent-master\familymap.sqlite</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
