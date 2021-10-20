@@ -2,12 +2,14 @@ package Service;
 
 import DataAccess.AuthTokenDAO;
 import DataAccess.Database;
-import DataAccess.PersonDAO;
+import DataAccess.UserDAO;
 import Exception.DataAccessException;
 import Model.AuthToken;
-import Model.Person;
+import Model.User;
 import Request.LoginRequest;
 import Result.LoginResult;
+
+import java.util.UUID;
 
 /**
  * Class that performs the login
@@ -23,20 +25,28 @@ public class LoginService {
         try{
             db.openConnection();
             // Use DAOs to do requested operation
-            AuthToken matchedToken = new AuthTokenDAO(db.getConnection()).find(request.getUsername());
+            User matchedUser = new UserDAO(db.openConnection()).find(request.getUsername());
 
-            if (matchedToken == null){
+            if (matchedUser == null){
                 LoginResult result = new LoginResult("No ID that match", false);
                 return result;
             }
 
-            Person matchedPerson = new PersonDAO(db.getConnection()).find(matchedToken.getUsername());
+            //when the password not match
+            if (matchedUser.getPassword() != request.getPassword()){
+                LoginResult result = new LoginResult("Password not match", false);
+                return result;
+            }
+
+            //Then I have to create the Authorization token and insert it.
+            String uuid = UUID.nameUUIDFromBytes(request.getUsername().getBytes()).toString();
+            AuthToken token = new AuthToken(uuid, request.getUsername());
+            new AuthTokenDAO(db.openConnection()).insert(token);
             // Close database connection, COMMIT transaction
             db.closeConnection(true);
 
             // Create and return SUCCESS Result object
-            LoginResult result = new LoginResult(matchedToken.getAuthToken(),matchedToken.getUsername(),
-                    matchedPerson.getPersonID(),"found Person!", true);
+            LoginResult result = new LoginResult(uuid, matchedUser.getUsername(), matchedUser.getPersonID(),"found Person!", true);
             return result;
         }
         catch (Exception ex) {

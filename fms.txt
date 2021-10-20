@@ -46,11 +46,11 @@ create table AuthTokens
 );
 
 insert into Users (Username, Password, Email, FirstName, LastName, Gender, PersonID) values ('Ann', '1234', 'ann@cs.byu.edu', 'kim', 'taeyang', 'm', 'Ann');
-insert into Users (Username, Password, Email, FirstName, LastName, Gender, PersonID) values ('a', '1234', 'ann@cs.byu.edu', 'kim', 'taeyang', 'm', 'a');
+insert into Users (Username, Password, Email, FirstName, LastName, Gender, PersonID) values ('taeyang', '1234', 'ann@cs.byu.edu', 'kim', 'taeyang', 'm', 'a');
 insert into Users (Username, Password, Email, FirstName, LastName, Gender, PersonID) values ('b', '1234', 'ann@cs.byu.edu', 'kim', 'taeyang', 'm', 'b');
 
 insert into Persons (PersonID, FirstName, LastName, Gender) values ('hello', 'taeyang', 'kim', 'm'); 
-insert into Persons (PersonID, AssociatedUsername, FirstName, LastName, Gender, FatherID, MotherID, SpouseID) values ('123', 'a', 'tom', 'bradey', 'm', 'hello', 'hello', 'hello');
+insert into Persons (PersonID, AssociatedUsername, FirstName, LastName, Gender, FatherID, MotherID, SpouseID) values ('123', 'taeyang', 'tom', 'bradey', 'm', 'hello', 'hello', 'hello');
 
 insert into Events (EventID, AssociatedUsername, PersonID, Latitude, Longitude, Country, City, EventType, Year) values ('2001', 'Ann', 'hello', '123', '342', 'korea', 'yongin', 'baptism', '2005');
 
