@@ -1,8 +1,11 @@
 package Service;
 
+import DataAccess.Database;
+import DataAccess.PersonDAO;
+import Error.DataAccessException;
+import Model.Person;
 import Result.PeopleResult;
 import Result.PersonResult;
-import Error.DataAccessException;
 
 /**
  * Class that performs person relating methods
@@ -14,6 +17,40 @@ public class PersonService {
      * @return one person
      */
     public PersonResult findPerson(String personID) throws DataAccessException {
+        Database db = new Database();
+        try{
+            db.openConnection();
+            // Use DAOs to do requested operation
+            Person desiredPerson = new PersonDAO(db.openConnection()).find(personID);
+
+            if (desiredPerson == null){
+                PersonResult result = new PersonResult("No Person that match the ID", false);
+                db.closeConnection(false);
+                return result;
+            }
+
+            // Close database connection, COMMIT transaction
+            db.closeConnection(true);
+
+            // Create and return SUCCESS Result object
+            PersonResult result = new PersonResult(desiredPerson.getAssociatedUsername(),
+                    desiredPerson.getPersonID(), desiredPerson.getFirstName(),
+                    desiredPerson.getLastName(), desiredPerson.getGender(),
+                    desiredPerson.getFatherID(), desiredPerson.getMotherID(),
+                    desiredPerson.getSpouseID(), "found person Successfully",
+                    true);
+            return result;
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+
+            // Close database connection, ROLLBACK transaction
+            db.closeConnection(false);
+
+            // Create and return FAILURE Result object
+
+        }
+
         return null;
     }
 
