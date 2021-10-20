@@ -34,8 +34,8 @@ public class Server {
         server.createContext("/fill/[username]/{generations}", new ListGamesHandler());
         server.createContext("/load", new ListGamesHandler());
         //TODO: Need more functions to find personID.
-        server.createContext("/person/[personID]", new PersonHandler());
         server.createContext("/person", new PersonHandler());
+        //server.createContext("/person", new PersonHandler());
         server.createContext("/clear", new ClearHandler());
         //TODO: Need more functions to find eventID.
         server.createContext("/event/[eventID]", new ListGamesHandler());

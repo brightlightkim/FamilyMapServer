@@ -1,6 +1,6 @@
 package Service;
 
-import Result.AllPersonResult;
+import Result.PeopleResult;
 import Result.PersonResult;
 
 /**
@@ -12,11 +12,11 @@ public class PersonService {
      * Method that shows the result of finding one person
      * @return one person
      */
-    public PersonResult personResult(){return null;}
+    public PersonResult findPerson(String personID){return null;}
 
     /**
      * Method that shows the result of finding every person
      * @return every person
      */
-    public AllPersonResult allPersonResult(){return null;}
+    public PeopleResult findAllPeople(){return null;}
 }
