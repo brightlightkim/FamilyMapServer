@@ -2,13 +2,11 @@ package DataAccessTest;
 
 import DataAccess.AuthTokenDAO;
 import DataAccess.Database;
-import DataAccess.PersonDAO;
 import Model.AuthToken;
-import Model.Person;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import Exception.DataAccessException;
+import Error.DataAccessException;
 
 import java.sql.Connection;
 

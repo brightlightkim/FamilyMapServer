@@ -1,6 +1,6 @@
 package Server;
 
-import Exception.DataAccessException;
+import Error.DataAccessException;
 import Request.RegisterRequest;
 import Result.RegisterResult;
 import Service.RegisterService;

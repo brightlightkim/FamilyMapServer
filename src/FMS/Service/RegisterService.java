@@ -4,7 +4,7 @@ import DataAccess.AuthTokenDAO;
 import DataAccess.Database;
 import DataAccess.PersonDAO;
 import DataAccess.UserDAO;
-import Exception.DataAccessException;
+import Error.DataAccessException;
 import Model.AuthToken;
 import Model.Person;
 import Model.User;

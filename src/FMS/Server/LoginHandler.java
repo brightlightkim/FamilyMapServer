@@ -1,6 +1,6 @@
 package Server;
 
-import Exception.DataAccessException;
+import Error.DataAccessException;
 import Request.LoginRequest;
 import Result.LoginResult;
 import Service.LoginService;

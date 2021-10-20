@@ -1,7 +1,7 @@
 package DataAccess;
 
 import Model.Event;
-import Exception.DataAccessException;
+import Error.DataAccessException;
 
 import java.util.ArrayList;
 import java.sql.Connection;

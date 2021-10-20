@@ -3,7 +3,7 @@ package Service;
 import DataAccess.AuthTokenDAO;
 import DataAccess.Database;
 import DataAccess.UserDAO;
-import Exception.DataAccessException;
+import Error.DataAccessException;
 import Model.AuthToken;
 import Model.User;
 import Request.LoginRequest;

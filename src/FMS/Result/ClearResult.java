@@ -12,6 +12,11 @@ public class ClearResult {
     public ClearResult() {
     }
 
+    public ClearResult(String message, boolean success) {
+        this.message = message;
+        this.success = success;
+    }
+
     public String getMessage() {
         return message;
     }

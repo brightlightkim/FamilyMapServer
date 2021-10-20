@@ -1,12 +1,11 @@
 package DataAccess;
 
 import Model.*;
-import Exception.DataAccessException;
+import Error.DataAccessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 /**
  * Data Access Class for user
