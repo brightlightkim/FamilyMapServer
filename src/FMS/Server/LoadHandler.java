@@ -1,4 +1,4 @@
 package Server;
 
-public class LoadHandler {
+public class LoadHandler extends Handler{
 }

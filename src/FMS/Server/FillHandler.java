@@ -1,4 +1,4 @@
 package Server;
 
-public class FillHandler {
+public class FillHandler extends Handler {
 }

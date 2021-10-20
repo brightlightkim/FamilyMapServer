@@ -4,7 +4,6 @@ import Exception.DataAccessException;
 import Request.LoginRequest;
 import Result.LoginResult;
 import Service.LoginService;
-import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.*;
@@ -14,7 +13,6 @@ import java.util.Locale;
 public class LoginHandler extends Handler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        Gson gson = new Gson();
         try {
             if (exchange.getRequestMethod().toLowerCase(Locale.ROOT).equals("post")){
                 Reader reqData = new InputStreamReader(exchange.getRequestBody());

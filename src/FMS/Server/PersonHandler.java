@@ -1,4 +1,4 @@
 package Server;
 
-public class PersonHandler {
+public class PersonHandler extends Handler{
 }

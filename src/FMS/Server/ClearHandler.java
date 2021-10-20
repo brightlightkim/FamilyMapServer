@@ -1,4 +1,4 @@
 package Server;
 
-public class ClearHandler {
+public class ClearHandler extends Handler{
 }
