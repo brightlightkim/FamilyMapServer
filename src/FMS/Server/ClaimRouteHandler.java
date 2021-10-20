@@ -1,8 +1,13 @@
 package Server;
 
-import java.io.*;
-import java.net.*;
-import com.sun.net.httpserver.*;
+import com.sun.net.httpserver.Headers;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 
 /*
 	The ClaimRouteHandler is the HTTP handler that processes
@@ -56,6 +61,8 @@ class ClaimRouteHandler implements HttpHandler {
             if (exchange.getRequestMethod().toLowerCase().equals("post")) {
 
                 // Get the HTTP request headers
+                //TODO: get this part for person..
+                //person & event server.
                 Headers reqHeaders = exchange.getRequestHeaders();
                 // Check to see if an "Authorization" header is present
                 if (reqHeaders.containsKey("Authorization")) {

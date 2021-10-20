@@ -34,7 +34,7 @@ public class RegisterService {
                 db.closeConnection(false);
                 return result;
             }
-            String uuid = UUID.nameUUIDFromBytes(request.getUsername().getBytes()).toString();
+            String uuid = UUID.randomUUID().toString();
 
             //Create each objects
             User newUser = new User(request.getUsername(), request.getPassword(),

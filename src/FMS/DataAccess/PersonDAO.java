@@ -99,6 +99,7 @@ public class PersonDAO {
     public ArrayList<Person> findPersons(String associatedUsername) throws DataAccessException {
         ArrayList<Person> persons = new ArrayList<>();
         ResultSet rs = null;
+        //TODO: change the SQL
         String sql = "SELECT * FROM Events WHERE EventID = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, associatedUsername);

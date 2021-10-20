@@ -24,6 +24,13 @@ public class PersonHandler extends Handler{
 
                 //check if it's for all people or not
                 if (exchange.getRequestURI().toString().length() == 7){
+                    //pass it to the parameter as an auth token.
+                    //1. valid
+                    //2. get the username of the authtoken table
+                    //3. get username to find all the people.
+                    //4. make new function in the personDAO
+                    //   select person where associated username = username..
+                    //   10-30 people >> find all persons.. >> back to clients
                     peopleResult = service.findAllPeople();
                 }
                 else {
