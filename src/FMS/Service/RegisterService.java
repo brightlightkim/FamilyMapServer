@@ -1,13 +1,14 @@
 package Service;
 
-import Exception.DataAccessException;
 import DataAccess.AuthTokenDAO;
 import DataAccess.Database;
+import DataAccess.PersonDAO;
 import DataAccess.UserDAO;
+import Exception.DataAccessException;
 import Model.AuthToken;
+import Model.Person;
 import Model.User;
 import Request.RegisterRequest;
-import Result.LoginResult;
 import Result.RegisterResult;
 
 import java.util.UUID;
@@ -29,25 +30,33 @@ public class RegisterService {
             User matchedUser = new UserDAO(db.openConnection()).find(request.getUsername());
 
             if (matchedUser != null){
-                LoginResult result = new LoginResult("We already have this username", false);
+                RegisterResult result = new RegisterResult("We already have this username", false);
                 return result;
             }
-
-            //when the password not match
-            if (matchedUser.getPassword() != request.getPassword()){
-                LoginResult result = new LoginResult("Password not match", false);
-                return result;
-            }
-
-            //Then I have to create the Authorization token and insert it.
             String uuid = UUID.nameUUIDFromBytes(request.getUsername().getBytes()).toString();
-            AuthToken token = new AuthToken(uuid, request.getUsername());
-            new AuthTokenDAO(db.openConnection()).insert(token);
+
+            //Create each objects
+            User newUser = new User(request.getUsername(), request.getPassword(),
+                    request.getEmail(), request.getFirstName(), request.getLastName(),
+                    request.getGender(), uuid);
+            //TODO: Have to fix the part of father, mother, and spouse later.
+            Person newPerson = new Person(uuid, request.getUsername(), request.getFirstName(),
+                    request.getLastName(), request.getGender(), null, null, null);
+
+            uuid = UUID.randomUUID().toString(); //grant the random token for the username.
+            AuthToken newToken = new AuthToken(uuid, request.getUsername());
+
+            //Add it to the database
+            new UserDAO(db.getConnection()).insert(newUser);
+            new PersonDAO(db.getConnection()).insert(newPerson);
+            new AuthTokenDAO(db.getConnection()).insert(newToken);
+
             // Close database connection, COMMIT transaction
             db.closeConnection(true);
 
             // Create and return SUCCESS Result object
-            LoginResult result = new LoginResult(uuid, matchedUser.getUsername(), matchedUser.getPersonID(),"found Person!", true);
+            RegisterResult result = new RegisterResult(uuid, request.getUsername(),
+                    newPerson.getPersonID(), "successfully registered", true);
             return result;
         }
         catch (Exception ex) {

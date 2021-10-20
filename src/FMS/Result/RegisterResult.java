@@ -5,7 +5,7 @@ package Result;
  * It has authorized token, username, and personID.
  * It also has a message to display, and boolean if it succeeded.
  */
-public class RegisterResult {
+public class RegisterResult extends Result{
     private String authtoken;
     private String username;
     private String personID;
@@ -13,6 +13,19 @@ public class RegisterResult {
     private boolean success;
 
     public RegisterResult() {
+    }
+
+    public RegisterResult(String authtoken, String username, String personID, String message, boolean success) {
+        this.authtoken = authtoken;
+        this.username = username;
+        this.personID = personID;
+        this.message = message;
+        this.success = success;
+    }
+
+    public RegisterResult(String message, boolean success){
+        this.message = message;
+        this.success = success;
     }
 
     public String getAuthtoken() {
