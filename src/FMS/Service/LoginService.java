@@ -1,7 +1,11 @@
 package Service;
 
+import DataAccess.AuthTokenDAO;
 import DataAccess.Database;
+import DataAccess.PersonDAO;
 import Exception.DataAccessException;
+import Model.AuthToken;
+import Model.Person;
 import Request.LoginRequest;
 import Result.LoginResult;
 
@@ -19,14 +23,20 @@ public class LoginService {
         try{
             db.openConnection();
             // Use DAOs to do requested operation
-            new DaoA(db.getConnection()).dbOpA(request.x, request.y);
-            new DaoB(db.getConnection()).dbOpB(request.z);
+            AuthToken matchedToken = new AuthTokenDAO(db.getConnection()).find(request.getUsername());
 
+            if (matchedToken == null){
+                LoginResult result = new LoginResult("No ID that match", false);
+                return result;
+            }
+
+            Person matchedPerson = new PersonDAO(db.getConnection()).find(matchedToken.getUsername());
             // Close database connection, COMMIT transaction
             db.closeConnection(true);
 
             // Create and return SUCCESS Result object
-            Result result = new Result(true, a, b, c);
+            LoginResult result = new LoginResult(matchedToken.getAuthToken(),matchedToken.getUsername(),
+                    matchedPerson.getPersonID(),"found Person!", true);
             return result;
         }
         catch (Exception ex) {
@@ -36,8 +46,7 @@ public class LoginService {
             db.closeConnection(false);
 
             // Create and return FAILURE Result object
-            Result result = new Result(false, “Error message”);
-            return result;
+
         }
 
         return null;

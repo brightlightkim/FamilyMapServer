@@ -14,6 +14,19 @@ public class LoginResult {
     public LoginResult() {
     }
 
+    public LoginResult(String authtoken, String username, String personID, String message, boolean success) {
+        this.authtoken = authtoken;
+        this.username = username;
+        this.personID = personID;
+        this.message = message;
+        this.success = success;
+    }
+
+    public LoginResult(String message, boolean success) {
+        this.message = message;
+        this.success = success;
+    }
+
     public String getAuthtoken() {
         return authtoken;
     }
