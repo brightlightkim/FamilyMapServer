@@ -29,12 +29,14 @@ public class LoginService {
 
             if (matchedUser == null){
                 LoginResult result = new LoginResult("No ID that match", false);
+                db.closeConnection(false);
                 return result;
             }
 
             //when the password not match
             if (matchedUser.getPassword() != request.getPassword()){
                 LoginResult result = new LoginResult("Password not match", false);
+                db.closeConnection(false);
                 return result;
             }
 

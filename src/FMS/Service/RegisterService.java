@@ -31,6 +31,7 @@ public class RegisterService {
 
             if (matchedUser != null){
                 RegisterResult result = new RegisterResult("We already have this username", false);
+                db.closeConnection(false);
                 return result;
             }
             String uuid = UUID.nameUUIDFromBytes(request.getUsername().getBytes()).toString();
