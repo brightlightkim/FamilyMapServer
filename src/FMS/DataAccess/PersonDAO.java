@@ -99,8 +99,13 @@ public class PersonDAO {
     public ArrayList<Person> findPeople(String associatedUsername) throws DataAccessException {
         ArrayList<Person> persons = new ArrayList<>();
         ResultSet rs = null;
-        //TODO: change the SQL
-        String sql = "SELECT * FROM Events WHERE EventID = ?;";
+        /*
+        TODO: change the SQL to find all the family member of its user.
+        TODO: find the father side, mother side, spouse side
+        TODO: Recursively add them.
+         */
+
+        String sql = "SELECT * FROM Persons WHERE AssociatedUsername = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, associatedUsername);
             rs = stmt.executeQuery();
