@@ -35,10 +35,8 @@ public class Server {
         server.createContext("/load", new ListGamesHandler());
         //TODO: Need more functions to find personID.
         server.createContext("/person", new PersonHandler());
-        //server.createContext("/person", new PersonHandler());
         server.createContext("/clear", new ClearHandler());
         //TODO: Need more functions to find eventID.
-        server.createContext("/event/[eventID]", new ListGamesHandler());
         server.createContext("/event", new ListGamesHandler());
 
         server.createContext("/", new FileHandler());

@@ -96,7 +96,7 @@ public class PersonDAO {
      * @return persons array of persons.
      * Associated Username
      */
-    public ArrayList<Person> findPersons(String associatedUsername) throws DataAccessException {
+    public ArrayList<Person> findPeople(String associatedUsername) throws DataAccessException {
         ArrayList<Person> persons = new ArrayList<>();
         ResultSet rs = null;
         //TODO: change the SQL

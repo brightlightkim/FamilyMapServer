@@ -1,30 +1,31 @@
 package Result;
 
-import Model.Person;
-
 import java.util.ArrayList;
 /**
  * Class that shows the result of all persons.
  * It has data arraylist, message to display, and check if it succeeded.
  */
 public class PeopleResult extends Result{
-    private ArrayList<Person> data;
+    private ArrayList<PersonResult> data;
 
     public PeopleResult() {
         super(null, false);
     }
 
-    public PeopleResult (ArrayList<Person> people, String message, boolean success){
+    public PeopleResult (ArrayList<PersonResult> people, String message, boolean success){
         super(message, success);
         data = people;
     }
 
-    public ArrayList<Person> getData() {
+    public PeopleResult(String message, boolean success){
+        super(message, success);
+    }
+
+    public ArrayList<PersonResult> getData() {
         return data;
     }
 
-    public void setData(ArrayList<Person> data) {
+    public void setData(ArrayList<PersonResult> data) {
         this.data = data;
     }
-
 }
