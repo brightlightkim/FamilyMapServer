@@ -22,7 +22,7 @@ public class ClearService {
             db.closeConnection(true);
 
             // Create and return SUCCESS Result object
-            ClearResult result = new ClearResult("Cleared all tables",true);
+            ClearResult result = new ClearResult("Cleared all tables", true);
             return result;
         }
         catch (Exception ex) {

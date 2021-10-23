@@ -5,31 +5,13 @@ package Result;
  * It has a message to display, and boolean if it succeeded.
  */
 
-public class ClearResult {
-    private String message;
-    private boolean success;
+public class ClearResult extends Result{
 
     public ClearResult() {
+        super(null, false);
     }
 
     public ClearResult(String message, boolean success) {
-        this.message = message;
-        this.success = success;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
+        super(message, success);
     }
 }

@@ -4,7 +4,7 @@ package Result;
  * It has associatedUsername, eventID, personID, latitude, longitude, country, city, eventType
  * year, message to display, and boolean if it succeeded.
  */
-public class EventResult {
+public class EventResult extends Result{
     private String associatedUsername;
     private String eventID;
     private String personID;
@@ -14,10 +14,22 @@ public class EventResult {
     private String city;
     private String eventType;
     private int year;
-    private String message;
-    private boolean success;
 
     public EventResult() {
+        super(null, false);
+    }
+
+    public EventResult(String message, boolean success, String associatedUsername, String eventID, String personID, float latitude, float longitude, String country, String city, String eventType, int year) {
+        super(message, success);
+        this.associatedUsername = associatedUsername;
+        this.eventID = eventID;
+        this.personID = personID;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.country = country;
+        this.city = city;
+        this.eventType = eventType;
+        this.year = year;
     }
 
     public String getAssociatedUsername() {
@@ -90,21 +102,5 @@ public class EventResult {
 
     public void setYear(int year) {
         this.year = year;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
     }
 }
