@@ -4,27 +4,24 @@ package Result;
  * Class that shows the result of login.
  * It has an authorized token, username, personID, message to display, and boolean if it succeeded.
  */
-public class LoginResult {
+public class LoginResult extends Result {
     private String authtoken;
     private String username;
     private String personID;
-    private String message;
-    private boolean success;
 
     public LoginResult() {
+        super(null, false);
     }
 
     public LoginResult(String authtoken, String username, String personID, String message, boolean success) {
+        super(message, success);
         this.authtoken = authtoken;
         this.username = username;
         this.personID = personID;
-        this.message = message;
-        this.success = success;
     }
 
     public LoginResult(String message, boolean success) {
-        this.message = message;
-        this.success = success;
+        super(message, success);
     }
 
     public String getAuthtoken() {
@@ -51,19 +48,4 @@ public class LoginResult {
         this.personID = personID;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
 }
