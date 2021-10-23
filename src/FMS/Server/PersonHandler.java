@@ -64,6 +64,9 @@ public class PersonHandler extends Handler {
         //1. valid
         if (reqHeaders.containsKey("Authorization")) {
             String authToken = reqHeaders.getFirst("Authorization");
+            if (authToken.length() == 0){
+                return new PeopleResult("No Authorization Token", false);
+            }
             String userName = getUsernameByToken(authToken);
             if (userName == null){
                 return new PeopleResult("No Token that match", false);
