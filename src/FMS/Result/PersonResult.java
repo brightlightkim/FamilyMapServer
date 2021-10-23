@@ -5,7 +5,7 @@ package Result;
  * gender, fatherID, motherID, and spouseID.
  * It also has a message to display, and boolean if it succeeded.
  */
-public class PersonResult {
+public class PersonResult extends Result{
     private String associatedUsername;
     private String personID;
     private String firstName;
@@ -14,13 +14,12 @@ public class PersonResult {
     private String fatherID;
     private String motherID;
     private String spouseID;
-    private String message;
-    private boolean success;
 
-    public PersonResult() {
+    public PersonResult(){
+        super(null, false);
     }
-
     public PersonResult(String associatedUsername, String personID, String firstName, String lastName, String gender, String fatherID, String motherID, String spouseID, String message, boolean success) {
+        super(message, success);
         this.associatedUsername = associatedUsername;
         this.personID = personID;
         this.firstName = firstName;
@@ -29,12 +28,9 @@ public class PersonResult {
         this.fatherID = fatherID;
         this.motherID = motherID;
         this.spouseID = spouseID;
-        this.message = message;
-        this.success = success;
     }
     public PersonResult(String message, boolean success) {
-        this.message = message;
-        this.success = success;
+        super(message, success);
     }
 
     public String getAssociatedUsername() {
@@ -101,19 +97,4 @@ public class PersonResult {
         this.spouseID = spouseID;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
 }
