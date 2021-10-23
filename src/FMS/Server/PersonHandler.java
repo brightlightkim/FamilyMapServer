@@ -30,7 +30,7 @@ public class PersonHandler extends Handler {
                     //TODO: Check this function out.
                     peopleResult = getPeopleResult(exchange, service);
                 } else {
-                    String personID = exchange.getRequestURI().toString().substring(7);
+                    String personID = exchange.getRequestURI().toString().substring(8);
                     personResult = service.findPerson(personID);
                     one = true;
                 }

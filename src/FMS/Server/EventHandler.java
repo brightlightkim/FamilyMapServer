@@ -33,8 +33,8 @@ public class EventHandler extends Handler{
                     allEventResult = getAllEventResult(exchange, service);
                 }
                 else {
-                    String eventID = exchange.getRequestURI().toString().substring(6);
-                    eventResult = service.requestEvent();
+                    String eventID = exchange.getRequestURI().toString().substring(7);
+                    eventResult = service.requestEvent(eventID);
                     one = true;
                 }
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);

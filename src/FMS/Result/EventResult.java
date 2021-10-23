@@ -18,7 +18,9 @@ public class EventResult extends Result{
     public EventResult() {
         super(null, false);
     }
-
+    public EventResult(String message, boolean success){
+        super(message, success);
+    }
     public EventResult(String message, boolean success, String associatedUsername, String eventID, String personID, float latitude, float longitude, String country, String city, String eventType, int year) {
         super(message, success);
         this.associatedUsername = associatedUsername;
