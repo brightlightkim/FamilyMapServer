@@ -20,6 +20,10 @@ public class AllEventResult extends Result{
         this.data = data;
     }
 
+    public AllEventResult(String message, boolean success){
+        super(message, success);
+    }
+
     public ArrayList<Event> getData() {
         return data;
     }

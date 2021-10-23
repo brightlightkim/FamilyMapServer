@@ -1,8 +1,13 @@
 package Server;
 
+import DataAccess.AuthTokenDAO;
+import DataAccess.Database;
+import Error.DataAccessException;
+import Model.AuthToken;
 import Result.AllEventResult;
 import Result.EventResult;
 import Service.EventService;
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
@@ -25,7 +30,7 @@ public class EventHandler extends Handler{
 
                 if (exchange.getRequestURI().toString().length() == 6){
                     //for all people.
-
+                    allEventResult = getAllEventResult(exchange, service);
                 }
                 else {
                     String eventID = exchange.getRequestURI().toString().substring(6);
@@ -50,10 +55,35 @@ public class EventHandler extends Handler{
                 exchange.getResponseBody().close();
             }
         }
-        catch (IOException e){
+        catch (DataAccessException e){
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_SERVER_ERROR, 0);
             exchange.getResponseBody().close();
             e.printStackTrace();
+        }
+    }
+
+    private AllEventResult getAllEventResult(HttpExchange exchange, EventService service) throws DataAccessException {
+        Headers reqHeaders = exchange.getRequestHeaders();
+        if (reqHeaders.containsKey("Authorization")) {
+            String authToken = reqHeaders.getFirst("Authorization");
+            String userName = getUsernameByToken(authToken);
+            if (userName == null){
+                return new AllEventResult("No Token that match", false);
+            }
+            return service.allEventResult(userName);
+        }
+        else{
+            return new AllEventResult("No Authorization Token", false);
+        }
+    }
+
+    private String getUsernameByToken(String token) throws DataAccessException {
+        Database db = new Database();
+        AuthToken desiredToken = new AuthTokenDAO(db.openConnection()).find(token);
+        if (token == null) {
+            return null;
+        } else {
+            return desiredToken.getUsername();
         }
     }
 }

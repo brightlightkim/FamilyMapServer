@@ -18,5 +18,7 @@ public class EventService {
      * Return every event
      * @return every event
      */
-    public AllEventResult allEventResult(){return null;}
+    public AllEventResult allEventResult(String userName){
+        return null;
+    }
 }
