@@ -98,13 +98,6 @@ public class PersonDAO {
      */
     public ArrayList<Person> findPeople(String associatedUsername) throws DataAccessException {
 
-        /*
-        TODO: change the SQL to find all the family member of its user.
-        TODO: find the father side, mother side, spouse side
-        TODO: Recursively add them.
-        TODO: Using the find function in this class recursively.
-         */
-        //How to make this recursively?
         if (associatedUsername != null){
             ArrayList<Person> persons = new ArrayList<>();
             Person person = findPersonByUsername(associatedUsername);
