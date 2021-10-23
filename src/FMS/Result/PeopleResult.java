@@ -7,12 +7,16 @@ import java.util.ArrayList;
  * Class that shows the result of all persons.
  * It has data arraylist, message to display, and check if it succeeded.
  */
-public class PeopleResult {
+public class PeopleResult extends Result{
     private ArrayList<Person> data;
-    private String message;
-    private boolean success;
 
     public PeopleResult() {
+        super(null, false);
+    }
+
+    public PeopleResult (ArrayList<Person> people, String message, boolean success){
+        super(message, success);
+        data = people;
     }
 
     public ArrayList<Person> getData() {
@@ -23,19 +27,4 @@ public class PeopleResult {
         this.data = data;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
 }
