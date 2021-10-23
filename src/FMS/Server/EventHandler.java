@@ -1,19 +1,49 @@
 package Server;
 
-import java.io.*;
-import java.net.*;
+import Result.AllEventResult;
+import Result.EventResult;
+import Service.EventService;
+import com.sun.net.httpserver.HttpExchange;
+
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.net.HttpURLConnection;
 import java.util.Locale;
 
-import com.sun.net.httpserver.*;
-
-public class EventHandler implements HttpHandler{
+public class EventHandler extends Handler{
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         boolean success = false;
 
         try {
             if (exchange.getRequestMethod().toLowerCase(Locale.ROOT).equals("get")){
-                Headers reqHeaders = exchange.getRequestHeaders();
+                EventService service = new EventService();
+                EventResult eventResult = new EventResult();
+                AllEventResult allEventResult = new AllEventResult();
+                boolean one = false;
+
+                if (exchange.getRequestURI().toString().length() == 6){
+                    //for all people.
+
+                }
+                else {
+                    String eventID = exchange.getRequestURI().toString().substring(6);
+                    eventResult = service.requestEvent();
+                    one = true;
+                }
+                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                Writer resBody = new OutputStreamWriter(exchange.getResponseBody());
+
+                if (one) {
+                    gson.toJson(eventResult, resBody);
+                }
+                else{
+                    gson.toJson(allEventResult, resBody);
+                }
+                resBody.close();
+                exchange.getResponseBody().close();
+                success = true;
             }
             if (!success){
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
@@ -25,13 +55,5 @@ public class EventHandler implements HttpHandler{
             exchange.getResponseBody().close();
             e.printStackTrace();
         }
-    }
-    /*
-        The writeString method shows how to write a String to an OutputStream.
-    */
-    private void writeString(String str, OutputStream os) throws IOException {
-        OutputStreamWriter sw = new OutputStreamWriter(os);
-        sw.write(str);
-        sw.flush();
     }
 }
