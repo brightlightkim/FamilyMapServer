@@ -97,26 +97,57 @@ public class PersonDAO {
      * Associated Username
      */
     public ArrayList<Person> findPeople(String associatedUsername) throws DataAccessException {
-        ArrayList<Person> persons = new ArrayList<>();
-        ResultSet rs = null;
+
         /*
         TODO: change the SQL to find all the family member of its user.
         TODO: find the father side, mother side, spouse side
         TODO: Recursively add them.
+        TODO: Using the find function in this class recursively.
          */
+        //How to make this recursively?
+        if (associatedUsername != null){
+            ArrayList<Person> persons = new ArrayList<>();
+            Person person = findPersonByUsername(associatedUsername);
+            persons.addAll(findPeopleByID(person.getPersonID()));
+            return persons;
+        }
+        else {
+            return null;
+        }
+    }
 
+    private ArrayList<Person> findPeopleByID(String id) throws DataAccessException{
+        if (id != null){
+            ArrayList<Person> people = new ArrayList<>();
+            Person person = find(id);
+            people.add(person);
+            ArrayList<Person> fatherSide = findPeopleByID(person.getFatherID());
+            people.addAll(fatherSide);
+            ArrayList<Person> motherSide = findPeopleByID(person.getMotherID());
+            people.addAll(motherSide);
+            ArrayList<Person> spouseSide = findPeopleByID(person.getSpouseID());
+            people.addAll(spouseSide);
+            return people;
+        }
+        else {
+            return null;
+        }
+    }
+
+    private Person findPersonByUsername(String associatedUsername) throws DataAccessException{
+        Person person = null;
+        ResultSet rs = null;
         String sql = "SELECT * FROM Persons WHERE AssociatedUsername = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, associatedUsername);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                Person person = new Person(rs.getString("PersonID"), rs.getString("AssociatedUsername"),
+                person = new Person(rs.getString("PersonID"), rs.getString("AssociatedUsername"),
                         rs.getString("FirstName"), rs.getString("LastName"),
                         rs.getString("Gender"), rs.getString("FatherID"),
                         rs.getString("MotherID"), rs.getString("SpouseID"));
-                persons.add(person);
             }
-            return persons;
+            return person;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new DataAccessException("Error encountered while finding event");
