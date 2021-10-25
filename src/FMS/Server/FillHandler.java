@@ -16,7 +16,7 @@ public class FillHandler extends Handler {
     public void handle(HttpExchange exchange) throws IOException {
         try {
             if (exchange.getRequestMethod().toLowerCase(Locale.ROOT).equals("post")){
-                FillResult fillResult = new FillResult();
+                //TODO: Check this number out.
                 String[] parsedString  = exchange.getRequestURI().toString().split("/");
                 String username = parsedString[1];
                 int generations = requestedNumberOfGenerations(parsedString[parsedString.length-1]);
