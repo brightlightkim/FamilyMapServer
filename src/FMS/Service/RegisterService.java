@@ -56,7 +56,7 @@ public class RegisterService {
             AuthToken newToken = new AuthToken(uuid, request.getUsername());
 
             //Create Event for this request >> Birth Event
-
+            //Event birthEvent = new Event("BIRTH", ) >> function of create birth event.
 
             //Add it to the database
             new UserDAO(db.getConnection()).insert(newUser);

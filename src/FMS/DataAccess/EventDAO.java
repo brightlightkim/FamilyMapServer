@@ -108,7 +108,7 @@ public class EventDAO {
         }
     }
 
-    private ArrayList<Event> findEventsByUserName(String username) throws DataAccessException {
+    public ArrayList<Event> findEventsByUserName(String username) throws DataAccessException {
         ArrayList<Event> events = new ArrayList<>();
         ResultSet rs = null;
         String sql = "SELECT * FROM Events WHERE AsssociatedUsername = ?;";
@@ -147,5 +147,9 @@ public class EventDAO {
             e.printStackTrace();
             throw new DataAccessException("There is no database at all!");
         }
+    }
+
+    public int createBirthEventAndReturnYear(Person person, int birthYearOfSon){
+        Event birth = new Event("Birth", person.getAssociatedUsername(),person.getPersonID(),)
     }
 }
