@@ -33,8 +33,7 @@ public class EventHandler extends Handler{
                     allEventResult = getAllEventResult(exchange, service);
                 }
                 else {
-                    String eventID = exchange.getRequestURI().toString().substring(7);
-                    eventResult = service.requestEvent(eventID);
+                    eventResult = getEventResult(exchange, service);
                     one = true;
                 }
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
@@ -66,6 +65,9 @@ public class EventHandler extends Handler{
         Headers reqHeaders = exchange.getRequestHeaders();
         if (reqHeaders.containsKey("Authorization")) {
             String authToken = reqHeaders.getFirst("Authorization");
+            if (authToken.length() == 0){
+                return new AllEventResult("No Authorization Token input", false);
+            }
             String userName = getUsernameByToken(authToken);
             if (userName == null){
                 return new AllEventResult("No Token that match", false);
@@ -74,6 +76,30 @@ public class EventHandler extends Handler{
         }
         else{
             return new AllEventResult("No Authorization Token", false);
+        }
+    }
+
+    private EventResult getEventResult(HttpExchange exchange, EventService service) throws DataAccessException{
+        Headers reqHeaders = exchange.getRequestHeaders();
+
+        if (reqHeaders.containsKey("Authorization")) {
+            String authToken = reqHeaders.getFirst("Authorization");
+            if (authToken.length() == 0){
+                return new EventResult("No Authorization token input", false);
+            }
+            String userName = getUsernameByToken(authToken);
+            if (userName == null){
+                return new EventResult("No Token that match", false);
+            }
+            String eventID = exchange.getRequestURI().toString().substring(7);
+            EventResult desiredEvent = service.requestEvent(eventID);
+            if (desiredEvent.getAssociatedUsername() != userName){
+                return new EventResult("Event's username does not match with authorized token", false);
+            }
+            return desiredEvent;
+        }
+        else{
+            return new EventResult("No Authorization Token", false);
         }
     }
 

@@ -36,13 +36,18 @@ public class RegisterService {
             }
             String uuid = UUID.randomUUID().toString();
 
-            //Create each objects
+            //Create each objects for this person.
             User newUser = new User(request.getUsername(), request.getPassword(),
                     request.getEmail(), request.getFirstName(), request.getLastName(),
                     request.getGender(), uuid);
             //TODO: Have to fix the part of father, mother, and spouse later.
+            String fatherID = UUID.randomUUID().toString();
+            String motherID = UUID.randomUUID().toString();
+            String spouseID = UUID.randomUUID().toString();
             Person newPerson = new Person(uuid, request.getUsername(), request.getFirstName(),
-                    request.getLastName(), request.getGender(), null, null, null);
+                    request.getLastName(), request.getGender(), fatherID, motherID, spouseID);
+
+
 
             uuid = UUID.randomUUID().toString(); //grant the random token for the username.
             AuthToken newToken = new AuthToken(uuid, request.getUsername());
