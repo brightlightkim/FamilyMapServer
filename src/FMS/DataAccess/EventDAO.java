@@ -149,7 +149,4 @@ public class EventDAO {
         }
     }
 
-    public int createBirthEventAndReturnYear(Person person, int birthYearOfSon){
-        Event birth = new Event("Birth", person.getAssociatedUsername(),person.getPersonID(),)
-    }
 }
