@@ -30,17 +30,18 @@ public class PersonHandler extends Handler {
                     //TODO: Check this function out.
                     peopleResult = getPeopleResult(exchange, service);
                 } else {
-                    String personID = exchange.getRequestURI().toString().substring(8);
-                    personResult = service.findPerson(personID);
+                    personResult = getPersonResult(exchange,service);
+                    //String personID = exchange.getRequestURI().toString().substring(8);
+                    //personResult = service.findPerson(personID);
                     one = true;
                 }
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
                 Writer resBody = new OutputStreamWriter(exchange.getResponseBody());
 
                 if (one) {
-                    gson.toJson(peopleResult, resBody);
-                } else {
                     gson.toJson(personResult, resBody);
+                } else {
+                    gson.toJson(peopleResult, resBody);
                 }
 
                 resBody.close();
@@ -59,9 +60,9 @@ public class PersonHandler extends Handler {
     }
 
     private PeopleResult getPeopleResult(HttpExchange exchange, PersonService service) throws DataAccessException {
-        //pass it to the parameter as an auth token.
+
         Headers reqHeaders = exchange.getRequestHeaders();
-        //1. valid
+
         if (reqHeaders.containsKey("Authorization")) {
             String authToken = reqHeaders.getFirst("Authorization");
             if (authToken.length() == 0){
@@ -75,6 +76,30 @@ public class PersonHandler extends Handler {
         }
         else{
             return new PeopleResult("No Authorization Token", false);
+        }
+    }
+
+    private PersonResult getPersonResult(HttpExchange exchange, PersonService service) throws DataAccessException {
+        Headers reqHeaders = exchange.getRequestHeaders();
+
+        if (reqHeaders.containsKey("Authorization")) {
+            String authToken = reqHeaders.getFirst("Authorization");
+            if (authToken.length() == 0){
+                return new PersonResult("No Authorization Token", false);
+            }
+            String usernameByToken = getUsernameByToken(authToken);
+            if (usernameByToken == null){
+                return new PersonResult("No Token that match", false);
+            }
+            String personID = exchange.getRequestURI().toString().substring(8);
+            PersonResult desiredPerson = service.findPerson(personID);
+            if (usernameByToken != desiredPerson.getAssociatedUsername()){
+                return new PersonResult("person ID and authorization token does not match", false);
+            }
+            return desiredPerson;
+        }
+        else{
+            return new PersonResult("No Authorization Token", false);
         }
     }
 
