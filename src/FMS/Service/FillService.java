@@ -32,7 +32,7 @@ public class FillService {
             // (their marriage events must be in synch with each other)
         }
 
-        //Person person = new Person();
+        Person person = new Person();
         // Set person's properties
         // Generate events for person (except marriage)
         // Save person in database
