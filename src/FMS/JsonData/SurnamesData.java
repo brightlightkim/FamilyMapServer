@@ -1,9 +1,9 @@
 package JsonData;
 
-public class femaleNamesData {
+public class SurnamesData {
     String[] data;
 
-    public femaleNamesData(String[] data) {
+    public SurnamesData(String[] data) {
         this.data = data;
     }
 

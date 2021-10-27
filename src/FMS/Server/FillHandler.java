@@ -20,7 +20,8 @@ public class FillHandler extends Handler {
                 String[] parsedString  = exchange.getRequestURI().toString().split("/");
                 String username = parsedString[1];
                 int generations = requestedNumberOfGenerations(parsedString[parsedString.length-1]);
-                FillResult result = new FillService().fillResult(username, generations);
+                FillService service = new FillService();
+                FillResult result = service.fillResult(username, generations);
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
                 Writer resBody = new OutputStreamWriter(exchange.getResponseBody());
                 gson.toJson(result, resBody);
