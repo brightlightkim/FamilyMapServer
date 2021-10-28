@@ -25,6 +25,8 @@ public class FillService {
     private MaleNamesData maleNames;
     private FemaleNamesData femaleNames;
     private SurnamesData surnames;
+    private int createdPeopleNum;
+    private int createdEventNum;
 
 
 
@@ -38,6 +40,8 @@ public class FillService {
             femaleNames = (FemaleNamesData) gson.fromJson(reader, FemaleNamesData.class);
             reader = new FileReader("snames.json");
             surnames = (SurnamesData) gson.fromJson(reader, SurnamesData.class);
+            createdPeopleNum = 0;
+            createdEventNum = 0;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -66,10 +70,9 @@ public class FillService {
         else if (generations > 20){
             throw new DataAccessException("Too much generations");
         }
-        Person newPerson = generatePerson(username, surname, gender, birthYear, generations);
-        //TODO: get the associated usernames array of events and persons.
-        //TODO: check when to add it to the server.
-        //TODO: Make the array or something.. >> and do continually.
+        generatePerson(username, surname, gender, birthYear, generations);
+
+        FillResult result = new FillResult()
 
         return null;
     }
@@ -126,6 +129,7 @@ public class FillService {
             Database db = new Database();
             db.openConnection();
             new PersonDAO(db.openConnection()).insert(person);
+            createdPeopleNum++;
             new EventDAO(db.openConnection()).insert(birth);
             new EventDAO(db.openConnection()).insert(death);
             db.closeConnection(true);
@@ -141,6 +145,7 @@ public class FillService {
         Event birth = new Event(birthEventID, username, personID, birthPlace.getLatitude(),
                 birthPlace.getLongitude(), birthPlace.getCountry(),
                 birthPlace.getCity(), "BIRTH", birthYear);
+        createdEventNum++;
         return birth;
     }
 
@@ -161,6 +166,7 @@ public class FillService {
         Event death = new Event(deathEventID, username, personID, deathPlace.getLatitude(),
                 deathPlace.getLongitude(), birthPlace.getCountry(),
                 deathPlace.getCity(), "BIRTH", birthYear);
+        createdEventNum++;
         return death;
     }
 
@@ -168,7 +174,7 @@ public class FillService {
 
         Event marriage = new Event(marriageID, username, personID, location.getLatitude(), location.getLongitude(),
                 location.getCountry(), location.getCity(), "MARRIAGE", year);
-
+        createdEventNum++;
         return marriage;
     }
 
