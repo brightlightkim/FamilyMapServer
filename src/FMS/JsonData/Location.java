@@ -1,31 +1,53 @@
 package JsonData;
 
 public class Location {
-    String latitude;
-    String longitude;
+    float latitude;
+    float longitude;
     String city;
     String country;
 
-    public Location(String latitude, String longitude, String city, String country) {
+    public Location(float latitude, float longitude, String city, String country) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.city = city;
         this.country = country;
     }
 
-    public String getLatitude() {
+    public float getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(float latitude) {
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
+    public float getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null){
+            return false;
+        }
+        if (obj == this){
+            return true;
+        }
+        if (obj.getClass() != this.getClass()){
+            return false;
+        }
+
+        Location compareLocation = (Location)obj;
+        if (this.city != compareLocation.getCity() ||
+            this.country != compareLocation.getCountry() ||
+            this.latitude != compareLocation.getLatitude() ||
+            this.longitude != compareLocation.getLongitude()){
+            return false;
+        }
+        return true;
+    }
+
+    public void setLongitude(float longitude) {
         this.longitude = longitude;
     }
 
