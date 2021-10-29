@@ -31,7 +31,7 @@ public class Server {
         server.createContext("/user/register", new RegisterHandler());
         server.createContext("/user/login", new LoginHandler());
         //TODO: Need more functions here for getting the username and generations.
-        server.createContext("/fill/[username]/{generations}", new FileHandler());
+        server.createContext("/fill", new FillHandler());
         server.createContext("/load", new LoadHandler());
         //TODO: Need more functions to find personID.
         server.createContext("/person", new PersonHandler());

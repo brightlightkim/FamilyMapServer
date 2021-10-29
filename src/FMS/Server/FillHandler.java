@@ -18,8 +18,11 @@ public class FillHandler extends Handler {
             if (exchange.getRequestMethod().toLowerCase(Locale.ROOT).equals("post")){
                 //TODO: Check this number out.
                 String[] parsedString  = exchange.getRequestURI().toString().split("/");
-                String username = parsedString[1];
-                int generations = requestedNumberOfGenerations(parsedString[parsedString.length-1]);
+                String username = parsedString[2];
+                int generations = 4;
+                if (parsedString.length == 4) {
+                    generations = requestedNumberOfGenerations(parsedString[parsedString.length - 1]);
+                }
                 FillService service = new FillService();
                 FillResult result = service.fillResult(username, generations);
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
@@ -47,7 +50,8 @@ public class FillHandler extends Handler {
             return value;
         }
         catch (NumberFormatException e){
-            return 4; //This is the default setting.
+            e.printStackTrace();
+            return Integer.MAX_VALUE; //This is the default setting.
         }
     }
 }

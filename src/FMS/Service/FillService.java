@@ -32,13 +32,13 @@ public class FillService {
 
     public FillService() throws FileNotFoundException {
         try {
-            Reader reader = new FileReader("locations.json");
+            Reader reader = new FileReader("C:\\Users\\brightlightkim\\IdeaProjects\\FamilyMapServerStudent-master\\json\\locations.json");
             location = (LocationData) gson.fromJson(reader, LocationData.class);
-            reader = new FileReader("mnames.json");
+            reader = new FileReader("C:\\Users\\brightlightkim\\IdeaProjects\\FamilyMapServerStudent-master\\json\\mnames.json");
             maleNames = (MaleNamesData) gson.fromJson(reader, MaleNamesData.class);
-            reader = new FileReader("fnames.json");
+            reader = new FileReader("C:\\Users\\brightlightkim\\IdeaProjects\\FamilyMapServerStudent-master\\json\\fnames.json");
             femaleNames = (FemaleNamesData) gson.fromJson(reader, FemaleNamesData.class);
-            reader = new FileReader("snames.json");
+            reader = new FileReader("C:\\Users\\brightlightkim\\IdeaProjects\\FamilyMapServerStudent-master\\json\\snames.json");
             surnames = (SurnamesData) gson.fromJson(reader, SurnamesData.class);
             createdPeopleNum = 0;
             createdEventNum = 0;
@@ -65,16 +65,16 @@ public class FillService {
         String surname = surnames.getData()[getRandomNum(0, surnames.getData().length)];
         int birthYear = getRandomNum(1921, 2021);
         if (generations < 1){
-            throw new DataAccessException("invalid generation");
+            return new FillResult("Invalid generation number", false);
         }
         else if (generations > 20){
-            throw new DataAccessException("Too much generations");
+            return new FillResult("generation numbers are too great", false);
         }
         generatePerson(username, surname, gender, birthYear, generations);
+        String message = "Successfully created " + createdPeopleNum + "persons and "
+                + createdEventNum + " events to the database";
 
-        FillResult result = new FillResult()
-
-        return null;
+        return new FillResult(message, true);
     }
 
     private Person generatePerson(String username, String surname, String gender,
