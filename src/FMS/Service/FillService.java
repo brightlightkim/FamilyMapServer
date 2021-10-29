@@ -29,7 +29,6 @@ public class FillService {
     private int createdEventNum;
 
 
-
     public FillService() throws FileNotFoundException {
         try {
             Reader reader = new FileReader("C:\\Users\\brightlightkim\\IdeaProjects\\FamilyMapServerStudent-master\\json\\locations.json");
@@ -56,18 +55,16 @@ public class FillService {
     public FillResult fillResult(String username, int generations) throws DataAccessException {
         String personID = UUID.randomUUID().toString();
         String gender;
-        if (getRandomNum(0,1) == 0){
+        if (getRandomNum(0, 1) == 0) {
             gender = "MALE";
-        }
-        else{
+        } else {
             gender = "FEMALE";
         }
         String surname = surnames.getData()[getRandomNum(0, surnames.getData().length)];
         int birthYear = getRandomNum(1921, 2021);
-        if (generations < 1){
+        if (generations < 1) {
             return new FillResult("Invalid generation number", false);
-        }
-        else if (generations > 20){
+        } else if (generations > 20) {
             return new FillResult("generation numbers are too great", false);
         }
         generatePerson(username, surname, gender, birthYear, generations);
@@ -139,7 +136,7 @@ public class FillService {
         return person;
     }
 
-    private Event createBirthEvent(String username, String personID, int birthYear){
+    private Event createBirthEvent(String username, String personID, int birthYear) {
         Location birthPlace = location.getData()[getRandomNum(0, location.getData().length)];
         String birthEventID = UUID.randomUUID().toString();
         Event birth = new Event(birthEventID, username, personID, birthPlace.getLatitude(),
@@ -149,16 +146,14 @@ public class FillService {
         return birth;
     }
 
-    private Event createDeathEvent(String username, String personID, Event birth, int birthYear){
+    private Event createDeathEvent(String username, String personID, Event birth, int birthYear) {
         Location deathPlace = null;
         Location birthPlace = new Location(birth.getLatitude(), birth.getLongitude(), birth.getCity(), birth.getCountry());
 
-        for (Location location : location.getData()){
-            if (!location.equals(birthPlace)) {
-                if (location.getCountry().equals(birthPlace.getCountry())) {
-                    deathPlace = location;
-                    break;
-                }
+        for (Location location : location.getData()) {
+            if (location.getCountry().equals(birthPlace.getCountry())) {
+                deathPlace = location;
+                break;
             }
         }
 
@@ -170,7 +165,7 @@ public class FillService {
         return death;
     }
 
-    private Event createMarriageEvent(String marriageID, String username, String personID, Location location, int year){
+    private Event createMarriageEvent(String marriageID, String username, String personID, Location location, int year) {
 
         Event marriage = new Event(marriageID, username, personID, location.getLatitude(), location.getLongitude(),
                 location.getCountry(), location.getCity(), "MARRIAGE", year);
@@ -183,14 +178,13 @@ public class FillService {
         Location marriagePlace = location.getData()[getRandomNum(0, location.getData().length)];
         Event marriageForHusband = createMarriageEvent(marriageID, username, father.getPersonID(), marriagePlace, year);
         Event marriageForWife = createMarriageEvent(marriageID, username, mother.getPersonID(), marriagePlace, year);
-        try{
+        try {
             Database db = new Database();
             db.openConnection();
             new EventDAO(db.openConnection()).insert(marriageForHusband);
             new EventDAO(db.openConnection()).insert(marriageForWife);
             db.closeConnection(true);
-        }
-        catch (DataAccessException e){
+        } catch (DataAccessException e) {
             e.printStackTrace();
         }
     }
