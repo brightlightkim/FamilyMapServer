@@ -36,8 +36,9 @@ public class RegisterService {
             }
             //Where recursion needs to occur..
             db.closeConnection(true);
-            //TODO: Implement FillHandler here!
 
+            FillService service = new FillService();
+            service.fillResult(request.getUsername(), request.getLastName(), 4);
 
             String uuid = UUID.randomUUID().toString();
 
@@ -60,7 +61,7 @@ public class RegisterService {
 
             //Create Event for this request >> Birth Event
             //Event birthEvent = new Event("BIRTH", ) >> function of create birth event.
-
+            db.openConnection();
             //Add it to the database
             new UserDAO(db.getConnection()).insert(newUser);
             new PersonDAO(db.getConnection()).insert(newPerson);
@@ -71,7 +72,7 @@ public class RegisterService {
 
             // Create and return SUCCESS Result object
             RegisterResult result = new RegisterResult(uuid, request.getUsername(),
-                    newPerson.getPersonID(), "successfully registered", true);
+                    newPerson.getPersonID(), true);
             return result;
         }
         catch (Exception ex) {

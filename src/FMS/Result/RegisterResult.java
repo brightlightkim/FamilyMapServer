@@ -10,8 +10,8 @@ public class RegisterResult extends Result{
     private String username;
     private String personID;
 
-    public RegisterResult(String authtoken, String username, String personID, String message, boolean success) {
-        super(message, success);
+    public RegisterResult(String authtoken, String username, String personID, boolean success) {
+        super(success);
         this.authtoken = authtoken;
         this.username = username;
         this.personID = personID;
