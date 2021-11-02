@@ -52,15 +52,19 @@ public class FillService {
      * @return the result of fill
      */
 
-    public FillResult fillResult(String username, int generations) throws DataAccessException {
+    public FillResult fillResult(String username, String userSurname, int generations) throws DataAccessException {
         String personID = UUID.randomUUID().toString();
         String gender;
+        String surname = userSurname;
         if (getRandomNum(0, 1) == 0) {
             gender = "MALE";
         } else {
             gender = "FEMALE";
         }
-        String surname = surnames.getData()[getRandomNum(0, surnames.getData().length)];
+
+        if (surname == null) {
+            surname = surnames.getData()[getRandomNum(0, surnames.getData().length)];
+        }
         int birthYear = getRandomNum(1921, 2021);
         if (generations < 1) {
             return new FillResult("Invalid generation number", false);
@@ -76,12 +80,12 @@ public class FillService {
 
     private Person generatePerson(String username, String surname, String gender,
                                   int birthYear, int generations) throws DataAccessException {
-
+        Database db = new Database();
         Person father = null;
         Person mother = null;
         Person person = null;
         try {
-            if (generations > 1) {
+            if (generations >= 1) {
                 //at least 13 birth year more than the kid
                 int fatherBirthYear = getRandomNum(birthYear - 40, birthYear - 10);
                 //this makes mother birth year for the max of 50 years of old.
@@ -123,15 +127,15 @@ public class FillService {
             Event birth = createBirthEvent(username, personID, birthYear);
             Event death = createDeathEvent(username, personID, birth, birthYear);
             // Save person in database
-            Database db = new Database();
-            db.openConnection();
-            new PersonDAO(db.openConnection()).insert(person);
             createdPeopleNum++;
-            new EventDAO(db.openConnection()).insert(birth);
-            new EventDAO(db.openConnection()).insert(death);
+            db.openConnection();
+            new PersonDAO(db.getConnection()).insert(person);
+            new EventDAO(db.getConnection()).insert(birth);
+            new EventDAO(db.getConnection()).insert(death);
             db.closeConnection(true);
         } catch (DataAccessException e) {
             e.printStackTrace();
+            db.closeConnection(false);
         }
         return person;
     }
@@ -173,19 +177,21 @@ public class FillService {
         return marriage;
     }
 
-    private void addMarriageEvent(String username, Person father, Person mother, int year) {
+    private void addMarriageEvent(String username, Person father, Person mother, int year) throws DataAccessException {
         String marriageID = UUID.randomUUID().toString();
         Location marriagePlace = location.getData()[getRandomNum(0, location.getData().length)];
         Event marriageForHusband = createMarriageEvent(marriageID, username, father.getPersonID(), marriagePlace, year);
         Event marriageForWife = createMarriageEvent(marriageID, username, mother.getPersonID(), marriagePlace, year);
+        Database db = new Database();
         try {
-            Database db = new Database();
             db.openConnection();
-            new EventDAO(db.openConnection()).insert(marriageForHusband);
-            new EventDAO(db.openConnection()).insert(marriageForWife);
+            new EventDAO(db.getConnection()).insert(marriageForHusband);
+            new EventDAO(db.getConnection()).insert(marriageForWife);
             db.closeConnection(true);
         } catch (DataAccessException e) {
+            db.closeConnection(false);
             e.printStackTrace();
+
         }
     }
 

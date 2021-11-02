@@ -24,7 +24,7 @@ public class FillHandler extends Handler {
                     generations = requestedNumberOfGenerations(parsedString[parsedString.length - 1]);
                 }
                 FillService service = new FillService();
-                FillResult result = service.fillResult(username, generations);
+                FillResult result = service.fillResult(username, null, generations);
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
                 Writer resBody = new OutputStreamWriter(exchange.getResponseBody());
                 gson.toJson(result, resBody);

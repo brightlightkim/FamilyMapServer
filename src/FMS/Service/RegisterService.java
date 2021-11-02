@@ -35,8 +35,9 @@ public class RegisterService {
                 return result;
             }
             //Where recursion needs to occur..
-
+            db.closeConnection(true);
             //TODO: Implement FillHandler here!
+
 
             String uuid = UUID.randomUUID().toString();
 
