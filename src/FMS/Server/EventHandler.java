@@ -4,7 +4,7 @@ import DataAccess.AuthTokenDAO;
 import DataAccess.Database;
 import Error.DataAccessException;
 import Model.AuthToken;
-import Result.AllEventResult;
+import Result.EventsResult;
 import Result.EventResult;
 import Service.EventService;
 import com.sun.net.httpserver.Headers;
@@ -25,12 +25,12 @@ public class EventHandler extends Handler{
             if (exchange.getRequestMethod().toLowerCase(Locale.ROOT).equals("get")){
                 EventService service = new EventService();
                 EventResult eventResult = new EventResult();
-                AllEventResult allEventResult = new AllEventResult();
+                EventsResult eventsResult = new EventsResult();
                 boolean one = false;
 
                 if (exchange.getRequestURI().toString().length() == 6){
                     //for all people.
-                    allEventResult = getAllEventResult(exchange, service);
+                    eventsResult = getAllEventResult(exchange, service);
                 }
                 else {
                     eventResult = getEventResult(exchange, service);
@@ -43,7 +43,7 @@ public class EventHandler extends Handler{
                     gson.toJson(eventResult, resBody);
                 }
                 else{
-                    gson.toJson(allEventResult, resBody);
+                    gson.toJson(eventsResult, resBody);
                 }
                 resBody.close();
                 exchange.getResponseBody().close();
@@ -61,21 +61,21 @@ public class EventHandler extends Handler{
         }
     }
 
-    private AllEventResult getAllEventResult(HttpExchange exchange, EventService service) throws DataAccessException {
+    private EventsResult getAllEventResult(HttpExchange exchange, EventService service) throws DataAccessException {
         Headers reqHeaders = exchange.getRequestHeaders();
         if (reqHeaders.containsKey("Authorization")) {
             String authToken = reqHeaders.getFirst("Authorization");
             if (authToken.length() == 0){
-                return new AllEventResult("No Authorization Token input", false);
+                return new EventsResult("No Authorization Token input", false);
             }
             String userName = getUsernameByToken(authToken);
             if (userName == null){
-                return new AllEventResult("No Token that match", false);
+                return new EventsResult("No Token that match", false);
             }
             return service.allEventResult(userName);
         }
         else{
-            return new AllEventResult("No Authorization Token", false);
+            return new EventsResult("No Authorization Token", false);
         }
     }
 

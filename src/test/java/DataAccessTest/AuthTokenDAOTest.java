@@ -41,7 +41,7 @@ public class AuthTokenDAOTest {
     @Test
     public void insertPass() throws DataAccessException {
         aDAO.insert(bestToken);
-        AuthToken compareTest = aDAO.find(bestToken.getAuthToken());
+        AuthToken compareTest = aDAO.find(bestToken.getAuthtoken());
         assertNotNull(compareTest);
         assertEquals(bestToken, compareTest);
     }
@@ -56,19 +56,19 @@ public class AuthTokenDAOTest {
     public void findPass() throws DataAccessException {
         aDAO.insert(bestToken);
         aDAO.insert(compareToken);
-        AuthToken compareTest = aDAO.find(bestToken.getAuthToken());
+        AuthToken compareTest = aDAO.find(bestToken.getAuthtoken());
         assertNotNull(compareTest);
         assertEquals(bestToken, compareTest);
     }
 
     @Test
     public void findFail() throws DataAccessException {
-        assertNull( aDAO.find(bestToken.getAuthToken()));
+        assertNull( aDAO.find(bestToken.getAuthtoken()));
     }
 
     @Test
     public void clear() throws DataAccessException {
         aDAO.clear();
-        assertNull(aDAO.find(bestToken.getAuthToken()));
+        assertNull(aDAO.find(bestToken.getAuthtoken()));
     }
 }

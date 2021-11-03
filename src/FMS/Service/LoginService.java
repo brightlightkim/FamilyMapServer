@@ -25,7 +25,7 @@ public class LoginService {
         try{
             db.openConnection();
             // Use DAOs to do requested operation
-            User matchedUser = new UserDAO(db.openConnection()).find(request.getUsername());
+            User matchedUser = new UserDAO(db.getConnection()).find(request.getUsername());
 
             if (matchedUser == null){
                 LoginResult result = new LoginResult("No ID that match", false);
@@ -43,7 +43,7 @@ public class LoginService {
             //Then I have to create the Authorization token and insert it.
             String uuid = UUID.nameUUIDFromBytes(request.getUsername().getBytes()).toString();
             AuthToken token = new AuthToken(uuid, request.getUsername());
-            new AuthTokenDAO(db.openConnection()).insert(token);
+            new AuthTokenDAO(db.getConnection()).insert(token);
             // Close database connection, COMMIT transaction
             db.closeConnection(true);
 

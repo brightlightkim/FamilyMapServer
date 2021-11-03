@@ -6,19 +6,19 @@ import java.util.ArrayList;
  * Class that shows the result of all events.
  * It has data arraylist, message to display, and check if it succeeded.
  */
-public class AllEventResult extends Result{
+public class EventsResult extends Result{
     private ArrayList<EventResult> data;
 
-    public AllEventResult() {
+    public EventsResult() {
         super(null, false);
     }
 
-    public AllEventResult(boolean success, ArrayList<EventResult> data) {
+    public EventsResult(boolean success, ArrayList<EventResult> data) {
         super(success);
         this.data = data;
     }
 
-    public AllEventResult(String message, boolean success){
+    public EventsResult(String message, boolean success){
         super(message, success);
     }
 

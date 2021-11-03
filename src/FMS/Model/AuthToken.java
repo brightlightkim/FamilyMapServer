@@ -6,17 +6,17 @@ import java.util.Objects;
  * Model Class for AuthToken
  */
 public class AuthToken {
-    private String AuthToken;
-    private String Username;
+    private String authtoken;
+    private String username;
 
     /**
      * Constructor
-     * @param authToken authorized token
+     * @param authtoken authorized token
      * @param username related username
      */
-    public AuthToken(String authToken, String username) {
-        this.AuthToken = authToken;
-        this.Username = username;
+    public AuthToken(String authtoken, String username) {
+        this.authtoken = authtoken;
+        this.username = username;
     }
 
     @Override
@@ -24,27 +24,27 @@ public class AuthToken {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AuthToken authToken = (AuthToken) o;
-        return Objects.equals(AuthToken, authToken.AuthToken) && Objects.equals(Username, authToken.Username);
+        return Objects.equals(authtoken, authToken.authtoken) && Objects.equals(username, authToken.username);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(AuthToken, Username);
+        return Objects.hash(authtoken, username);
     }
 
-    public String getAuthToken() {
-        return AuthToken;
+    public String getAuthtoken() {
+        return authtoken;
     }
 
-    public void setAuthToken(String authToken) {
-        this.AuthToken = authToken;
+    public void setAuthtoken(String authtoken) {
+        this.authtoken = authtoken;
     }
 
     public String getUsername() {
-        return Username;
+        return username;
     }
 
     public void setUsername(String username) {
-        this.Username = username;
+        this.username = username;
     }
 }

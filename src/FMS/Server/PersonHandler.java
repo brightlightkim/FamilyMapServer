@@ -3,7 +3,7 @@ package Server;
 import DataAccess.AuthTokenDAO;
 import DataAccess.Database;
 import Model.AuthToken;
-import Result.PeopleResult;
+import Result.PersonsResult;
 import Result.PersonResult;
 import Service.PersonService;
 import com.sun.net.httpserver.Headers;
@@ -22,13 +22,13 @@ public class PersonHandler extends Handler {
             if (exchange.getRequestMethod().toLowerCase(Locale.ROOT).equals("get")) {
                 //take out "/person" part
                 PersonService service = new PersonService();
-                PeopleResult peopleResult = new PeopleResult();
+                PersonsResult personsResult = new PersonsResult();
                 PersonResult personResult = new PersonResult();
                 boolean one = false;
                 //check if it's for all people or not
                 if (exchange.getRequestURI().toString().length() == 7) {
                     //TODO: Check this function out.
-                    peopleResult = getPeopleResult(exchange, service);
+                    personsResult = getPeopleResult(exchange, service);
                 } else {
                     personResult = getPersonResult(exchange,service);
                     //String personID = exchange.getRequestURI().toString().substring(8);
@@ -41,7 +41,7 @@ public class PersonHandler extends Handler {
                 if (one) {
                     gson.toJson(personResult, resBody);
                 } else {
-                    gson.toJson(peopleResult, resBody);
+                    gson.toJson(personsResult, resBody);
                 }
 
                 resBody.close();
@@ -59,23 +59,23 @@ public class PersonHandler extends Handler {
         }
     }
 
-    private PeopleResult getPeopleResult(HttpExchange exchange, PersonService service) throws DataAccessException {
+    private PersonsResult getPeopleResult(HttpExchange exchange, PersonService service) throws DataAccessException {
 
         Headers reqHeaders = exchange.getRequestHeaders();
 
         if (reqHeaders.containsKey("Authorization")) {
             String authToken = reqHeaders.getFirst("Authorization");
             if (authToken.length() == 0){
-                return new PeopleResult("No Authorization Token", false);
+                return new PersonsResult("No Authorization Token", false);
             }
             String userName = getUsernameByToken(authToken);
             if (userName == null){
-                return new PeopleResult("No Token that match", false);
+                return new PersonsResult("No Token that match", false);
             }
             return service.findAllPeople(userName);
         }
         else{
-            return new PeopleResult("No Authorization Token", false);
+            return new PersonsResult("No Authorization Token", false);
         }
     }
 

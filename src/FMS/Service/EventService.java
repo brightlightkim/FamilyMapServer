@@ -6,7 +6,7 @@ import DataAccess.Database;
 import DataAccess.EventDAO;
 import Model.Event;
 import Model.Person;
-import Result.AllEventResult;
+import Result.EventsResult;
 import Result.EventResult;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class EventService {
         try {
             db.openConnection();
             EventResult result;
-            Event desiredEvent = new EventDAO(db.openConnection()).find(eventID);
+            Event desiredEvent = new EventDAO(db.getConnection()).find(eventID);
             if (desiredEvent == null) {
                 result = new EventResult("No Event that match", false);
                 db.closeConnection(false);
@@ -58,15 +58,15 @@ public class EventService {
      *
      * @return every event
      */
-    public AllEventResult allEventResult(String userName) throws DataAccessException{
+    public EventsResult allEventResult(String userName) throws DataAccessException{
         Database db = new Database();
         try {
             db.openConnection();
-            ArrayList<Person> desiredPeople = new PersonDAO(db.openConnection()).findPeople(userName);
-            ArrayList<Event> desiredEvents = new EventDAO(db.openConnection()).findAll(desiredPeople, userName);
-            AllEventResult result;
+            ArrayList<Person> desiredPeople = new PersonDAO(db.getConnection()).findPeople(userName);
+            ArrayList<Event> desiredEvents = new EventDAO(db.getConnection()).findAll(desiredPeople, userName);
+            EventsResult result;
             if (desiredEvents == null){
-                result = new AllEventResult("no event is available for the given userName", false);
+                result = new EventsResult("no event is available for the given userName", false);
                 db.closeConnection(false);
                 return result;
             }
@@ -82,7 +82,7 @@ public class EventService {
                             event.getYear());
                     eventResultArray.add(eventResult);
                 }
-                result = new AllEventResult(true, eventResultArray);
+                result = new EventsResult(true, eventResultArray);
                 return result;
             }
         } catch (Exception ex) {

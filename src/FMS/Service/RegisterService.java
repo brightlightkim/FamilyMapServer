@@ -27,7 +27,7 @@ public class RegisterService {
         try{
             db.openConnection();
             // Use DAOs to do requested operation
-            User matchedUser = new UserDAO(db.openConnection()).find(request.getUsername());
+            User matchedUser = new UserDAO(db.getConnection()).find(request.getUsername());
 
             if (matchedUser != null){
                 RegisterResult result = new RegisterResult("We already have this username", false);

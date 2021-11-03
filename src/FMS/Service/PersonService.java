@@ -4,7 +4,7 @@ import DataAccess.Database;
 import DataAccess.PersonDAO;
 import Error.DataAccessException;
 import Model.Person;
-import Result.PeopleResult;
+import Result.PersonsResult;
 import Result.PersonResult;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class PersonService {
         try {
             db.openConnection();
             // Use DAOs to do requested operation
-            Person desiredPerson = new PersonDAO(db.openConnection()).find(personID);
+            Person desiredPerson = new PersonDAO(db.getConnection()).find(personID);
 
             if (desiredPerson == null) {
                 PersonResult result = new PersonResult("No Person that match the ID", false);
@@ -60,15 +60,15 @@ public class PersonService {
      *
      * @return every person
      */
-    public PeopleResult findAllPeople(String userName) throws DataAccessException {
+    public PersonsResult findAllPeople(String userName) throws DataAccessException {
         Database db = new Database();
         try {
             db.openConnection();
             // Use DAOs to do requested operation
-            ArrayList<Person> desiredPeople = new PersonDAO(db.openConnection()).findPeople(userName);
-            PeopleResult result;
+            ArrayList<Person> desiredPeople = new PersonDAO(db.getConnection()).findPeople(userName);
+            PersonsResult result;
             if (desiredPeople == null) {
-                result = new PeopleResult("no data is available for the given username", false);
+                result = new PersonsResult("no data is available for the given username", false);
                 db.closeConnection(false);
                 return result;
             }
@@ -87,7 +87,7 @@ public class PersonService {
                         person.getSpouseID(),true);
                 peopleResultArray.add(personResult);
             }
-            result = new PeopleResult(peopleResultArray, true);
+            result = new PersonsResult(peopleResultArray, true);
             return result;
         } catch (Exception ex) {
             ex.printStackTrace();
