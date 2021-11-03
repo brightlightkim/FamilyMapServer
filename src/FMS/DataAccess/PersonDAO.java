@@ -105,7 +105,10 @@ public class PersonDAO {
         if (associatedUsername != null) {
             ArrayList<Person> persons = new ArrayList<>();
             Person person = findPersonByUsername(associatedUsername);
-            persons.addAll(findPeopleByID(person.getPersonID()));
+            if (person != null) {
+                persons.add(person);
+                persons.addAll(findPeopleByID(person.getPersonID()));
+            }
             return persons;
         } else {
             return null;
@@ -116,13 +119,21 @@ public class PersonDAO {
         if (id != null) {
             ArrayList<Person> people = new ArrayList<>();
             Person person = find(id);
-            people.add(person);
-            ArrayList<Person> fatherSide = findPeopleByID(person.getFatherID());
-            people.addAll(fatherSide);
-            ArrayList<Person> motherSide = findPeopleByID(person.getMotherID());
-            people.addAll(motherSide);
-            ArrayList<Person> spouseSide = findPeopleByID(person.getSpouseID());
-            people.addAll(spouseSide);
+            if (person != null) {
+                people.add(person);
+                if (person.getFatherID() != null) {
+                    ArrayList<Person> fatherSide = findPeopleByID(person.getFatherID());
+                    people.addAll(fatherSide);
+                }
+                if (person.getMotherID() != null) {
+                    ArrayList<Person> motherSide = findPeopleByID(person.getMotherID());
+                    people.addAll(motherSide);
+                }
+                if (person.getSpouseID() != null) {
+                    ArrayList<Person> spouseSide = findPeopleByID(person.getSpouseID());
+                    people.addAll(spouseSide);
+                }
+            }
             return people;
         } else {
             return null;

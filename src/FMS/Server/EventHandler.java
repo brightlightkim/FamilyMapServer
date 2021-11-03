@@ -66,6 +66,9 @@ public class EventHandler extends Handler{
             exchange.getResponseBody().close();
             e.printStackTrace();
         }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private EventsResult getAllEventResult(HttpExchange exchange, EventService service) throws DataAccessException {

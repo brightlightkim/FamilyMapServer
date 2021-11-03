@@ -63,11 +63,11 @@ public class PersonService {
     public PersonsResult findAllPeople(String userName) throws DataAccessException {
         Database db = new Database();
         try {
-            db.openConnection();
+            db.getConnection();
             // Use DAOs to do requested operation
             ArrayList<Person> desiredPeople = new PersonDAO(db.getConnection()).findPeople(userName);
             PersonsResult result;
-            if (desiredPeople == null) {
+            if (desiredPeople == null || desiredPeople.size() == 0) {
                 result = new PersonsResult("no data is available for the given username", false);
                 db.closeConnection(false);
                 return result;

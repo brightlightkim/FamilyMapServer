@@ -23,7 +23,7 @@ public class LoginService {
     public LoginResult login(LoginRequest request) throws DataAccessException {
         Database db = new Database();
         try{
-            db.openConnection();
+            db.getConnection();
 
             if (request.getUsername() == null || request.getPassword() == null){
                 LoginResult result = new LoginResult("request field is not filled", false);
@@ -46,6 +46,8 @@ public class LoginService {
                 db.closeConnection(false);
                 return result;
             }
+
+            db.closeConnection(true);
 
             //Then I have to create the Authorization token and insert it.
             String uuid = UUID.nameUUIDFromBytes(request.getUsername().getBytes()).toString();

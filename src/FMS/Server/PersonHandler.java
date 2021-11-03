@@ -29,7 +29,7 @@ public class PersonHandler extends Handler {
                 if (exchange.getRequestURI().toString().length() == 7) {
                     personsResult = getPeopleResult(exchange, service);
                 } else {
-                    personResult = getPersonResult(exchange,service);
+                    personResult = getPersonResult(exchange, service);
                     one = true;
                 }
 

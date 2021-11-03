@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class LoadServiceTest {
+public class LoadTest {
     private Database db;
     LoadRequest request;
     LoadRequest badRequest;

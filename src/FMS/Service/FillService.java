@@ -90,7 +90,7 @@ public class FillService {
             //this makes mother birth year for the max of 50 years of old.
             int motherBirthYear = getRandomNum(fatherBirthYear - 10, fatherBirthYear + 10);
 
-            String motherSideSurname = surnames.getData()[getRandomNum(0, surnames.getData().length)];
+            String motherSideSurname = surnames.getData()[getRandomNum(0, surnames.getData().length - 1)];
 
             father = generatePerson(username, surname, "MALE", fatherBirthYear, generations - 1);
             mother = generatePerson(username, motherSideSurname, "FEMALE", motherBirthYear, generations - 1);
@@ -143,7 +143,7 @@ public class FillService {
     }
 
     private Event createBirthEvent(String username, String personID, int birthYear) {
-        Location birthPlace = location.getData()[getRandomNum(0, location.getData().length)];
+        Location birthPlace = location.getData()[getRandomNum(0, location.getData().length-1)];
         String birthEventID = UUID.randomUUID().toString();
         Event birth = new Event(birthEventID, username, personID, birthPlace.getLatitude(),
                 birthPlace.getLongitude(), birthPlace.getCountry(),
