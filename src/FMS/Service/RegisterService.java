@@ -26,6 +26,14 @@ public class RegisterService {
         Database db = new Database();
         try{
             db.openConnection();
+
+            if(request.getUsername() == null || request.getFirstName() == null ||
+            request.getLastName() == null || request.getGender() == null ||
+            request.getEmail() == null || request.getPassword() == null){
+                RegisterResult result = new RegisterResult("Request Field Is Not Filled", false);
+                db.closeConnection(false);
+                return result;
+            }
             // Use DAOs to do requested operation
             User matchedUser = new UserDAO(db.getConnection()).find(request.getUsername());
 

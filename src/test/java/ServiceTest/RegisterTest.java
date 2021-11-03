@@ -4,25 +4,25 @@ import DataAccess.Database;
 import DataAccess.UserDAO;
 import Error.DataAccessException;
 import Model.User;
-import Request.LoginRequest;
-import Result.LoginResult;
-import Service.LoginService;
+import Request.RegisterRequest;
+import Result.RegisterResult;
+import Service.RegisterService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class RegisterTest {
     private Database db;
     private User bestUser;
     private User compareUser;
-    private LoginRequest passRequest;
-    private LoginRequest wrongPasswordRequest;
-    private LoginRequest wrongIDRequest;
-    private LoginService service;
-    private LoginResult result;
+    private RegisterRequest passRequest;
+    private RegisterRequest usedUsernameRequest;
+    private RegisterRequest emptyFieldRequest;
+    private RegisterService service;
+    private RegisterResult result;
 
     @BeforeEach
     public void setUp() throws DataAccessException {
@@ -31,17 +31,17 @@ public class RegisterTest {
                 "Taeyang", "Kim", "M", "k2289");
         compareUser = new User("jingerman", "hellso", "k2d289@byu.edu",
                 "Taeyangs", "Kiam", "F", "k22s89");
-        passRequest = new LoginRequest("taeyangk95", "hello");
-        wrongIDRequest = new LoginRequest("xoxo", "nonono");
-        wrongPasswordRequest = new LoginRequest("taeyangk95", "hi");
-        Connection conn = db.getConnection();
+        passRequest = new RegisterRequest("jessi", "hello", "k2289@byu.edu",
+                "jessi", "Kim", "F");
+        usedUsernameRequest = new RegisterRequest("taeyangk95", "hio", "k2as89@byu.edu",
+                "asfg", "dim", "M");
+        emptyFieldRequest = new RegisterRequest(null, null, null, null, null, null);
+
+        db.openConnection();
         db.clearTables();
-        new UserDAO(conn).insert(bestUser);
-        new UserDAO(conn).insert(compareUser);
-        db.closeConnection(true);
-        service = new LoginService();
+        service = new RegisterService();
     }
-    /*
+
     @AfterEach
     public void tearDown() throws DataAccessException {
         try {
@@ -52,27 +52,29 @@ public class RegisterTest {
         }
     }
 
-     */
 
     @Test
-    public void loginPass() throws DataAccessException {
-        result = service.login(passRequest);
+    public void registerPass() throws DataAccessException {
+        result = service.register(passRequest);
         assertNotNull(result);
-        assertEquals(result.getUsername(), "taeyangk95");
-        assertEquals(result.getPersonID(), "k2289");
+        assertNotNull(result.getAuthtoken());
+        assertNotNull(result.getPersonID());
+        assertEquals(result.getUsername(), "jessi");
     }
 
     @Test
-    public void NoIDFound() throws DataAccessException {
-        result = service.login(wrongIDRequest);
+    public void EmptyRequestField() throws DataAccessException {
+        result = service.register(emptyFieldRequest);
         assertNotNull(result);
-        assertEquals(result.getMessage(), "No ID that match");
+        assertEquals(result.getMessage(), "Request Field Is Not Filled");
     }
 
     @Test
-    public void passwordNotMatch() throws DataAccessException {
-        result = service.login(wrongPasswordRequest);
+    public void UsedUserName() throws DataAccessException {
+        new UserDAO(db.getConnection()).insert(bestUser);
+        db.closeConnection(true);
+        result = service.register(usedUsernameRequest);
         assertNotNull(result);
-        assertEquals(result.getMessage(), "Password not match");
+        assertEquals(result.getMessage(), "We already have this username");
     }
 }

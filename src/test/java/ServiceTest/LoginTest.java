@@ -12,7 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class LoginTest {
     private Database db;
@@ -55,7 +56,6 @@ public class LoginTest {
             throw new DataAccessException("close connection failed");
         }
     }
-
      */
 
     @Test
