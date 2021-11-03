@@ -24,6 +24,13 @@ public class LoginService {
         Database db = new Database();
         try{
             db.openConnection();
+
+            if (request.getUsername() == null || request.getPassword() == null){
+                LoginResult result = new LoginResult("request field is not filled", false);
+                db.closeConnection(false);
+                return result;
+            }
+
             // Use DAOs to do requested operation
             User matchedUser = new UserDAO(db.getConnection()).find(request.getUsername());
 
@@ -34,7 +41,7 @@ public class LoginService {
             }
 
             //when the password not match
-            if (matchedUser.getPassword() != request.getPassword()){
+            if (!matchedUser.getPassword().equals(request.getPassword())){
                 LoginResult result = new LoginResult("Password not match", false);
                 db.closeConnection(false);
                 return result;
