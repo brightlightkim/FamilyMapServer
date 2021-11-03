@@ -53,13 +53,12 @@ public class FillService {
      */
 
     public FillResult fillResult(String username, String userSurname, int generations) throws DataAccessException {
-        String personID = UUID.randomUUID().toString();
         String gender;
         String surname = userSurname;
         if (getRandomNum(0, 1) == 0) {
-            gender = "MALE";
+            gender = "m";
         } else {
-            gender = "FEMALE";
+            gender = "f";
         }
 
         if (surname == null) {
@@ -93,8 +92,8 @@ public class FillService {
 
                 String motherSideSurname = surnames.getData()[getRandomNum(0, surnames.getData().length)];
 
-                father = generatePerson(username, surname, "MALE", fatherBirthYear, generations - 1);
-                mother = generatePerson(username, motherSideSurname, "FEMALE", motherBirthYear, generations - 1);
+                father = generatePerson(username, surname, "m", fatherBirthYear, generations - 1);
+                mother = generatePerson(username, motherSideSurname, "f", motherBirthYear, generations - 1);
 
                 // Set mother's and father's spouse IDs
                 father.setSpouseID(mother.getPersonID());
