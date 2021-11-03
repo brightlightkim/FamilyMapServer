@@ -65,7 +65,7 @@ public class EventService {
             ArrayList<Person> desiredPeople = new PersonDAO(db.getConnection()).findPeople(userName);
             ArrayList<Event> desiredEvents = new EventDAO(db.getConnection()).findAll(desiredPeople, userName);
             EventsResult result;
-            if (desiredEvents == null){
+            if (desiredEvents == null || desiredEvents.size() == 0){
                 result = new EventsResult("no event is available for the given userName", false);
                 db.closeConnection(false);
                 return result;

@@ -2,9 +2,6 @@ package ServiceTest;
 
 import DataAccess.Database;
 import Error.DataAccessException;
-import Model.Event;
-import Model.Person;
-import Model.User;
 import Request.LoadRequest;
 import Result.LoadResult;
 import Service.LoadService;
@@ -15,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -34,9 +30,6 @@ public class LoadTest {
         Gson gson = new Gson();
         JsonReader jsonReader = new JsonReader(new FileReader("passoffFiles/LoadData.json"));
         request = gson.fromJson(jsonReader, LoadRequest.class);
-        ArrayList<User> users;
-        ArrayList<Person> persons;
-        ArrayList<Event> events;
         badRequest = new LoadRequest(null, null, null);
         service = new LoadService();
         db.getConnection();

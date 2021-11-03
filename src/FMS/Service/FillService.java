@@ -181,7 +181,7 @@ public class FillService {
 
     private void addMarriageEvent(String username, Person father, Person mother, int year) throws DataAccessException {
         String marriageIDHusband = UUID.randomUUID().toString();
-        Location marriagePlace = location.getData()[getRandomNum(0, location.getData().length)];
+        Location marriagePlace = location.getData()[getRandomNum(0, location.getData().length - 1)];
         Event marriageForHusband = createMarriageEvent(marriageIDHusband, username, father.getPersonID(), marriagePlace, year);
         String marriageIDWife = UUID.randomUUID().toString();
         Event marriageForWife = createMarriageEvent(marriageIDWife, username, mother.getPersonID(), marriagePlace, year);

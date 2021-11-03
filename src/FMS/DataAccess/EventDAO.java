@@ -111,7 +111,7 @@ public class EventDAO {
     public ArrayList<Event> findEventsByUserName(String username) throws DataAccessException {
         ArrayList<Event> events = new ArrayList<>();
         ResultSet rs = null;
-        String sql = "SELECT * FROM Events WHERE AsssociatedUsername = ?;";
+        String sql = "SELECT * FROM Events WHERE asssociatedUsername = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
             rs = stmt.executeQuery();
