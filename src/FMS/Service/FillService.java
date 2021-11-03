@@ -72,7 +72,7 @@ public class FillService {
             return new FillResult("generation numbers are too great", false);
         }
         generatePerson(username, surname, gender, birthYear, generations);
-        String message = "Successfully created " + createdPeopleNum + "persons and "
+        String message = "Successfully created " + createdPeopleNum + " persons and "
                 + createdEventNum + " events to the database";
 
         return new FillResult(message, true);
@@ -107,10 +107,10 @@ public class FillService {
 
         String personName;
 
-        if (gender.equals("MALE")) {
-            personName = maleNames.getData()[getRandomNum(0, maleNames.getData().length)];
+        if (gender.equals("MALE") || gender.equals("m") || gender.equals("M")) {
+            personName = maleNames.getData()[getRandomNum(0, maleNames.getData().length-1)];
         } else {
-            personName = femaleNames.getData()[getRandomNum(0, femaleNames.getData().length)];
+            personName = femaleNames.getData()[getRandomNum(0, femaleNames.getData().length-1)];
         }
 
         // Set person's properties
@@ -129,9 +129,10 @@ public class FillService {
         createdPeopleNum++;
         Database db = new Database();
         try {
-            db.openConnection();
             new PersonDAO(db.getConnection()).insert(person);
+            db.closeConnection(true);
             new EventDAO(db.getConnection()).insert(birth);
+            db.closeConnection(true);
             new EventDAO(db.getConnection()).insert(death);
             db.closeConnection(true);
         } catch (DataAccessException e) {
@@ -165,7 +166,7 @@ public class FillService {
         String deathEventID = UUID.randomUUID().toString();
         Event death = new Event(deathEventID, username, personID, deathPlace.getLatitude(),
                 deathPlace.getLongitude(), birthPlace.getCountry(),
-                deathPlace.getCity(), "BIRTH", birthYear);
+                deathPlace.getCity(), "DEATH", birthYear + getRandomNum(20, 110));
         createdEventNum++;
         return death;
     }
@@ -179,22 +180,20 @@ public class FillService {
     }
 
     private void addMarriageEvent(String username, Person father, Person mother, int year) throws DataAccessException {
-        String marriageID = UUID.randomUUID().toString();
+        String marriageIDHusband = UUID.randomUUID().toString();
         Location marriagePlace = location.getData()[getRandomNum(0, location.getData().length)];
-        Event marriageForHusband = createMarriageEvent(marriageID, username, father.getPersonID(), marriagePlace, year);
-        //Event marriageForWife = createMarriageEvent(marriageID, username, mother.getPersonID(), marriagePlace, year);
+        Event marriageForHusband = createMarriageEvent(marriageIDHusband, username, father.getPersonID(), marriagePlace, year);
+        String marriageIDWife = UUID.randomUUID().toString();
+        Event marriageForWife = createMarriageEvent(marriageIDWife, username, mother.getPersonID(), marriagePlace, year);
         Database db = new Database();
         try {
-            db.openConnection();
-            //TODO: Regarding Marriage Event, what should we do?
-            //TODO: what does it mean by in sync to each other? when the EventID is a primary key?
             new EventDAO(db.getConnection()).insert(marriageForHusband);
-            //new EventDAO(db.getConnection()).insert(marriageForWife);
+            db.closeConnection(true);
+            new EventDAO(db.getConnection()).insert(marriageForWife);
             db.closeConnection(true);
         } catch (DataAccessException e) {
             db.closeConnection(false);
             e.printStackTrace();
-
         }
     }
 

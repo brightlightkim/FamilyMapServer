@@ -25,7 +25,7 @@ public class RegisterService {
     public RegisterResult register(RegisterRequest request) throws DataAccessException {
         Database db = new Database();
         try{
-            db.openConnection();
+            db.getConnection();
 
             if(request.getUsername() == null || request.getFirstName() == null ||
             request.getLastName() == null || request.getGender() == null ||
@@ -68,7 +68,7 @@ public class RegisterService {
 
             //Create Event for this request >> Birth Event
             //Event birthEvent = new Event("BIRTH", ) >> function of create birth event.
-            db.openConnection();//TODO: Check if this works
+            db.getConnection();
             //Add it to the database
             new UserDAO(db.getConnection()).insert(newUser);
             new PersonDAO(db.getConnection()).insert(newPerson);

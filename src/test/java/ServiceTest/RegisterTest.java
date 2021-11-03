@@ -7,7 +7,6 @@ import Model.User;
 import Request.RegisterRequest;
 import Result.RegisterResult;
 import Service.RegisterService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -39,9 +38,10 @@ public class RegisterTest {
 
         db.openConnection();
         db.clearTables();
+        db.closeConnection(true);
         service = new RegisterService();
     }
-
+    /*
     @AfterEach
     public void tearDown() throws DataAccessException {
         try {
@@ -51,11 +51,16 @@ public class RegisterTest {
             throw new DataAccessException("close connection failed");
         }
     }
-
+     */
 
     @Test
     public void registerPass() throws DataAccessException {
-        result = service.register(passRequest);
+        try {
+            result = service.register(passRequest);
+        } catch (DataAccessException e){
+            e.printStackTrace();
+            throw new DataAccessException("register failed");
+        }
         assertNotNull(result);
         assertNotNull(result.getAuthtoken());
         assertNotNull(result.getPersonID());
@@ -64,7 +69,12 @@ public class RegisterTest {
 
     @Test
     public void EmptyRequestField() throws DataAccessException {
-        result = service.register(emptyFieldRequest);
+        try {
+            result = service.register(emptyFieldRequest);
+        } catch (DataAccessException e){
+            e.printStackTrace();
+            throw new DataAccessException("register failed");
+        }
         assertNotNull(result);
         assertEquals(result.getMessage(), "Request Field Is Not Filled");
     }

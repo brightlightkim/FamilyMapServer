@@ -36,7 +36,14 @@ public class EventHandler extends Handler{
                     eventResult = getEventResult(exchange, service);
                     one = true;
                 }
-                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+
+                if (eventResult.isSuccess() || eventsResult.isSuccess()){
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                }
+                else {
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                }
+
                 Writer resBody = new OutputStreamWriter(exchange.getResponseBody());
 
                 if (one) {
@@ -45,13 +52,9 @@ public class EventHandler extends Handler{
                 else{
                     gson.toJson(eventsResult, resBody);
                 }
+
                 resBody.close();
-                exchange.getResponseBody().close();
-                success = true;
-            }
-            if (!success){
-                exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
-                exchange.getResponseBody().close();
+                exchange.getResponseBody().close(); //What triggers everything up (ends of the handler)
             }
         }
         catch (DataAccessException e){

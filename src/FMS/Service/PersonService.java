@@ -77,7 +77,6 @@ public class PersonService {
             db.closeConnection(true);
 
             // Create and return SUCCESS Result object
-            //TODO: Check if this format is right
             ArrayList<PersonResult> peopleResultArray = new ArrayList<>();
             for (Person person : desiredPeople) {
                 PersonResult personResult = new PersonResult(person.getAssociatedUsername(),

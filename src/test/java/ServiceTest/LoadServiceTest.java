@@ -1,6 +1,12 @@
 package ServiceTest;
 
+import Request.LoadRequest;
+import Service.LoadService;
+
 public class LoadServiceTest {
+    LoadRequest request;
+    LoadService service;
+
     /*
     try {
         Gson gson = new Gson();
