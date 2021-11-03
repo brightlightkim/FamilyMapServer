@@ -6,15 +6,15 @@ import java.util.Objects;
  * Model Class for Event
  */
 public class Event {
-    private String EventID;
-    private String AssociatedUsername;
-    private String PersonID;
-    private float Latitude;
-    private float Longitude;
-    private String Country;
-    private String City;
-    private String EventType;
-    private int Year;
+    private String eventID;
+    private String associatedUsername;
+    private String personID;
+    private float latitude;
+    private float longitude;
+    private String country;
+    private String city;
+    private String eventType;
+    private int year;
 
     /**
      * Event Class Constructor
@@ -29,15 +29,15 @@ public class Event {
      * @param year year of the event
      */
     public Event(String event_id, String associated_username, String person_id, float latitude, float longitude, String country, String city, String event_type, int year) {
-        this.EventID = event_id;
-        this.AssociatedUsername = associated_username;
-        this.PersonID = person_id;
-        this.Latitude = latitude;
-        this.Longitude = longitude;
-        this.Country = country;
-        this.City = city;
-        this.EventType = event_type;
-        this.Year = year;
+        this.eventID = event_id;
+        this.associatedUsername = associated_username;
+        this.personID = person_id;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.country = country;
+        this.city = city;
+        this.eventType = event_type;
+        this.year = year;
     }
 
     @Override
@@ -45,83 +45,83 @@ public class Event {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-        return Float.compare(event.Latitude, Latitude) == 0 && Float.compare(event.Longitude, Longitude) == 0 && Year == event.Year && EventID.equals(event.EventID) && Objects.equals(AssociatedUsername, event.AssociatedUsername) && Objects.equals(PersonID, event.PersonID) && Objects.equals(Country, event.Country) && Objects.equals(City, event.City) && Objects.equals(EventType, event.EventType);
+        return Float.compare(event.latitude, latitude) == 0 && Float.compare(event.longitude, longitude) == 0 && year == event.year && eventID.equals(event.eventID) && Objects.equals(associatedUsername, event.associatedUsername) && Objects.equals(personID, event.personID) && Objects.equals(country, event.country) && Objects.equals(city, event.city) && Objects.equals(eventType, event.eventType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(EventID, AssociatedUsername, PersonID, Latitude, Longitude, Country, City, EventType, Year);
+        return Objects.hash(eventID, associatedUsername, personID, latitude, longitude, country, city, eventType, year);
     }
 
     public String getEventID() {
-        return EventID;
+        return eventID;
     }
 
     public void setEventID(String eventID) {
-        this.EventID = eventID;
+        this.eventID = eventID;
     }
 
     public String getAssociatedUsername() {
-        return AssociatedUsername;
+        return associatedUsername;
     }
 
     public void setAssociatedUsername(String associatedUsername) {
-        this.AssociatedUsername = associatedUsername;
+        this.associatedUsername = associatedUsername;
     }
 
     public String getPersonID() {
-        return PersonID;
+        return personID;
     }
 
     public void setPersonID(String personID) {
-        this.PersonID = personID;
+        this.personID = personID;
     }
 
     public float getLatitude() {
-        return Latitude;
+        return latitude;
     }
 
     public void setLatitude(float latitude) {
-        this.Latitude = latitude;
+        this.latitude = latitude;
     }
 
     public float getLongitude() {
-        return Longitude;
+        return longitude;
     }
 
     public void setLongitude(float longitude) {
-        this.Longitude = longitude;
+        this.longitude = longitude;
     }
 
     public String getCountry() {
-        return Country;
+        return country;
     }
 
     public void setCountry(String country) {
-        this.Country = country;
+        this.country = country;
     }
 
     public String getCity() {
-        return City;
+        return city;
     }
 
     public void setCity(String city) {
-        this.City = city;
+        this.city = city;
     }
 
     public String getEventType() {
-        return EventType;
+        return eventType;
     }
 
     public void setEventType(String eventType) {
-        this.EventType = eventType;
+        this.eventType = eventType;
     }
 
     public int getYear() {
-        return Year;
+        return year;
     }
 
     public void setYear(int year) {
-        this.Year = year;
+        this.year = year;
     }
 }

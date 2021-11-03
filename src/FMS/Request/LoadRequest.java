@@ -18,6 +18,12 @@ public class LoadRequest {
     public LoadRequest() {
     }
 
+    public LoadRequest(ArrayList<User> users, ArrayList<Person> persons, ArrayList<Event> events) {
+        this.users = users;
+        this.persons = persons;
+        this.events = events;
+    }
+
     public ArrayList<User> getUsers() {
         return users;
     }
