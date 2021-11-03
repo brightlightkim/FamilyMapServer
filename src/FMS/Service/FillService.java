@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -32,13 +33,13 @@ public class FillService {
     public FillService() throws FileNotFoundException {
         try {
             Reader reader = new FileReader("C:\\Users\\brightlightkim\\IdeaProjects\\FamilyMapServerStudent-master\\json\\locations.json");
-            location = (LocationData) gson.fromJson(reader, LocationData.class);
+            location = gson.fromJson(reader, LocationData.class);
             reader = new FileReader("C:\\Users\\brightlightkim\\IdeaProjects\\FamilyMapServerStudent-master\\json\\mnames.json");
-            maleNames = (MaleNamesData) gson.fromJson(reader, MaleNamesData.class);
+            maleNames = gson.fromJson(reader, MaleNamesData.class);
             reader = new FileReader("C:\\Users\\brightlightkim\\IdeaProjects\\FamilyMapServerStudent-master\\json\\fnames.json");
-            femaleNames = (FemaleNamesData) gson.fromJson(reader, FemaleNamesData.class);
+            femaleNames = gson.fromJson(reader, FemaleNamesData.class);
             reader = new FileReader("C:\\Users\\brightlightkim\\IdeaProjects\\FamilyMapServerStudent-master\\json\\snames.json");
-            surnames = (SurnamesData) gson.fromJson(reader, SurnamesData.class);
+            surnames = gson.fromJson(reader, SurnamesData.class);
             createdPeopleNum = 0;
             createdEventNum = 0;
         } catch (FileNotFoundException e) {
@@ -53,7 +54,6 @@ public class FillService {
      */
 
     public FillResult fillResult(String username, String userSurname, int generations) throws DataAccessException {
-        String personID = UUID.randomUUID().toString();
         String gender;
         String surname = userSurname;
         if (getRandomNum(0, 1) == 0) {
@@ -83,7 +83,7 @@ public class FillService {
 
         Person father = null;
         Person mother = null;
-        Person person = null;
+        Person person;
         if (generations >= 1) {
             //at least 13 birth year more than the kid
             int fatherBirthYear = getRandomNum(birthYear - 40, birthYear - 10);
@@ -182,7 +182,7 @@ public class FillService {
         String marriageID = UUID.randomUUID().toString();
         Location marriagePlace = location.getData()[getRandomNum(0, location.getData().length)];
         Event marriageForHusband = createMarriageEvent(marriageID, username, father.getPersonID(), marriagePlace, year);
-        Event marriageForWife = createMarriageEvent(marriageID, username, mother.getPersonID(), marriagePlace, year);
+        //Event marriageForWife = createMarriageEvent(marriageID, username, mother.getPersonID(), marriagePlace, year);
         Database db = new Database();
         try {
             db.openConnection();
@@ -199,7 +199,8 @@ public class FillService {
     }
 
     private int getRandomNum(int min, int max) {
-        int randomAge = (int) Math.floor(Math.random() * (max - min + 1) + min);
+        Random rand = new Random();
+        int randomAge = rand.nextInt((max - min) + 1) + min;
         return randomAge;
     }
 }

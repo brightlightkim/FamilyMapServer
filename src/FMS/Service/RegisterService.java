@@ -42,8 +42,8 @@ public class RegisterService {
                 db.closeConnection(false);
                 return result;
             }
+            db.closeConnection(true);
             //Where recursion needs to occur..
-
             FillService service = new FillService();
             service.fillResult(request.getUsername(), request.getLastName(), 4);
 
@@ -68,7 +68,7 @@ public class RegisterService {
 
             //Create Event for this request >> Birth Event
             //Event birthEvent = new Event("BIRTH", ) >> function of create birth event.
-
+            db.openConnection();//TODO: Check if this works
             //Add it to the database
             new UserDAO(db.getConnection()).insert(newUser);
             new PersonDAO(db.getConnection()).insert(newPerson);
