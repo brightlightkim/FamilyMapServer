@@ -24,14 +24,20 @@ public class FillHandler extends Handler {
                 }
                 FillService service = new FillService();
                 FillResult result = service.fillResult(username, null, generations);
-                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+
+                if (result.isSuccess()) {
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                }
+                else{
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                }
                 Writer resBody = new OutputStreamWriter(exchange.getResponseBody());
                 gson.toJson(result, resBody);
                 resBody.close();
                 exchange.getResponseBody().close();
                 success = true;
             }
-            if (!success) {
+            else {
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
                 exchange.getResponseBody().close();
             }

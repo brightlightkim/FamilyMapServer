@@ -56,6 +56,10 @@ public class EventHandler extends Handler{
                 resBody.close();
                 exchange.getResponseBody().close(); //What triggers everything up (ends of the handler)
             }
+            else{
+                exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                exchange.getResponseBody().close();
+            }
         }
         catch (DataAccessException e){
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_SERVER_ERROR, 0);

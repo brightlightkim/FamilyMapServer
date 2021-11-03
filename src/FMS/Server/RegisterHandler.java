@@ -19,13 +19,18 @@ public class RegisterHandler extends Handler{
                 RegisterRequest request = (RegisterRequest) gson.fromJson(reqData, RegisterRequest.class);
                 RegisterService service = new RegisterService();
                 RegisterResult result = service.register(request);
-                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                if (result.isSuccess()) {
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                }
+                else{
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                }
                 Writer resBody= new OutputStreamWriter(exchange.getResponseBody());
                 gson.toJson(result, resBody);
                 resBody.close();
                 success = true;
             }
-            if (!success){
+            else {
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
                 exchange.getResponseBody().close();
             }

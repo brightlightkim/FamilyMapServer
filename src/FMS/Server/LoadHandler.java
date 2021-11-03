@@ -30,6 +30,10 @@ public class LoadHandler extends Handler{
                 resBody.close();
                 exchange.getResponseBody().close();
             }
+            else{
+                exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                exchange.getResponseBody().close();
+            }
         } catch (DataAccessException e) {
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_SERVER_ERROR, 0);
             exchange.getResponseBody().close();

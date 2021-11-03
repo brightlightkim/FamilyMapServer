@@ -27,15 +27,19 @@ public class PersonHandler extends Handler {
                 boolean one = false;
                 //check if it's for all people or not
                 if (exchange.getRequestURI().toString().length() == 7) {
-                    //TODO: Check this function out.
                     personsResult = getPeopleResult(exchange, service);
                 } else {
                     personResult = getPersonResult(exchange,service);
-                    //String personID = exchange.getRequestURI().toString().substring(8);
-                    //personResult = service.findPerson(personID);
                     one = true;
                 }
-                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+
+                if (personResult.isSuccess() || personsResult.isSuccess()) {
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                }
+                else{
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                }
+
                 Writer resBody = new OutputStreamWriter(exchange.getResponseBody());
 
                 if (one) {
@@ -48,7 +52,7 @@ public class PersonHandler extends Handler {
                 exchange.getResponseBody().close();
                 success = true;
             }
-            if (!success) {
+            else {
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
                 exchange.getResponseBody().close();
             }
@@ -105,7 +109,6 @@ public class PersonHandler extends Handler {
 
     private String getUsernameByToken(String token) throws DataAccessException {
         Database db = new Database();
-        db.openConnection();
         AuthToken desiredToken = new AuthTokenDAO(db.getConnection()).find(token);
         db.closeConnection(true);
         if (token == null) {
