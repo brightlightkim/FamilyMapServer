@@ -53,15 +53,16 @@ public class FillService {
      */
 
     public FillResult fillResult(String username, String userSurname, int generations) throws DataAccessException {
+        String personID = UUID.randomUUID().toString();
         String gender;
         String surname = userSurname;
         if (getRandomNum(0, 1) == 0) {
-            gender = "m";
+            gender = "MALE";
         } else {
-            gender = "f";
+            gender = "FEMALE";
         }
 
-        if (surname == null) {
+        if (userSurname == null) {
             surname = surnames.getData()[getRandomNum(0, surnames.getData().length)];
         }
         int birthYear = getRandomNum(1921, 2021);
@@ -79,54 +80,55 @@ public class FillService {
 
     private Person generatePerson(String username, String surname, String gender,
                                   int birthYear, int generations) throws DataAccessException {
-        Database db = new Database();
+
         Person father = null;
         Person mother = null;
         Person person = null;
+        if (generations >= 1) {
+            //at least 13 birth year more than the kid
+            int fatherBirthYear = getRandomNum(birthYear - 40, birthYear - 10);
+            //this makes mother birth year for the max of 50 years of old.
+            int motherBirthYear = getRandomNum(fatherBirthYear - 10, fatherBirthYear + 10);
+
+            String motherSideSurname = surnames.getData()[getRandomNum(0, surnames.getData().length)];
+
+            father = generatePerson(username, surname, "MALE", fatherBirthYear, generations - 1);
+            mother = generatePerson(username, motherSideSurname, "FEMALE", motherBirthYear, generations - 1);
+
+            // Set mother's and father's spouse IDs
+            father.setSpouseID(mother.getPersonID());
+            mother.setSpouseID(father.getPersonID());
+            // Add marriage events to mother and father + marriage could happen child's birth or remarriage.
+            addMarriageEvent(username, father, mother, getRandomNum(motherBirthYear + 13, motherBirthYear + 50));
+            // (their marriage events must be in synch with each other)
+        }
+
+        String personID = UUID.randomUUID().toString();
+
+        String personName;
+
+        if (gender.equals("MALE")) {
+            personName = maleNames.getData()[getRandomNum(0, maleNames.getData().length)];
+        } else {
+            personName = femaleNames.getData()[getRandomNum(0, femaleNames.getData().length)];
+        }
+
+        // Set person's properties
+        if (father != null && mother != null) {
+            person = new Person(personID, username, personName, surname, gender,
+                    father.getFatherID(), mother.getPersonID(), null);
+        } else {
+            person = new Person(personID, username, personName, surname, gender,
+                    null, null, null);
+        }
+        // Generate events for person (except marriage)
+
+        Event birth = createBirthEvent(username, personID, birthYear);
+        Event death = createDeathEvent(username, personID, birth, birthYear);
+        // Save person in database
+        createdPeopleNum++;
+        Database db = new Database();
         try {
-            if (generations >= 1) {
-                //at least 13 birth year more than the kid
-                int fatherBirthYear = getRandomNum(birthYear - 40, birthYear - 10);
-                //this makes mother birth year for the max of 50 years of old.
-                int motherBirthYear = getRandomNum(fatherBirthYear - 10, fatherBirthYear + 10);
-
-                String motherSideSurname = surnames.getData()[getRandomNum(0, surnames.getData().length)];
-
-                father = generatePerson(username, surname, "m", fatherBirthYear, generations - 1);
-                mother = generatePerson(username, motherSideSurname, "f", motherBirthYear, generations - 1);
-
-                // Set mother's and father's spouse IDs
-                father.setSpouseID(mother.getPersonID());
-                mother.setSpouseID(father.getPersonID());
-                // Add marriage events to mother and father + marriage could happen child's birth or remarriage.
-                addMarriageEvent(username, father, mother, getRandomNum(motherBirthYear + 13, motherBirthYear + 50));
-                // (their marriage events must be in synch with each other)
-            }
-
-            String personID = UUID.randomUUID().toString();
-
-            String personName;
-
-            if (gender.equals("MALE")) {
-                personName = maleNames.getData()[getRandomNum(0, maleNames.getData().length)];
-            } else {
-                personName = femaleNames.getData()[getRandomNum(0, femaleNames.getData().length)];
-            }
-
-            // Set person's properties
-            if (father != null && mother != null) {
-                person = new Person(personID, username, personName, surname, gender,
-                        father.getFatherID(), mother.getPersonID(), null);
-            } else {
-                person = new Person(personID, username, personName, surname, gender,
-                        null, null, null);
-            }
-            // Generate events for person (except marriage)
-
-            Event birth = createBirthEvent(username, personID, birthYear);
-            Event death = createDeathEvent(username, personID, birth, birthYear);
-            // Save person in database
-            createdPeopleNum++;
             db.openConnection();
             new PersonDAO(db.getConnection()).insert(person);
             new EventDAO(db.getConnection()).insert(birth);
@@ -184,8 +186,10 @@ public class FillService {
         Database db = new Database();
         try {
             db.openConnection();
+            //TODO: Regarding Marriage Event, what should we do?
+            //TODO: what does it mean by in sync to each other? when the EventID is a primary key?
             new EventDAO(db.getConnection()).insert(marriageForHusband);
-            new EventDAO(db.getConnection()).insert(marriageForWife);
+            //new EventDAO(db.getConnection()).insert(marriageForWife);
             db.closeConnection(true);
         } catch (DataAccessException e) {
             db.closeConnection(false);

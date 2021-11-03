@@ -76,8 +76,8 @@ public class PersonDAO {
      * @param person It's the person
      */
     public void insert(Person person) throws DataAccessException {
-        String sql = "INSERT INTO Persons (PersonID, AssociatedUsername, FirstName, " +
-                "LastName, Gender, FatherID, MotherID, SpouseID) VALUES(?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Persons (personID, associatedUsername, firstName, " +
+                "lastName, gender, fatherID, motherID, spouseID) VALUES(?,?,?,?,?,?,?,?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, person.getPersonID());
             stmt.setString(2, person.getAssociatedUsername());

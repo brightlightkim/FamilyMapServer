@@ -23,8 +23,8 @@ public class UserDAO {
      * @param user user
      */
     public void insert(User user) throws DataAccessException {
-        String sql = "INSERT INTO Users (Username, Password, Email, FirstName, LastName, " +
-                "Gender, PersonID) VALUES(?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Users (username, password, email, firstName, lastName, " +
+                "gender, personID) VALUES(?,?,?,?,?,?,?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getUsername());
             stmt.setString(2, user.getPassword());

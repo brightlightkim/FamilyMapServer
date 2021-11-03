@@ -105,7 +105,9 @@ public class PersonHandler extends Handler {
 
     private String getUsernameByToken(String token) throws DataAccessException {
         Database db = new Database();
-        AuthToken desiredToken = new AuthTokenDAO(db.openConnection()).find(token);
+        db.openConnection();
+        AuthToken desiredToken = new AuthTokenDAO(db.getConnection()).find(token);
+        db.closeConnection(true);
         if (token == null) {
             return null;
         } else {
