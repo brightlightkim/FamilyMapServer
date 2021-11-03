@@ -27,22 +27,46 @@ public class LoadService {
             int userNum = 0;
             int personNum = 0;
             int eventNum = 0;
-            db.openConnection();
-            for(User user: request.getUsers()){
-                new UserDAO(db.getConnection()).insert(user);
-                userNum++;
+            int emptyIfItReachThree = 0;
+            db.getConnection();
+            if (request.getUsers() != null) {
+                for (User user : request.getUsers()) {
+                    new UserDAO(db.getConnection()).insert(user);
+                    db.closeConnection(true);
+                    userNum++;
+                }
             }
-            for(Person person: request.getPersons()){
-                new PersonDAO(db.getConnection()).insert(person);
-                personNum++;
+            else{
+                emptyIfItReachThree++;
             }
-            for(Event event: request.getEvents()){
-                new EventDAO(db.getConnection()).insert(event);
-                eventNum++;
+            if (request.getPersons() != null) {
+                for (Person person : request.getPersons()) {
+                    new PersonDAO(db.getConnection()).insert(person);
+                    db.closeConnection(true);
+                    personNum++;
+                }
             }
-            db.closeConnection(true);
-            message = "Successfully added " + userNum + " users, " + personNum + " persons, and " + eventNum + " events to the database.";
-            result = new LoadResult(message, true);
+            else{
+                emptyIfItReachThree++;
+            }
+            if (request.getEvents() != null) {
+                for (Event event : request.getEvents()) {
+                    new EventDAO(db.getConnection()).insert(event);
+                    db.closeConnection(true);
+                    eventNum++;
+                }
+            }
+            else{
+                emptyIfItReachThree++;
+            }
+            if (emptyIfItReachThree != 3) {
+                message = "Successfully added " + userNum + " users, " + personNum + " persons, and " + eventNum + " events to the database.";
+                result = new LoadResult(message, true);
+            }
+            else{
+                message = "Empty Request";
+                result = new LoadResult(message, false);
+            }
         }
         catch (Exception exception){
             exception.printStackTrace();
