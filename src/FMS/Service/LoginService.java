@@ -48,7 +48,7 @@ public class LoginService {
             db.closeConnection(true);
 
             // Create and return SUCCESS Result object
-            LoginResult result = new LoginResult(uuid, matchedUser.getUsername(), matchedUser.getPersonID(),"found Person!", true);
+            LoginResult result = new LoginResult(uuid, matchedUser.getUsername(), matchedUser.getPersonID(),true);
             return result;
         }
         catch (Exception ex) {

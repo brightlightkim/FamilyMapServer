@@ -12,8 +12,8 @@ public class PeopleResult extends Result{
         super(null, false);
     }
 
-    public PeopleResult (ArrayList<PersonResult> people, String message, boolean success){
-        super(message, success);
+    public PeopleResult (ArrayList<PersonResult> people, boolean success){
+        super(success);
         data = people;
     }
 

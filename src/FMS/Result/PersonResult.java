@@ -18,8 +18,8 @@ public class PersonResult extends Result{
     public PersonResult(){
         super(null, false);
     }
-    public PersonResult(String associatedUsername, String personID, String firstName, String lastName, String gender, String fatherID, String motherID, String spouseID, String message, boolean success) {
-        super(message, success);
+    public PersonResult(String associatedUsername, String personID, String firstName, String lastName, String gender, String fatherID, String motherID, String spouseID, boolean success) {
+        super(success);
         this.associatedUsername = associatedUsername;
         this.personID = personID;
         this.firstName = firstName;

@@ -30,15 +30,11 @@ public class Server {
 
         server.createContext("/user/register", new RegisterHandler());
         server.createContext("/user/login", new LoginHandler());
-        //TODO: Need more functions here for getting the username and generations.
         server.createContext("/fill", new FillHandler());
         server.createContext("/load", new LoadHandler());
-        //TODO: Need more functions to find personID.
         server.createContext("/person", new PersonHandler());
         server.createContext("/clear", new ClearHandler());
-        //TODO: Need more functions to find eventID.
         server.createContext("/event", new EventHandler());
-
         server.createContext("/", new FileHandler());
 
         System.out.println("Starting server");

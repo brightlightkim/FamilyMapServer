@@ -25,14 +25,15 @@ public class EventService {
         Database db = new Database();
         try {
             db.openConnection();
+            EventResult result;
             Event desiredEvent = new EventDAO(db.openConnection()).find(eventID);
             if (desiredEvent == null) {
-                EventResult result = new EventResult("No Event that match", false);
+                result = new EventResult("No Event that match", false);
                 db.closeConnection(false);
                 return result;
             } else {
                 db.closeConnection(true);
-                EventResult result = new EventResult("successfully found event", true,
+                result = new EventResult(true,
                         desiredEvent.getAssociatedUsername(), desiredEvent.getEventID(),
                         desiredEvent.getPersonID(), desiredEvent.getLatitude(),
                         desiredEvent.getLongitude(), desiredEvent.getCountry(),
@@ -73,7 +74,7 @@ public class EventService {
                 db.closeConnection(true);
                 ArrayList<EventResult> eventResultArray = new ArrayList<>();
                 for (Event event : desiredEvents){
-                    EventResult eventResult = new EventResult("successfully found event", true,
+                    EventResult eventResult = new EventResult(true,
                             event.getAssociatedUsername(), event.getEventID(),
                             event.getPersonID(), event.getLatitude(),
                             event.getLongitude(), event.getCountry(),
@@ -81,8 +82,7 @@ public class EventService {
                             event.getYear());
                     eventResultArray.add(eventResult);
                 }
-                result = new AllEventResult("successfully got all events",
-                        true, eventResultArray);
+                result = new AllEventResult(true, eventResultArray);
                 return result;
             }
         } catch (Exception ex) {

@@ -13,8 +13,8 @@ public class AllEventResult extends Result{
         super(null, false);
     }
 
-    public AllEventResult(String message, boolean success, ArrayList<EventResult> data) {
-        super(message, success);
+    public AllEventResult(boolean success, ArrayList<EventResult> data) {
+        super(success);
         this.data = data;
     }
 

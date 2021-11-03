@@ -40,8 +40,7 @@ public class PersonService {
                     desiredPerson.getPersonID(), desiredPerson.getFirstName(),
                     desiredPerson.getLastName(), desiredPerson.getGender(),
                     desiredPerson.getFatherID(), desiredPerson.getMotherID(),
-                    desiredPerson.getSpouseID(), "found person Successfully",
-                    true);
+                    desiredPerson.getSpouseID(), true);
             return result;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -85,11 +84,10 @@ public class PersonService {
                         person.getPersonID(), person.getFirstName(),
                         person.getLastName(), person.getGender(),
                         person.getFatherID(), person.getMotherID(),
-                        person.getSpouseID(), "found person Successfully",
-                        true);
+                        person.getSpouseID(),true);
                 peopleResultArray.add(personResult);
             }
-            result = new PeopleResult(peopleResultArray, "successfully got the array", true);
+            result = new PeopleResult(peopleResultArray, true);
             return result;
         } catch (Exception ex) {
             ex.printStackTrace();
