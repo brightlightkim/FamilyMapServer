@@ -28,7 +28,7 @@ public class PersonService {
             Person desiredPerson = new PersonDAO(db.getConnection()).find(personID);
 
             if (desiredPerson == null) {
-                PersonResult result = new PersonResult("No Person that match the ID", false);
+                PersonResult result = new PersonResult("Error: No Person that match the ID", false);
                 db.closeConnection(false);
                 return result;
             }
@@ -69,7 +69,7 @@ public class PersonService {
             Set<Person> desiredPeople = new PersonDAO(db.getConnection()).findPeople(userName);
             PersonsResult result;
             if (desiredPeople == null || desiredPeople.size() == 0) {
-                result = new PersonsResult("no data is available for the given username", false);
+                result = new PersonsResult("Error: no data is available for the given username", false);
                 db.closeConnection(false);
                 return result;
             }

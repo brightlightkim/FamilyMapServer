@@ -30,7 +30,7 @@ public class RegisterService {
             if(request.getUsername() == null || request.getFirstName() == null ||
             request.getLastName() == null || request.getGender() == null ||
             request.getEmail() == null || request.getPassword() == null){
-                RegisterResult result = new RegisterResult("Request Field Is Not Filled", false);
+                RegisterResult result = new RegisterResult("Error: Request Field Is Not Filled", false);
                 db.closeConnection(false);
                 return result;
             }
@@ -38,25 +38,23 @@ public class RegisterService {
             User matchedUser = new UserDAO(db.getConnection()).find(request.getUsername());
 
             if (matchedUser != null){
-                RegisterResult result = new RegisterResult("We already have this username", false);
+                RegisterResult result = new RegisterResult("Error: We already have this username", false);
                 db.closeConnection(false);
                 return result;
             }
             db.closeConnection(true);
             FillService service = new FillService();
             int bornYear = service.getRandomNum(1921,2021);
+
             Person newPerson = service.generatePerson(request.getUsername(), request.getFirstName(), request.getLastName(),
                     request.getGender(), bornYear, 4);
 
-            String uuid = UUID.randomUUID().toString();
-
-            //Create User for this request
             User newUser = new User(request.getUsername(), request.getPassword(),
                     request.getEmail(), request.getFirstName(), request.getLastName(),
-                    request.getGender(), uuid);
+                    request.getGender(), newPerson.getPersonID());
 
             //Create Token for this request
-            uuid = UUID.randomUUID().toString(); //grant the random token for the username.
+            String uuid = UUID.randomUUID().toString(); //grant the random token for the username.
             AuthToken newToken = new AuthToken(uuid, request.getUsername());
 
             //Create Event for this request >> Birth Event

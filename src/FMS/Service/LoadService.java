@@ -64,7 +64,7 @@ public class LoadService {
                 result = new LoadResult(message, true);
             }
             else{
-                message = "Empty Request";
+                message = "Error: Empty Request";
                 result = new LoadResult(message, false);
             }
         }

@@ -29,7 +29,7 @@ public class EventService {
             EventResult result;
             Event desiredEvent = new EventDAO(db.getConnection()).find(eventID);
             if (desiredEvent == null) {
-                result = new EventResult("No Event that match", false);
+                result = new EventResult("Error: No Event that match", false);
                 db.closeConnection(false);
                 return result;
             } else {
@@ -68,7 +68,7 @@ public class EventService {
             Set<Event> desiredEvents = new EventDAO(db.getConnection()).findAll(desiredPeople, userName);
             EventsResult result;
             if (desiredEvents == null || desiredEvents.size() == 0){
-                result = new EventsResult("no event is available for the given userName", false);
+                result = new EventsResult("Error: no event is available for the given userName", false);
                 db.closeConnection(false);
                 return result;
             }

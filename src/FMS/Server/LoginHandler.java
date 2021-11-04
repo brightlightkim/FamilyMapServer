@@ -16,7 +16,7 @@ public class LoginHandler extends Handler {
         try {
             if (exchange.getRequestMethod().toLowerCase(Locale.ROOT).equals("post")){
                 Reader reqData = new InputStreamReader(exchange.getRequestBody());
-                LoginRequest request = (LoginRequest)gson.fromJson(reqData, LoginRequest.class);
+                LoginRequest request = gson.fromJson(reqData, LoginRequest.class);
                 LoginService service = new LoginService();
                 LoginResult result = service.login(request);
                 if (result.isSuccess()) {
@@ -28,7 +28,6 @@ public class LoginHandler extends Handler {
                 Writer resBody= new OutputStreamWriter(exchange.getResponseBody());
                 gson.toJson(result, resBody);
                 resBody.close();
-                success = true;
             }
             else {
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);

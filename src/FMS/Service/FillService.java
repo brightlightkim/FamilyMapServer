@@ -70,9 +70,9 @@ public class FillService {
         }
         int birthYear = getRandomNum(1921, 2021);
         if (generations < 1) {
-            return new FillResult("Invalid generation number", false);
+            return new FillResult("Error: Invalid generation number", false);
         } else if (generations > 20) {
-            return new FillResult("generation numbers are too great", false);
+            return new FillResult("Error: generation numbers are too great", false);
         }
         generatePerson(username, firstName, surname, gender, birthYear, generations);
         String message = "Successfully created " + createdPeopleNum + " persons and "
@@ -163,9 +163,13 @@ public class FillService {
         }
 
         String deathEventID = UUID.randomUUID().toString();
+        int deathYear = birthYear + getRandomNum(20, 50);
+        if (deathYear >= 2020){
+            getRandomNum(birthYear + 20, 2019);
+        }
         Event death = new Event(deathEventID, username, personID, deathPlace.getLatitude(),
                 deathPlace.getLongitude(), birthPlace.getCountry(),
-                deathPlace.getCity(), "DEATH", birthYear + getRandomNum(20, 110));
+                deathPlace.getCity(), "DEATH", deathYear);
         createdEventNum++;
         return death;
     }

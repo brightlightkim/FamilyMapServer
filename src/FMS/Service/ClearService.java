@@ -14,27 +14,18 @@ public class ClearService {
      */
     public ClearResult clear() throws DataAccessException{
         Database db = new Database();
+        ClearResult result;
         try{
-            db.openConnection();
-            // clear all tables
+            db.getConnection();
             db.clearTables();
-            // Close database connection, COMMIT transaction
             db.closeConnection(true);
-
-            // Create and return SUCCESS Result object
-            ClearResult result = new ClearResult("Cleared all tables", true);
-            return result;
+            result = new ClearResult("Cleared all tables", true);
         }
         catch (Exception ex) {
             ex.printStackTrace();
-
-            // Close database connection, ROLLBACK transaction
             db.closeConnection(false);
-
-            // Create and return FAILURE Result object
-
+            result = new ClearResult("Error: failed clearing", false);
         }
-
-        return null;
+        return result;
     }
 }
