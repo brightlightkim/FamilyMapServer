@@ -8,6 +8,7 @@ import Result.PersonsResult;
 import Result.PersonResult;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Class that performs person relating methods
@@ -65,7 +66,7 @@ public class PersonService {
         try {
             db.getConnection();
             // Use DAOs to do requested operation
-            ArrayList<Person> desiredPeople = new PersonDAO(db.getConnection()).findPeople(userName);
+            Set<Person> desiredPeople = new PersonDAO(db.getConnection()).findPeople(userName);
             PersonsResult result;
             if (desiredPeople == null || desiredPeople.size() == 0) {
                 result = new PersonsResult("no data is available for the given username", false);

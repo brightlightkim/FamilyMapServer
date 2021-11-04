@@ -25,7 +25,8 @@ public class PersonHandler extends Handler {
                 PersonsResult personsResult = new PersonsResult();
                 PersonResult personResult = new PersonResult();
                 boolean one = false;
-                //check if it's for all people or not
+                //TODO: Check for Authorization Token.
+
                 if (exchange.getRequestURI().toString().length() == 7) {
                     personsResult = getPeopleResult(exchange, service);
                 } else {

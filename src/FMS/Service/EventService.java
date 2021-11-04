@@ -10,6 +10,7 @@ import Result.EventsResult;
 import Result.EventResult;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Class that performs the Event relating service
@@ -62,8 +63,9 @@ public class EventService {
         Database db = new Database();
         try {
             db.openConnection();
-            ArrayList<Person> desiredPeople = new PersonDAO(db.getConnection()).findPeople(userName);
-            ArrayList<Event> desiredEvents = new EventDAO(db.getConnection()).findAll(desiredPeople, userName);
+            //TODO: The thing that I need to solve about.
+            Set<Person> desiredPeople = new PersonDAO(db.getConnection()).findPeople(userName);
+            Set<Event> desiredEvents = new EventDAO(db.getConnection()).findAll(desiredPeople, userName);
             EventsResult result;
             if (desiredEvents == null || desiredEvents.size() == 0){
                 result = new EventsResult("no event is available for the given userName", false);

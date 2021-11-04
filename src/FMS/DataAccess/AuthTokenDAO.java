@@ -42,12 +42,12 @@ public class AuthTokenDAO {
     public AuthToken find(String token) throws DataAccessException{
         AuthToken tokenThatMatch;
         ResultSet rs = null;
-        String sql = "SELECT * FROM AuthTokens WHERE AuthToken = ?;";
+        String sql = "SELECT * FROM AuthTokens WHERE authtoken = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, token);
             rs = stmt.executeQuery();
             if (rs.next()) {
-                tokenThatMatch = new AuthToken(rs.getString("AuthToken"), rs.getString("Username"));
+                tokenThatMatch = new AuthToken(rs.getString("authtoken"), rs.getString("username"));
                 return tokenThatMatch;
             }
         } catch (SQLException e) {

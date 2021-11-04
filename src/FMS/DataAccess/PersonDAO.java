@@ -1,13 +1,15 @@
 package DataAccess;
 
-import Model.Person;
 import Error.DataAccessException;
+import Model.Person;
+import Model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Data Access Class for Person
@@ -16,7 +18,7 @@ import java.util.ArrayList;
  */
 public class PersonDAO {
     private final Connection conn;
-
+    private boolean spouseCheck; //This is for checking not circling infinitely.
     public PersonDAO(Connection conn) {
         this.conn = conn;
     }
@@ -43,15 +45,15 @@ public class PersonDAO {
     public Person find(String personID) throws DataAccessException {
         Person person;
         ResultSet rs = null;
-        String sql = "SELECT * FROM Persons WHERE PersonID = ?;";
+        String sql = "SELECT * FROM Persons WHERE personID = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, personID);
             rs = stmt.executeQuery();
             if (rs.next()) {
-                person = new Person(rs.getString("PersonID"), rs.getString("AssociatedUsername"),
-                        rs.getString("FirstName"), rs.getString("LastName"),
-                        rs.getString("Gender"), rs.getString("FatherID"),
-                        rs.getString("MotherID"), rs.getString("SpouseID"));
+                person = new Person(rs.getString("personID"), rs.getString("associatedUsername"),
+                        rs.getString("firstName"), rs.getString("lastName"),
+                        rs.getString("gender"), rs.getString("fatherID"),
+                        rs.getString("motherID"), rs.getString("spouseID"));
                 return person;
             }
         } catch (SQLException e) {
@@ -93,6 +95,17 @@ public class PersonDAO {
         }
     }
 
+    public void updateSpouseID(Person person, String spouseID) throws DataAccessException{
+        String sql = "UPDATE Persons SET spouseID = '" + spouseID + "' WHERE personID = '" + person.getPersonID() + "'";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while updating Spouse ID");
+        }
+    }
+
     /**
      * find all persons
      *
@@ -100,13 +113,16 @@ public class PersonDAO {
      * @return persons array of persons.
      * Associated Username
      */
-    public ArrayList<Person> findPeople(String associatedUsername) throws DataAccessException {
+    public Set<Person> findPeople(String associatedUsername) throws DataAccessException {
 
         if (associatedUsername != null) {
-            ArrayList<Person> persons = new ArrayList<>();
-            Person person = findPersonByUsername(associatedUsername);
+            Set<Person> persons = new HashSet<>();
+            Database db = new Database();
+            User user = new UserDAO(db.getConnection()).find(associatedUsername);
+            db.closeConnection(true);
+            Person person = find(user.getPersonID());
             if (person != null) {
-                persons.add(person);
+                spouseCheck = false; // it means not finding the spouse yet.
                 persons.addAll(findPeopleByID(person.getPersonID()));
             }
             return persons;
@@ -115,56 +131,31 @@ public class PersonDAO {
         }
     }
 
-    private ArrayList<Person> findPeopleByID(String id) throws DataAccessException {
+    private Set<Person> findPeopleByID(String id) throws DataAccessException {
         if (id != null) {
-            ArrayList<Person> people = new ArrayList<>();
+            Set<Person> people = new HashSet<>();
             Person person = find(id);
+
             if (person != null) {
                 people.add(person);
                 if (person.getFatherID() != null) {
-                    ArrayList<Person> fatherSide = findPeopleByID(person.getFatherID());
+                    Set<Person> fatherSide = findPeopleByID(person.getFatherID());
                     people.addAll(fatherSide);
                 }
                 if (person.getMotherID() != null) {
-                    ArrayList<Person> motherSide = findPeopleByID(person.getMotherID());
+                    Set<Person> motherSide = findPeopleByID(person.getMotherID());
                     people.addAll(motherSide);
                 }
-                if (person.getSpouseID() != null) {
-                    ArrayList<Person> spouseSide = findPeopleByID(person.getSpouseID());
+                if (person.getSpouseID() != null && !spouseCheck) {
+                    spouseCheck = true;
+                    Set<Person> spouseSide = findPeopleByID(person.getSpouseID());
+                    spouseCheck = false;
                     people.addAll(spouseSide);
                 }
             }
             return people;
         } else {
             return null;
-        }
-    }
-
-    private Person findPersonByUsername(String associatedUsername) throws DataAccessException {
-        Person person = null;
-        ResultSet rs = null;
-        String sql = "SELECT * FROM Persons WHERE AssociatedUsername = ?;";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, associatedUsername);
-            rs = stmt.executeQuery();
-            while (rs.next()) {
-                person = new Person(rs.getString("PersonID"), rs.getString("AssociatedUsername"),
-                        rs.getString("FirstName"), rs.getString("LastName"),
-                        rs.getString("Gender"), rs.getString("FatherID"),
-                        rs.getString("MotherID"), rs.getString("SpouseID"));
-            }
-            return person;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DataAccessException("Error encountered while finding event");
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 }

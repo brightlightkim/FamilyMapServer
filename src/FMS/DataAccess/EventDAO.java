@@ -9,6 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Data Access Class for Event
  * It stores all events
@@ -59,15 +62,15 @@ public class EventDAO {
     public Event find(String eventID) throws DataAccessException {
         Event event;
         ResultSet rs = null;
-        String sql = "SELECT * FROM Events WHERE EventID = ?;";
+        String sql = "SELECT * FROM Events WHERE eventID = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, eventID);
             rs = stmt.executeQuery();
             if (rs.next()) {
-                event = new Event(rs.getString("EventID"), rs.getString("AssociatedUsername"),
-                        rs.getString("PersonID"), rs.getFloat("Latitude"), rs.getFloat("Longitude"),
-                        rs.getString("Country"), rs.getString("City"), rs.getString("EventType"),
-                        rs.getInt("Year"));
+                event = new Event(rs.getString("eventID"), rs.getString("associatedUsername"),
+                        rs.getString("personID"), rs.getFloat("latitude"), rs.getFloat("longitude"),
+                        rs.getString("country"), rs.getString("city"), rs.getString("eventType"),
+                        rs.getInt("year"));
                 return event;
             }
         } catch (SQLException e) {
@@ -92,12 +95,12 @@ public class EventDAO {
      * @param userName username of the events
      * @return return the events.
      */
-    public ArrayList<Event> findAll(ArrayList<Person> people, String userName) throws DataAccessException{
+    public Set<Event> findAll(Set<Person> people, String userName) throws DataAccessException{
         //1. Get all the associated username's events
         //2. do the followings for the father, mother, and spouse side.
 
         if(userName != null){
-            ArrayList<Event> allEvents = new ArrayList<>();
+            Set<Event> allEvents = new HashSet<>();
             for (Person person: people){
                 ArrayList<Event> events = findEventsByUserName(person.getAssociatedUsername());
                 allEvents.addAll(events);
@@ -111,15 +114,15 @@ public class EventDAO {
     public ArrayList<Event> findEventsByUserName(String username) throws DataAccessException {
         ArrayList<Event> events = new ArrayList<>();
         ResultSet rs = null;
-        String sql = "SELECT * FROM Events WHERE asssociatedUsername = ?;";
+        String sql = "SELECT * FROM Events WHERE associatedUsername = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                Event event = new Event(rs.getString("EventID"), rs.getString("AssociatedUsername"),
-                        rs.getString("PersonID"), rs.getFloat("Latitude"), rs.getFloat("Longitude"),
-                        rs.getString("Country"), rs.getString("City"), rs.getString("EventType"),
-                        rs.getInt("Year"));
+                Event event = new Event(rs.getString("eventID"), rs.getString("associatedUsername"),
+                        rs.getString("personID"), rs.getFloat("latitude"), rs.getFloat("longitude"),
+                        rs.getString("country"), rs.getString("city"), rs.getString("eventType"),
+                        rs.getInt("year"));
                 events.add(event);
             }
             return events;
@@ -146,6 +149,16 @@ public class EventDAO {
         } catch (SQLException e){
             e.printStackTrace();
             throw new DataAccessException("There is no database at all!");
+        }
+    }
+
+    public void removeDeathEvent(Person person) throws DataAccessException{
+        String sql = "DELETE FROM Events WHERE eventType = 'DEATH' AND personID = '" + person.getPersonID() + "';";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.executeUpdate();
+        } catch (SQLException e){
+            e.printStackTrace();
+            throw new DataAccessException("There is no event that match!");
         }
     }
 

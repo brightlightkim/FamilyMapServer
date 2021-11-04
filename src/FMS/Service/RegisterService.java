@@ -2,7 +2,7 @@ package Service;
 
 import DataAccess.AuthTokenDAO;
 import DataAccess.Database;
-import DataAccess.PersonDAO;
+import DataAccess.EventDAO;
 import DataAccess.UserDAO;
 import Error.DataAccessException;
 import Model.AuthToken;
@@ -43,9 +43,10 @@ public class RegisterService {
                 return result;
             }
             db.closeConnection(true);
-            //Where recursion needs to occur..
             FillService service = new FillService();
-            service.fillResult(request.getUsername(), request.getLastName(), 4);
+            int bornYear = service.getRandomNum(1921,2021);
+            Person newPerson = service.generatePerson(request.getUsername(), request.getFirstName(), request.getLastName(),
+                    request.getGender(), bornYear, 4);
 
             String uuid = UUID.randomUUID().toString();
 
@@ -53,14 +54,6 @@ public class RegisterService {
             User newUser = new User(request.getUsername(), request.getPassword(),
                     request.getEmail(), request.getFirstName(), request.getLastName(),
                     request.getGender(), uuid);
-
-            //Create Person for this request
-            String fatherID = UUID.randomUUID().toString();
-            String motherID = UUID.randomUUID().toString();
-            String spouseID = UUID.randomUUID().toString();
-            Person newPerson = new Person(uuid, request.getUsername(), request.getFirstName(),
-                    request.getLastName(), request.getGender(), fatherID, motherID, spouseID);
-
 
             //Create Token for this request
             uuid = UUID.randomUUID().toString(); //grant the random token for the username.
@@ -71,7 +64,7 @@ public class RegisterService {
             db.getConnection();
             //Add it to the database
             new UserDAO(db.getConnection()).insert(newUser);
-            new PersonDAO(db.getConnection()).insert(newPerson);
+            new EventDAO(db.getConnection()).removeDeathEvent(newPerson);
             new AuthTokenDAO(db.getConnection()).insert(newToken);
 
             // Close database connection, COMMIT transaction

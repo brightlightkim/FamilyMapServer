@@ -28,6 +28,9 @@ public class EventHandler extends Handler{
                 EventsResult eventsResult = new EventsResult();
                 boolean one = false;
 
+                //Check for the Authorization token
+                //if (exchange.)
+
                 if (exchange.getRequestURI().toString().length() == 6){
                     //for all people.
                     eventsResult = getAllEventResult(exchange, service);
@@ -103,7 +106,7 @@ public class EventHandler extends Handler{
             }
             String eventID = exchange.getRequestURI().toString().substring(7);
             EventResult desiredEvent = service.requestEvent(eventID);
-            if (desiredEvent.getAssociatedUsername() != userName){
+            if (!desiredEvent.getAssociatedUsername().equals(userName)){
                 return new EventResult("Event's username does not match with authorized token", false);
             }
             return desiredEvent;
@@ -115,7 +118,7 @@ public class EventHandler extends Handler{
 
     private String getUsernameByToken(String token) throws DataAccessException {
         Database db = new Database();
-        db.openConnection();
+        db.getConnection();
         AuthToken desiredToken = new AuthTokenDAO(db.getConnection()).find(token);
         db.closeConnection(true);
         if (token == null) {

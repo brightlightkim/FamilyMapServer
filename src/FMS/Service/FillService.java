@@ -56,14 +56,17 @@ public class FillService {
     public FillResult fillResult(String username, String userSurname, int generations) throws DataAccessException {
         String gender;
         String surname = userSurname;
+        String firstName;
         if (getRandomNum(0, 1) == 0) {
             gender = "MALE";
+            firstName = maleNames.getData()[getRandomNum(0, maleNames.getData().length - 1)];
         } else {
             gender = "FEMALE";
+            firstName = femaleNames.getData()[getRandomNum(0, femaleNames.getData().length - 1)];
         }
 
         if (userSurname == null) {
-            surname = surnames.getData()[getRandomNum(0, surnames.getData().length)];
+            surname = surnames.getData()[getRandomNum(0, surnames.getData().length - 1)];
         }
         int birthYear = getRandomNum(1921, 2021);
         if (generations < 1) {
@@ -71,14 +74,15 @@ public class FillService {
         } else if (generations > 20) {
             return new FillResult("generation numbers are too great", false);
         }
-        generatePerson(username, surname, gender, birthYear, generations);
+        generatePerson(username, firstName, surname, gender, birthYear, generations);
         String message = "Successfully created " + createdPeopleNum + " persons and "
                 + createdEventNum + " events to the database";
 
         return new FillResult(message, true);
     }
 
-    private Person generatePerson(String username, String surname, String gender,
+
+    public Person generatePerson(String username, String firstName, String surname, String gender,
                                   int birthYear, int generations) throws DataAccessException {
 
         Person father = null;
@@ -89,15 +93,19 @@ public class FillService {
             int fatherBirthYear = getRandomNum(birthYear - 40, birthYear - 10);
             //this makes mother birth year for the max of 50 years of old.
             int motherBirthYear = getRandomNum(fatherBirthYear - 10, fatherBirthYear + 10);
-
+            String fatherFirstName = maleNames.getData()[getRandomNum(0, maleNames.getData().length - 1)];
+            String motherFirstName = femaleNames.getData()[getRandomNum(0, femaleNames.getData().length - 1)];
             String motherSideSurname = surnames.getData()[getRandomNum(0, surnames.getData().length - 1)];
 
-            father = generatePerson(username, surname, "MALE", fatherBirthYear, generations - 1);
-            mother = generatePerson(username, motherSideSurname, "FEMALE", motherBirthYear, generations - 1);
+            father = generatePerson(username, fatherFirstName, surname, "MALE", fatherBirthYear, generations - 1);
+            mother = generatePerson(username, motherFirstName, motherSideSurname, "FEMALE", motherBirthYear, generations - 1);
 
             // Set mother's and father's spouse IDs
-            father.setSpouseID(mother.getPersonID());
-            mother.setSpouseID(father.getPersonID());
+            //TODO: Update SpouseID to each other using SQL Command. Now it didn't update to the server
+            Database db = new Database();
+            new PersonDAO(db.getConnection()).updateSpouseID(father, mother.getPersonID());
+            new PersonDAO(db.getConnection()).updateSpouseID(mother, father.getPersonID());
+            db.closeConnection(true);
             // Add marriage events to mother and father + marriage could happen child's birth or remarriage.
             addMarriageEvent(username, father, mother, getRandomNum(motherBirthYear + 13, motherBirthYear + 50));
             // (their marriage events must be in synch with each other)
@@ -105,20 +113,12 @@ public class FillService {
 
         String personID = UUID.randomUUID().toString();
 
-        String personName;
-
-        if (gender.equals("MALE") || gender.equals("m") || gender.equals("M")) {
-            personName = maleNames.getData()[getRandomNum(0, maleNames.getData().length-1)];
-        } else {
-            personName = femaleNames.getData()[getRandomNum(0, femaleNames.getData().length-1)];
-        }
-
         // Set person's properties
         if (father != null && mother != null) {
-            person = new Person(personID, username, personName, surname, gender,
-                    father.getFatherID(), mother.getPersonID(), null);
+            person = new Person(personID, username, firstName, surname, gender,
+                    father.getPersonID(), mother.getPersonID(), null);
         } else {
-            person = new Person(personID, username, personName, surname, gender,
+            person = new Person(personID, username, firstName, surname, gender,
                     null, null, null);
         }
         // Generate events for person (except marriage)
@@ -129,10 +129,9 @@ public class FillService {
         createdPeopleNum++;
         Database db = new Database();
         try {
+            db.getConnection();
             new PersonDAO(db.getConnection()).insert(person);
-            db.closeConnection(true);
             new EventDAO(db.getConnection()).insert(birth);
-            db.closeConnection(true);
             new EventDAO(db.getConnection()).insert(death);
             db.closeConnection(true);
         } catch (DataAccessException e) {
@@ -187,8 +186,8 @@ public class FillService {
         Event marriageForWife = createMarriageEvent(marriageIDWife, username, mother.getPersonID(), marriagePlace, year);
         Database db = new Database();
         try {
+            db.getConnection();
             new EventDAO(db.getConnection()).insert(marriageForHusband);
-            db.closeConnection(true);
             new EventDAO(db.getConnection()).insert(marriageForWife);
             db.closeConnection(true);
         } catch (DataAccessException e) {
@@ -197,7 +196,7 @@ public class FillService {
         }
     }
 
-    private int getRandomNum(int min, int max) {
+    public int getRandomNum(int min, int max) {
         Random rand = new Random();
         int randomAge = rand.nextInt((max - min) + 1) + min;
         return randomAge;
