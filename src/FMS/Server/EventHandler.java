@@ -28,9 +28,6 @@ public class EventHandler extends Handler{
                 EventsResult eventsResult = new EventsResult();
                 boolean one = false;
 
-                //Check for the Authorization token
-                //if (exchange.)
-
                 if (exchange.getRequestURI().toString().length() == 6){
                     //for all people.
                     eventsResult = getAllEventResult(exchange, service);
@@ -79,16 +76,16 @@ public class EventHandler extends Handler{
         if (reqHeaders.containsKey("Authorization")) {
             String authToken = reqHeaders.getFirst("Authorization");
             if (authToken.length() == 0){
-                return new EventsResult("No Authorization Token input", false);
+                return new EventsResult("Error: No Authorization Token input", false);
             }
             String userName = getUsernameByToken(authToken);
             if (userName == null){
-                return new EventsResult("No Token that match", false);
+                return new EventsResult("Error: No Token that match", false);
             }
             return service.allEventResult(userName);
         }
         else{
-            return new EventsResult("No Authorization Token", false);
+            return new EventsResult("Error: No Authorization Token", false);
         }
     }
 
@@ -98,21 +95,21 @@ public class EventHandler extends Handler{
         if (reqHeaders.containsKey("Authorization")) {
             String authToken = reqHeaders.getFirst("Authorization");
             if (authToken.length() == 0){
-                return new EventResult("No Authorization token input", false);
+                return new EventResult("Error: No Authorization token input", false);
             }
             String userName = getUsernameByToken(authToken);
             if (userName == null){
-                return new EventResult("No Token that match", false);
+                return new EventResult("Error: No Token that match", false);
             }
             String eventID = exchange.getRequestURI().toString().substring(7);
             EventResult desiredEvent = service.requestEvent(eventID);
             if (!desiredEvent.getAssociatedUsername().equals(userName)){
-                return new EventResult("Event's username does not match with authorized token", false);
+                return new EventResult("Error: Event's username does not match with authorized token", false);
             }
             return desiredEvent;
         }
         else{
-            return new EventResult("No Authorization Token", false);
+            return new EventResult("Error: No Authorization Token", false);
         }
     }
 
@@ -121,7 +118,7 @@ public class EventHandler extends Handler{
         db.getConnection();
         AuthToken desiredToken = new AuthTokenDAO(db.getConnection()).find(token);
         db.closeConnection(true);
-        if (token == null) {
+        if (desiredToken == null) {
             return null;
         } else {
             return desiredToken.getUsername();

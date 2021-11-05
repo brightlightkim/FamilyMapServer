@@ -34,7 +34,12 @@ public class FileHandler extends Handler {
                 }
                 else{ //file is not found
                     exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_FOUND, 0);
-                    exchange.getResponseBody().close();
+                    urlPath = "/HTML/404.html";
+                    filePath = "web" + urlPath;
+                    file = new File(filePath);
+                    OutputStream respBody = exchange.getResponseBody();
+                    Files.copy(file.toPath(), respBody);
+                    respBody.close();
                 }
             }
             else{ //if it's not get function

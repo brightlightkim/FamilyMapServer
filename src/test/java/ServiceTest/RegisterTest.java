@@ -73,10 +73,10 @@ public class RegisterTest {
             result = service.register(emptyFieldRequest);
         } catch (DataAccessException e){
             e.printStackTrace();
-            throw new DataAccessException("register failed");
+            throw new DataAccessException("Error: register failed");
         }
         assertNotNull(result);
-        assertEquals(result.getMessage(), "Request Field Is Not Filled");
+        assertEquals(result.getMessage(), "Error: Request Field Is Not Filled");
     }
 
     @Test
@@ -85,6 +85,6 @@ public class RegisterTest {
         db.closeConnection(true);
         result = service.register(usedUsernameRequest);
         assertNotNull(result);
-        assertEquals(result.getMessage(), "We already have this username");
+        assertEquals(result.getMessage(), "Error: We already have this username");
     }
 }

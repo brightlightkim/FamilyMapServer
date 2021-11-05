@@ -21,6 +21,9 @@ public class LoadService {
      */
     public LoadResult load(LoadRequest request) throws DataAccessException {
         Database db = new Database();
+        db.getConnection();
+        db.clearTables();
+        db.closeConnection(true);
         LoadResult result;
         String message;
         try{
@@ -28,7 +31,6 @@ public class LoadService {
             int personNum = 0;
             int eventNum = 0;
             int emptyIfItReachThree = 0;
-            db.getConnection();
             if (request.getUsers() != null) {
                 for (User user : request.getUsers()) {
                     new UserDAO(db.getConnection()).insert(user);

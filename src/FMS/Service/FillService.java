@@ -75,7 +75,7 @@ public class FillService {
             return new FillResult("Error: generation numbers are too great", false);
         }
         generatePerson(username, firstName, surname, gender, birthYear, generations);
-        String message = "Successfully created " + createdPeopleNum + " persons and "
+        String message = "Successfully added " + createdPeopleNum + " persons and "
                 + createdEventNum + " events to the database";
 
         return new FillResult(message, true);
@@ -90,9 +90,9 @@ public class FillService {
         Person person;
         if (generations >= 1) {
             //at least 13 birth year more than the kid
-            int fatherBirthYear = getRandomNum(birthYear - 40, birthYear - 10);
+            int fatherBirthYear = getRandomNum(birthYear - 40, birthYear - 17);
             //this makes mother birth year for the max of 50 years of old.
-            int motherBirthYear = getRandomNum(fatherBirthYear - 10, fatherBirthYear + 10);
+            int motherBirthYear = getRandomNum(fatherBirthYear - 2, fatherBirthYear+2);
             String fatherFirstName = maleNames.getData()[getRandomNum(0, maleNames.getData().length - 1)];
             String motherFirstName = femaleNames.getData()[getRandomNum(0, femaleNames.getData().length - 1)];
             String motherSideSurname = surnames.getData()[getRandomNum(0, surnames.getData().length - 1)];
@@ -100,14 +100,12 @@ public class FillService {
             father = generatePerson(username, fatherFirstName, surname, "MALE", fatherBirthYear, generations - 1);
             mother = generatePerson(username, motherFirstName, motherSideSurname, "FEMALE", motherBirthYear, generations - 1);
 
-            // Set mother's and father's spouse IDs
-            //TODO: Update SpouseID to each other using SQL Command. Now it didn't update to the server
             Database db = new Database();
             new PersonDAO(db.getConnection()).updateSpouseID(father, mother.getPersonID());
             new PersonDAO(db.getConnection()).updateSpouseID(mother, father.getPersonID());
             db.closeConnection(true);
             // Add marriage events to mother and father + marriage could happen child's birth or remarriage.
-            addMarriageEvent(username, father, mother, getRandomNum(motherBirthYear + 13, motherBirthYear + 50));
+            addMarriageEvent(username, father, mother, getRandomNum(motherBirthYear + 18, motherBirthYear + 50));
             // (their marriage events must be in synch with each other)
         }
 
@@ -165,7 +163,7 @@ public class FillService {
         String deathEventID = UUID.randomUUID().toString();
         int deathYear = birthYear + getRandomNum(20, 50);
         if (deathYear >= 2020){
-            getRandomNum(birthYear + 20, 2019);
+            getRandomNum(birthYear, 2019);
         }
         Event death = new Event(deathEventID, username, personID, deathPlace.getLatitude(),
                 deathPlace.getLongitude(), birthPlace.getCountry(),
@@ -201,6 +199,9 @@ public class FillService {
     }
 
     public int getRandomNum(int min, int max) {
+        if (min > max){
+            min = max-3;
+        }
         Random rand = new Random();
         int randomAge = rand.nextInt((max - min) + 1) + min;
         return randomAge;

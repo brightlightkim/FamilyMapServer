@@ -119,6 +119,10 @@ public class PersonDAO {
             Set<Person> persons = new HashSet<>();
             Database db = new Database();
             User user = new UserDAO(db.getConnection()).find(associatedUsername);
+            if (user == null){
+                db.closeConnection(false);
+                return null;
+            }
             db.closeConnection(true);
             Person person = find(user.getPersonID());
             if (person != null) {

@@ -70,16 +70,16 @@ public class PersonHandler extends Handler {
         if (reqHeaders.containsKey("Authorization")) {
             String authToken = reqHeaders.getFirst("Authorization");
             if (authToken.length() == 0){
-                return new PersonsResult("No Authorization Token", false);
+                return new PersonsResult("Error: No Authorization Token", false);
             }
             String userName = getUsernameByToken(authToken);
             if (userName == null){
-                return new PersonsResult("No Token that match", false);
+                return new PersonsResult("Error: No Token that match", false);
             }
             return service.findAllPeople(userName);
         }
         else{
-            return new PersonsResult("No Authorization Token", false);
+            return new PersonsResult("Error: No Authorization Token", false);
         }
     }
 
@@ -89,21 +89,21 @@ public class PersonHandler extends Handler {
         if (reqHeaders.containsKey("Authorization")) {
             String authToken = reqHeaders.getFirst("Authorization");
             if (authToken.length() == 0){
-                return new PersonResult("No Authorization Token", false);
+                return new PersonResult("Error: No Authorization Token", false);
             }
             String usernameByToken = getUsernameByToken(authToken);
             if (usernameByToken == null){
-                return new PersonResult("No Token that match", false);
+                return new PersonResult("Error: No Token that match", false);
             }
             String personID = exchange.getRequestURI().toString().substring(8);
             PersonResult desiredPerson = service.findPerson(personID);
-            if (usernameByToken != desiredPerson.getAssociatedUsername()){
-                return new PersonResult("person ID and authorization token does not match", false);
+            if (!usernameByToken.equals(desiredPerson.getAssociatedUsername())){
+                return new PersonResult("Error: person ID and authorization token does not match", false);
             }
             return desiredPerson;
         }
         else{
-            return new PersonResult("No Authorization Token", false);
+            return new PersonResult("Error: No Authorization Token", false);
         }
     }
 
@@ -111,7 +111,7 @@ public class PersonHandler extends Handler {
         Database db = new Database();
         AuthToken desiredToken = new AuthTokenDAO(db.getConnection()).find(token);
         db.closeConnection(true);
-        if (token == null) {
+        if (desiredToken == null) {
             return null;
         } else {
             return desiredToken.getUsername();

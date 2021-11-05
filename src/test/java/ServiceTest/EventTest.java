@@ -92,7 +92,7 @@ public class EventTest {
         try {
             results = service.allEventResult("yoo");
             assertNotNull(results);
-            assertEquals(results.getMessage(), "no event is available for the given userName");
+            assertEquals(results.getMessage(), "Error: no event is available for the given userName");
             assertEquals(results.isSuccess(), false);
         }
         catch (DataAccessException e){

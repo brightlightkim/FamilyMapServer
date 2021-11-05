@@ -19,7 +19,7 @@ public class ClearService {
             db.getConnection();
             db.clearTables();
             db.closeConnection(true);
-            result = new ClearResult("Cleared all tables", true);
+            result = new ClearResult("clear succeeded", true);
         }
         catch (Exception ex) {
             ex.printStackTrace();

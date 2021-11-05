@@ -49,7 +49,7 @@ public class LoadTest {
     public void FailedLoad() throws DataAccessException {
         result = service.load(badRequest);
         assertNotNull(result);
-        assertEquals(result.getMessage(), "Empty Request");
+        assertEquals(result.getMessage(), "Error: Empty Request");
         assertEquals(result.isSuccess(), false);
     }
 

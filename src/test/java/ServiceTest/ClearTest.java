@@ -39,11 +39,8 @@ public class ClearTest {
         db.clearTables();
         db.closeConnection(true);
         new UserDAO(db.getConnection()).insert(user);
-        db.closeConnection(true);
         new PersonDAO(db.getConnection()).insert(person);
-        db.closeConnection(true);
         new EventDAO(db.getConnection()).insert(event);
-        db.closeConnection(true);
         new AuthTokenDAO(db.getConnection()).insert(token);
         db.closeConnection(true);
     }
@@ -53,7 +50,7 @@ public class ClearTest {
         try {
             result = service.clear();
             assertNotNull(result);
-            assertEquals(result.getMessage(), "Cleared all tables");
+            assertEquals(true, result.isSuccess());
             assertNull(new UserDAO(db.getConnection()).find(user.getUsername()));
             db.closeConnection(true);
             assertNull(new PersonDAO(db.getConnection()).find(person.getPersonID()));
@@ -65,7 +62,7 @@ public class ClearTest {
         }
         catch (DataAccessException e){
             e.printStackTrace();
-            throw new DataAccessException("Error while cleaning the data tables");
+            throw new DataAccessException("Error: Error while cleaning the data tables");
         }
     }
 

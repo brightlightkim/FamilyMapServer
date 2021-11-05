@@ -70,23 +70,23 @@ public class LoginTest {
     public void EmptyRequestField() throws DataAccessException {
         result = service.login(emptyUsernameRequest);
         assertNotNull(result);
-        assertEquals(result.getMessage(), "request field is not filled");
+        assertEquals(result.getMessage(), "Error: request field is not filled");
         result = service.login(emptyPasswordRequest);
         assertNotNull(result);
-        assertEquals(result.getMessage(), "request field is not filled");
+        assertEquals(result.getMessage(), "Error: request field is not filled");
     }
 
     @Test
     public void NoIDFound() throws DataAccessException {
         result = service.login(wrongIDRequest);
         assertNotNull(result);
-        assertEquals(result.getMessage(), "No ID that match");
+        assertEquals(result.getMessage(), "Error: No ID that match");
     }
 
     @Test
     public void passwordNotMatch() throws DataAccessException {
         result = service.login(wrongPasswordRequest);
         assertNotNull(result);
-        assertEquals(result.getMessage(), "Password not match");
+        assertEquals(result.getMessage(), "Error: Password not match");
     }
 }

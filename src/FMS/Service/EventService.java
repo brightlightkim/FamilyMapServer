@@ -63,10 +63,15 @@ public class EventService {
         Database db = new Database();
         try {
             db.openConnection();
-            //TODO: The thing that I need to solve about.
-            Set<Person> desiredPeople = new PersonDAO(db.getConnection()).findPeople(userName);
-            Set<Event> desiredEvents = new EventDAO(db.getConnection()).findAll(desiredPeople, userName);
             EventsResult result;
+            Set<Person> desiredPeople = new PersonDAO(db.getConnection()).findPeople(userName);
+            if (desiredPeople == null || desiredPeople.size() == 0){
+                result = new EventsResult("Error: no event is available for the given userName", false);
+                db.closeConnection(false);
+                return result;
+            }
+            Set<Event> desiredEvents = new EventDAO(db.getConnection()).findAll(desiredPeople, userName);
+
             if (desiredEvents == null || desiredEvents.size() == 0){
                 result = new EventsResult("Error: no event is available for the given userName", false);
                 db.closeConnection(false);
