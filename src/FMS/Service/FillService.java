@@ -87,11 +87,8 @@ public class FillService {
 
         Person father = null;
         Person mother = null;
-        Person person;
         if (generations >= 1) {
-            //at least 13 birth year more than the kid
             int fatherBirthYear = getRandomNum(birthYear - 40, birthYear - 17);
-            //this makes mother birth year for the max of 50 years of old.
             int motherBirthYear = getRandomNum(fatherBirthYear - 2, fatherBirthYear+2);
             String fatherFirstName = maleNames.getData()[getRandomNum(0, maleNames.getData().length - 1)];
             String motherFirstName = femaleNames.getData()[getRandomNum(0, femaleNames.getData().length - 1)];
@@ -100,31 +97,20 @@ public class FillService {
             father = generatePerson(username, fatherFirstName, surname, "MALE", fatherBirthYear, generations - 1);
             mother = generatePerson(username, motherFirstName, motherSideSurname, "FEMALE", motherBirthYear, generations - 1);
 
-            Database db = new Database();
-            new PersonDAO(db.getConnection()).updateSpouseID(father, mother.getPersonID());
-            new PersonDAO(db.getConnection()).updateSpouseID(mother, father.getPersonID());
-            db.closeConnection(true);
-            // Add marriage events to mother and father + marriage could happen child's birth or remarriage.
+            updateSpouseIDs(father, mother);
             addMarriageEvent(username, father, mother, getRandomNum(motherBirthYear + 18, motherBirthYear + 50));
-            // (their marriage events must be in synch with each other)
         }
 
-        String personID = UUID.randomUUID().toString();
+        Person person = createPerson(father, mother, username, firstName, surname, gender);
+        Event birth = createBirthEvent(username, person.getPersonID(), birthYear);
+        Event death = createDeathEvent(username, person.getPersonID(), birth, birthYear);
 
-        // Set person's properties
-        if (father != null && mother != null) {
-            person = new Person(personID, username, firstName, surname, gender,
-                    father.getPersonID(), mother.getPersonID(), null);
-        } else {
-            person = new Person(personID, username, firstName, surname, gender,
-                    null, null, null);
-        }
-        // Generate events for person (except marriage)
+        addThemToDatabase(person, birth, death);
 
-        Event birth = createBirthEvent(username, personID, birthYear);
-        Event death = createDeathEvent(username, personID, birth, birthYear);
-        // Save person in database
-        createdPeopleNum++;
+        return person;
+    }
+
+    private void addThemToDatabase(Person person, Event birth, Event death) throws DataAccessException{
         Database db = new Database();
         try {
             db.getConnection();
@@ -136,6 +122,19 @@ public class FillService {
             e.printStackTrace();
             db.closeConnection(false);
         }
+    }
+
+    private Person createPerson(Person father, Person mother, String username, String firstName, String surname, String gender){
+        Person person;
+        String personID = UUID.randomUUID().toString();
+        if (father != null && mother != null) {
+            person = new Person(personID, username, firstName, surname, gender,
+                    father.getPersonID(), mother.getPersonID(), null);
+        } else {
+            person = new Person(personID, username, firstName, surname, gender,
+                    null, null, null);
+        }
+        createdPeopleNum++;
         return person;
     }
 
@@ -178,6 +177,19 @@ public class FillService {
                 location.getCountry(), location.getCity(), "MARRIAGE", year);
         createdEventNum++;
         return marriage;
+    }
+
+    private void updateSpouseIDs(Person father, Person mother) throws DataAccessException{
+        try {
+            Database db = new Database();
+            new PersonDAO(db.getConnection()).updateSpouseID(father, mother.getPersonID());
+            new PersonDAO(db.getConnection()).updateSpouseID(mother, father.getPersonID());
+            db.closeConnection(true);
+        }
+        catch (DataAccessException e){
+            e.printStackTrace();
+            throw new DataAccessException("Error while updating spouse IDs");
+        }
     }
 
     private void addMarriageEvent(String username, Person father, Person mother, int year) throws DataAccessException {
