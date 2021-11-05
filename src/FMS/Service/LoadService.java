@@ -14,6 +14,11 @@ import Result.LoadResult;
  * Class that performs the loading
  */
 public class LoadService {
+    int userNum;
+    int personNum;
+    int eventNum;
+    int emptyIfItReachThree;
+
     /**
      * Performs the loading with the request and return the result
      * @param request LoadRequest object
@@ -27,40 +32,15 @@ public class LoadService {
         LoadResult result;
         String message;
         try{
-            int userNum = 0;
-            int personNum = 0;
-            int eventNum = 0;
-            int emptyIfItReachThree = 0;
-            if (request.getUsers() != null) {
-                for (User user : request.getUsers()) {
-                    new UserDAO(db.getConnection()).insert(user);
-                    db.closeConnection(true);
-                    userNum++;
-                }
-            }
-            else{
-                emptyIfItReachThree++;
-            }
-            if (request.getPersons() != null) {
-                for (Person person : request.getPersons()) {
-                    new PersonDAO(db.getConnection()).insert(person);
-                    db.closeConnection(true);
-                    personNum++;
-                }
-            }
-            else{
-                emptyIfItReachThree++;
-            }
-            if (request.getEvents() != null) {
-                for (Event event : request.getEvents()) {
-                    new EventDAO(db.getConnection()).insert(event);
-                    db.closeConnection(true);
-                    eventNum++;
-                }
-            }
-            else{
-                emptyIfItReachThree++;
-            }
+            userNum = 0;
+            personNum = 0;
+            eventNum = 0;
+            emptyIfItReachThree = 0;
+
+            loadUsers(request, db);
+            loadPersons(request, db);
+            loadEvents(request, db);
+
             if (emptyIfItReachThree != 3) {
                 message = "Successfully added " + userNum + " users, " + personNum + " persons, and " + eventNum + " events to the database.";
                 result = new LoadResult(message, true);
@@ -76,5 +56,61 @@ public class LoadService {
             result = new LoadResult("Error in accessing data", false);
         }
         return result;
+    }
+
+    private void loadUsers(LoadRequest request, Database db) throws DataAccessException{
+        try {
+            if (request.getUsers() != null) {
+                for (User user : request.getUsers()) {
+                    new UserDAO(db.getConnection()).insert(user);
+                    db.closeConnection(true);
+                    userNum++;
+                }
+            } else {
+                emptyIfItReachThree++;
+            }
+        }
+        catch (DataAccessException e){
+            e.printStackTrace();
+            throw new DataAccessException("Error while loading users");
+        }
+    }
+
+    private void loadPersons(LoadRequest request, Database db) throws DataAccessException{
+        try {
+            if (request.getPersons() != null) {
+                for (Person person : request.getPersons()) {
+                    new PersonDAO(db.getConnection()).insert(person);
+                    db.closeConnection(true);
+                    personNum++;
+                }
+            }
+            else{
+                emptyIfItReachThree++;
+            }
+        }
+        catch (DataAccessException e){
+            e.printStackTrace();
+            throw new DataAccessException("Error while loading users");
+        }
+    }
+
+    private void loadEvents(LoadRequest request, Database db) throws DataAccessException{
+        try {
+            if (request.getEvents() != null) {
+                for (Event event : request.getEvents()) {
+                    new EventDAO(db.getConnection()).insert(event);
+                    db.closeConnection(true);
+                    eventNum++;
+                }
+            }
+            else{
+                emptyIfItReachThree++;
+            }
+        }
+        catch (DataAccessException e){
+            e.printStackTrace();
+            throw new DataAccessException("Error while loading users");
+        }
     }
 }
