@@ -77,22 +77,23 @@ public class PersonService {
             // Close database connection, COMMIT transaction
             db.closeConnection(true);
 
-            // Create and return SUCCESS Result object
-            ArrayList<PersonResult> peopleResultArray = new ArrayList<>();
-            for (Person person : desiredPeople) {
-                PersonResult personResult = new PersonResult(person.getAssociatedUsername(),
-                        person.getPersonID(), person.getFirstName(),
-                        person.getLastName(), person.getGender(),
-                        person.getFatherID(), person.getMotherID(),
-                        person.getSpouseID(),true);
-                peopleResultArray.add(personResult);
-            }
-            result = new PersonsResult(peopleResultArray, true);
-            return result;
+            return getPersonsResult(desiredPeople);
         } catch (Exception ex) {
             ex.printStackTrace();
             db.closeConnection(false);
         }
         return null;
+    }
+    private PersonsResult getPersonsResult(Set<Person> desiredPeople){
+        ArrayList<PersonResult> peopleResultArray = new ArrayList<>();
+        for (Person person : desiredPeople) {
+            PersonResult personResult = new PersonResult(person.getAssociatedUsername(),
+                    person.getPersonID(), person.getFirstName(),
+                    person.getLastName(), person.getGender(),
+                    person.getFatherID(), person.getMotherID(),
+                    person.getSpouseID(),true);
+            peopleResultArray.add(personResult);
+        }
+        return new PersonsResult(peopleResultArray, true);
     }
 }
