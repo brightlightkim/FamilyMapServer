@@ -20,36 +20,64 @@ public class LoginService {
      * @param request of LoginRequest with username and password
      * @return login result
      */
+    private User matchedUser;
+
     public LoginResult login(LoginRequest request) throws DataAccessException {
         Database db = new Database();
         try{
-            db.getConnection();
+            LoginResult result = checkPossibleErrors(request, db);
+            if (result != null){
+                return result;
+            }
 
-            if (request.getUsername() == null || request.getPassword() == null){
-                LoginResult result = new LoginResult("Error: request field is not filled", false);
+            return loginWithValidRequest(request, db);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            db.closeConnection(false);
+        }
+
+        return null;
+    }
+
+    private LoginResult checkPossibleErrors(LoginRequest request, Database db) throws DataAccessException {
+        try {
+            db.getConnection();
+            LoginResult result = null;
+            if (request.getUsername() == null || request.getPassword() == null) {
+                result = new LoginResult("Error: request field is not filled", false);
                 db.closeConnection(false);
                 return result;
             }
 
             // Use DAOs to do requested operation
-            User matchedUser = new UserDAO(db.getConnection()).find(request.getUsername());
+            matchedUser = new UserDAO(db.getConnection()).find(request.getUsername());
 
-            if (matchedUser == null){
-                LoginResult result = new LoginResult("Error: No ID that match", false);
+            if (matchedUser == null) {
+                result = new LoginResult("Error: No ID that match", false);
                 db.closeConnection(false);
                 return result;
             }
 
             //when the password not match
-            if (!matchedUser.getPassword().equals(request.getPassword())){
-                LoginResult result = new LoginResult("Error: Password not match", false);
+            if (!matchedUser.getPassword().equals(request.getPassword())) {
+                result = new LoginResult("Error: Password not match", false);
                 db.closeConnection(false);
                 return result;
             }
 
             db.closeConnection(true);
+            return result;
+        }
+        catch (DataAccessException e){
+            e.printStackTrace();
+            db.closeConnection(false);
+            throw new DataAccessException("Error while checking the login request");
+        }
+    }
 
-            //Then I have to create the Authorization token and insert it.
+    private LoginResult loginWithValidRequest(LoginRequest request, Database db) throws DataAccessException {
+        try {
             String uuid = UUID.nameUUIDFromBytes(request.getUsername().getBytes()).toString();
             AuthToken token = new AuthToken(uuid, request.getUsername());
             db.getConnection();
@@ -58,19 +86,13 @@ public class LoginService {
             db.closeConnection(true);
 
             // Create and return SUCCESS Result object
-            LoginResult result = new LoginResult(uuid, matchedUser.getUsername(), matchedUser.getPersonID(),true);
+            LoginResult result = new LoginResult(uuid, matchedUser.getUsername(), matchedUser.getPersonID(), true);
             return result;
         }
-        catch (Exception ex) {
-            ex.printStackTrace();
-
-            // Close database connection, ROLLBACK transaction
+        catch (DataAccessException e){
+            e.printStackTrace();
             db.closeConnection(false);
-
-            // Create and return FAILURE Result object
-
+            throw new DataAccessException("Error while checking the login request");
         }
-
-        return null;
     }
 }
