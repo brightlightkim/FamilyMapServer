@@ -37,12 +37,7 @@ public class EventHandler extends Handler{
                     one = true;
                 }
 
-                if (eventResult.isSuccess() || eventsResult.isSuccess()){
-                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-                }
-                else {
-                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
-                }
+                sendRightHttpResponse(exchange, eventResult.isSuccess(), eventsResult.isSuccess());
 
                 Writer resBody = new OutputStreamWriter(exchange.getResponseBody());
 

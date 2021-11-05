@@ -20,12 +20,12 @@ public class PersonHandler extends Handler {
     public void handle(HttpExchange exchange) throws IOException {
         try {
             if (exchange.getRequestMethod().toLowerCase(Locale.ROOT).equals("get")) {
-                //take out "/person" part
                 PersonService service = new PersonService();
                 PersonsResult personsResult = new PersonsResult();
                 PersonResult personResult = new PersonResult();
                 boolean one = false;
 
+                //Check whether it wants all person or just one person.
                 if (exchange.getRequestURI().toString().length() == 7) {
                     personsResult = getPeopleResult(exchange, service);
                 } else {
@@ -33,12 +33,7 @@ public class PersonHandler extends Handler {
                     one = true;
                 }
 
-                if (personResult.isSuccess() || personsResult.isSuccess()) {
-                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-                }
-                else{
-                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
-                }
+                sendRightHttpResponse(exchange, personResult.isSuccess(), personsResult.isSuccess());
 
                 Writer resBody = new OutputStreamWriter(exchange.getResponseBody());
 
