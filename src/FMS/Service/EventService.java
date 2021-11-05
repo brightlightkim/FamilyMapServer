@@ -1,13 +1,13 @@
 package Service;
 
-import DataAccess.PersonDAO;
-import Error.DataAccessException;
 import DataAccess.Database;
 import DataAccess.EventDAO;
+import DataAccess.PersonDAO;
+import Error.DataAccessException;
 import Model.Event;
 import Model.Person;
-import Result.EventsResult;
 import Result.EventResult;
+import Result.EventsResult;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -65,22 +65,35 @@ public class EventService {
             db.openConnection();
             EventsResult result;
             Set<Person> desiredPeople = new PersonDAO(db.getConnection()).findPeople(userName);
+
             if (desiredPeople == null || desiredPeople.size() == 0){
                 result = new EventsResult("Error: no event is available for the given userName", false);
                 db.closeConnection(false);
                 return result;
             }
+
             Set<Event> desiredEvents = new EventDAO(db.getConnection()).findAll(desiredPeople, userName);
 
-            if (desiredEvents == null || desiredEvents.size() == 0){
+            return makeAllEventResult(desiredEvents, db);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            db.closeConnection(false);
+        }
+
+        return null;
+    }
+
+    private EventsResult makeAllEventResult(Set<Event> desiredEvents, Database db) throws DataAccessException{
+        try {
+            EventsResult result;
+            if (desiredEvents == null || desiredEvents.size() == 0) {
                 result = new EventsResult("Error: no event is available for the given userName", false);
                 db.closeConnection(false);
                 return result;
-            }
-            else{
+            } else {
                 db.closeConnection(true);
                 ArrayList<EventResult> eventResultArray = new ArrayList<>();
-                for (Event event : desiredEvents){
+                for (Event event : desiredEvents) {
                     EventResult eventResult = new EventResult(true,
                             event.getAssociatedUsername(), event.getEventID(),
                             event.getPersonID(), event.getLatitude(),
@@ -92,11 +105,10 @@ public class EventService {
                 result = new EventsResult(true, eventResultArray);
                 return result;
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            db.closeConnection(false);
         }
-
-        return null;
+        catch (DataAccessException e){
+            e.printStackTrace();
+            throw new DataAccessException("Error while making an Array of all events");
+        }
     }
 }
