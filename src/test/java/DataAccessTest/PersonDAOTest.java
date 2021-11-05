@@ -22,7 +22,7 @@ public class PersonDAOTest {
     public void setUp() throws DataAccessException {
         db = new Database();
         bestPerson = new Person("taeyangk95", "taeyangk", "Taeyang"
-                , "Kim", "m", "gwant", "hong", "you");
+                , "Kim", "m", "jin", "hong", "you");
         comparePerson = new Person("jin", "that", "hwang"
                 , "tae", "f", "gwang", "hons", "yod");
         Connection conn = db.getConnection();
@@ -73,4 +73,5 @@ public class PersonDAOTest {
         pDAO.clear();
         assertNull(pDAO.find(bestPerson.getPersonID()));
     }
+
 }

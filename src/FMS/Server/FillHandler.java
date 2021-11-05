@@ -30,7 +30,6 @@ public class FillHandler extends Handler {
                 gson.toJson(result, resBody);
                 resBody.close();
                 exchange.getResponseBody().close();
-                success = true;
             }
             else {
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);

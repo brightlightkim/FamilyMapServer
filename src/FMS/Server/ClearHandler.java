@@ -19,7 +19,6 @@ public class ClearHandler extends Handler{
                 Writer resBody= new OutputStreamWriter(exchange.getResponseBody());
                 gson.toJson(result, resBody);
                 resBody.close();
-                success = true;
             }
             else {
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
