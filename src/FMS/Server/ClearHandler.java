@@ -13,7 +13,6 @@ public class ClearHandler extends Handler{
     public void handle(HttpExchange exchange) throws IOException {
         try {
             if (exchange.getRequestMethod().toLowerCase(Locale.ROOT).equals("post")){
-                Reader reqData = new InputStreamReader(exchange.getRequestBody());
                 ClearService service = new ClearService();
                 ClearResult result = service.clear();
                 if (result.isSuccess()) {
