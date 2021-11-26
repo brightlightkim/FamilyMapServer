@@ -78,7 +78,7 @@ public class LoginService {
 
     private LoginResult loginWithValidRequest(LoginRequest request, Database db) throws DataAccessException {
         try {
-            String uuid = UUID.nameUUIDFromBytes(request.getUsername().getBytes()).toString();
+            String uuid = UUID.randomUUID().toString();
             AuthToken token = new AuthToken(uuid, request.getUsername());
             db.getConnection();
             new AuthTokenDAO(db.getConnection()).insert(token);
